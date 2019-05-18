@@ -10,7 +10,7 @@ before_script:
   - npm install -g @angular/cli
 script:
 - ng lint
-- ng build --prod --base-href https://helelef.github.io/mymap
+- ng build --prod --base-href https://helelef.github.io/mymap/
 deploy:
   provider: pages
   skip_cleanup: true

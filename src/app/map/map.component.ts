@@ -15,7 +15,7 @@ export class MapComponent implements OnInit {
   ngOnInit() {
 
     // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/23467
-    Object.getOwnPropertyDescriptor(mapboxgl, "accessToken").set(environment.MAPBOX_API_TOKEN);
+    Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.MAPBOX_API_TOKEN);
 
     this.map = new mapboxgl.Map({
       container: 'map',

@@ -25,5 +25,5 @@ export class AppComponent implements OnInit {
 
   updateStatus() {
     this.isOnline = navigator.onLine;
-  };
+  }
 }

@@ -5,8 +5,7 @@ import { MapComponent } from './map/map.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'map', pathMatch: 'full' },
-  { path: 'map', component: MapComponent },
+  { path: '', component: MapComponent},
   { path: 'settings', component: SettingsComponent },
 ];
 

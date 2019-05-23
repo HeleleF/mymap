@@ -1,11 +1,13 @@
 {
-  "name": "MyMap",
-  "short_name": "MyMap",
+  "name": "Lehne's Pogo PWA",
+  "short_name": "Pogo PWA",
+  "description": "MyMap PWA is a wie was brabbel brabbel for quests.",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
+  "orientation": "portrait",
   "scope": "/",
-  "start_url": "/",
+  "start_url": "/?utm_source=pwa_lehne",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

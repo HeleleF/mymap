@@ -15,12 +15,11 @@ namespace ApiModel {
     };
 
     export interface GymInfo {
-        id?: string,
-        name: string,
-        description?: string,
+        gymid?: string,
+        description: string,
         latitude: number,
         longitude: number,
-        imageUrl?: string,
+        url?: string,
         badge: number
     };
 }

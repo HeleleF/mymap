@@ -7,9 +7,12 @@
       "resources": {
         "files": [
           "/favicon.ico",
+          "/3rdpartylicenses.txt",
           "/index.html",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "/*.json",
+          "/assets/gyms/**"
         ]
       }
     }, {
@@ -18,9 +21,23 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/**",
-          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+          "/assets/icons/**"
         ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "pogo-api",
+      "urls": [
+        "http://localhost:8123/api/**",
+        "https://api.mapbox.com/**"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 500,
+        "maxAge": "21d",
+        "timeout": "7s"
       }
     }
   ]

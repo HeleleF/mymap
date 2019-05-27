@@ -12,16 +12,16 @@ export class ApiService {
   private API_URL: string;
 
   constructor(private httpClient: HttpClient) {
-    this.API_URL = 'http://localhost:8011';
+    this.API_URL = 'http://localhost:8123/api';
    }
 
   getStops() {
-    return this.httpClient.get<ApiModel.StopInfo[]>(`${this.API_URL}/stops/`)
+    return this.httpClient.get<ApiModel.StopInfo[]>(`${this.API_URL}/stops`)
     .pipe(catchError(this.handleError));
   };
 
   getGyms() {
-    return this.httpClient.get<ApiModel.GymInfo[]>(`${this.API_URL}/gyms/`)
+    return this.httpClient.get<ApiModel.GymInfo[]>(`${this.API_URL}/gyms`)
     .pipe(catchError(this.handleError));
   }
 
@@ -33,7 +33,7 @@ export class ApiService {
   }
 
   setMultipleGymBadges(data: ApiModel.GymBadgeInfo[]) {
-    return this.httpClient.post(`${this.API_URL}/gyms/badges`, {
+    return this.httpClient.post(`${this.API_URL}/gyms/badge`, {
       badges: data
     })
     .pipe(catchError(this.handleError));
@@ -122,15 +122,18 @@ export class ApiService {
 
   private handleError(error: HttpErrorResponse) {
 
+    let reason: string;
+
     if (error.error instanceof ErrorEvent) {
 
       console.error('client or network error:', error.error.message);
+      reason = 'client or network';
 
     } else {
 
       console.error(`Backend error: ${error.status}`);
-
+      reason = 'backend';
     }
-    return throwError('Something bad happened; please try again later.');
+    return throwError(new Error(`${reason} failed!`));
   };
 }

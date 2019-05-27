@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
 
-  constructor(private store: AngularFirestore) { }
+  gymsRef: AngularFirestoreCollection<ApiModel.GymInfo>;
 
-  getQuests() {
-    return this.store.collection('quests').snapshotChanges();
+  constructor(private store: AngularFirestore) {
+    this.gymsRef = this.store.collection<ApiModel.GymInfo>('gyms');
+   }
+
+  getGyms() {
+    return this.gymsRef.snapshotChanges();
   }
 
   addQuest() {

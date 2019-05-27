@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o",
-    "build": "ng build --prod",
+    "start": "ng serve --port 8001 --open",
+    "build": "ng build --prod && http-server-spa dist/MyMap/ index.html 8001",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "prodtest": "ng build --prod --source-map && http-server-spa dist/MyMap/ index.html 8001"
   },
   "repository": {
     "type": "git",

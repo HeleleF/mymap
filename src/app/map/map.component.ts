@@ -18,7 +18,7 @@ import { DbService } from '../shared/db.service';
 export class MapComponent implements OnInit {
 
   map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/outdoors-v9';
+  usedLayers: string[] = [];
 
   constructor(private swUpdate: SwUpdate,
     private db: DbService,
@@ -44,7 +44,7 @@ export class MapComponent implements OnInit {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: this.style,
+      style: 'mapbox://styles/mapbox/outdoors-v9',
       zoom: 13,
       center: [13.204929, 52.637736],
       maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
@@ -71,7 +71,7 @@ export class MapComponent implements OnInit {
     this.map.on('click', e => {
 
       const features = this.map.queryRenderedFeatures(e.point, {
-        layers: ['gymbadge0','gymbadge1','gymbadge2','gymbadge3','gymbadge4']
+        layers: ['gymbadge0', 'gymbadge1', 'gymbadge2', 'gymbadge3', 'gymbadge4']
       });
 
       if (features.length) {
@@ -81,7 +81,14 @@ export class MapComponent implements OnInit {
         const {name: n, url: u, desc: d} = features[0].properties;
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
-          .setHTML(`<h3 class="gym-name">${n}</h3><p class="gym-description">${d}</p><img class="gym-preview-img" src="http://${u}"/>`)
+          .setHTML(`
+          <div class="popup-header">
+            <h3 class="gym-name">${n}</h3>
+          </div>
+          <div class="popup-body">
+            <p class="gym-description">${d}</p>
+            <img src="http://${u}" class="gym-preview-img"/>
+          </div>`)
           .addTo(this.map);
       }
     });
@@ -95,6 +102,8 @@ export class MapComponent implements OnInit {
   }
 
   private addImage(path: string): Promise<string> {
+
+    // dont add if already added?
 
     return new Promise((resolve, reject) => {
       this.map.loadImage(`../assets/${path}.png`, (err: Error, img: ImageData) => {
@@ -126,7 +135,7 @@ export class MapComponent implements OnInit {
       },
       layout: {
         "icon-image": "badge0",
-        "icon-size": 0.25
+        "icon-size": 0.5
       }
     }, {
       id: "gymbadge1",
@@ -140,7 +149,7 @@ export class MapComponent implements OnInit {
       },
       layout: {
         "icon-image": "badge1",
-        "icon-size": 0.25
+        "icon-size": 0.5
       }
     }, {
       id: "gymbadge2",
@@ -154,7 +163,7 @@ export class MapComponent implements OnInit {
       },
       layout: {
         "icon-image": "badge2",
-        "icon-size": 0.25
+        "icon-size": 0.5
       }
     }, {
       id: "gymbadge3",
@@ -168,7 +177,7 @@ export class MapComponent implements OnInit {
       },
       layout: {
         "icon-image": "badge3",
-        "icon-size": 0.25
+        "icon-size": 0.5
       }
     }, {
       id: "gymbadge4",
@@ -182,7 +191,7 @@ export class MapComponent implements OnInit {
       },
       layout: {
         "icon-image": "badge4",
-        "icon-size": 0.25
+        "icon-size": 0.5
       }
     }];
 
@@ -195,9 +204,8 @@ export class MapComponent implements OnInit {
           coordinates: [g.longitude, g.latitude],
         },
         properties: {
-            name: g.name,
-            id: g.id,
-            url: g.imageUrl,
+            id: g.gymid,
+            url: g.url,
             desc: g.description
         }
       })
@@ -208,9 +216,13 @@ export class MapComponent implements OnInit {
 
   private async loadData() {
 
-    const imgs = await this.loadAndAddImages();
+    try {
 
-    console.log(imgs);
+      const imgs = await this.loadAndAddImages();
+
+    } catch (err) {
+      this.toast.error(`${err.message}`, 'Map error');
+    }
 
     this.api.getGyms().subscribe(gyms => {
 
@@ -221,14 +233,14 @@ export class MapComponent implements OnInit {
       });
     },
       err => {
-        this.toast.error(`Failed because ${err.message}`, 'Gym error');
+        this.toast.error(`${err.message}`, 'Gym error');
       });
 
     this.api.getStops().subscribe(stops => {
       console.log(stops);
     },
       err => {
-        this.toast.error(`Failed because ${err.message}`, 'Stop error');
+        this.toast.error(`${err.message}`, 'Stop error');
       });
   }
 

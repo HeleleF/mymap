@@ -3,6 +3,10 @@
       <button mat-button routerLink="/">{{title}}</button>
       <button mat-button routerLink="/"><mat-icon>home</mat-icon></button>
       <button mat-button routerLink="/settings"><mat-icon>settings</mat-icon></button>
+      <button *ngIf="!authenticated" mat-button (click)="auth.googleSignin()"><mat-icon>input</mat-icon></button>
+      <button *ngIf="authenticated" mat-button (click)="auth.signOut()"><mat-icon>logout</mat-icon></button>
+
+      <span *ngIf="authenticated">{{auth.user.displayName}}</span>
     </span>
     <span>{{isOnline}}</span>
     <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>

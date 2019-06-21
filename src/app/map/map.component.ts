@@ -5,7 +5,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { ToastrService } from 'ngx-toastr';
 
 import { SwUpdate } from '@angular/service-worker';
-import { take, max } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import { DbService } from '../shared/db.service';
 
@@ -25,10 +25,10 @@ export class MapComponent implements OnInit {
    * wird über die settings verändert; enthält alle momentan sichtbaren layer
    */
   usedLayers: string[] = [];
-  modal: MatDialog;
 
   constructor(private swUpdate: SwUpdate,
     private db: DbService,
+    private modal: MatDialog,
     private toast: ToastrService) {
     // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/23467
     Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.MAPBOX_API_TOKEN);
@@ -60,8 +60,8 @@ export class MapComponent implements OnInit {
 
     this.map.addControl(new mapboxgl.NavigationControl());
 
-    this.map.on('click', this.clickHandler);
-    this.map.on('styleimagemissing', this.styleHandler);
+    this.map.on('click', this.clickHandler.bind(this));
+    this.map.on('styleimagemissing', this.styleHandler.bind(this));
 
     this.map.on('load', () => {
 
@@ -137,6 +137,9 @@ export class MapComponent implements OnInit {
 
     this.db.getGymsAsGeoJSON().subscribe(gyms => {
 
+            //@ts-ignore
+            window.g = gyms;
+
       this.map.addSource("gyms", {
         type: "geojson",
         data: gyms
@@ -167,7 +170,9 @@ export class MapComponent implements OnInit {
       });
 
     this.db.getQuestsAsGeoJSON().subscribe(quests => {
-      console.log(quests);
+
+      //@ts-ignore
+      window.q = quests;
 
       this.map.addSource("quests", {
         type: "geojson",
@@ -179,12 +184,11 @@ export class MapComponent implements OnInit {
         type: "symbol",
         source: "quests",
         layout: {
-          'icon-image': ['get', 'icon'], //????
+          'icon-image': ['get', 'status'], //????
           'icon-size': 0.5
         }
       });
       this.usedLayers.push('questsLayer');
-
     },
       err => {
         this.toast.error(`${err.message}`, 'Quest error');

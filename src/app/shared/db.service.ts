@@ -46,14 +46,14 @@ export class DbService {
             type: 'Feature',
             geometry: {
               type: 'Point',
-              coordinates: [p.longitude, p.latitude]
+              coordinates: [p.lon, p.lat]
             },
             properties: {
               fid: item.id,
-              id: p.gymid,
-              url: p.url,
-              desc: p.description,
-              badge: p.badge
+              id: p.i,
+              url: p.u,
+              desc: p.d,
+              badge: p.b
             }
           }; 
         })
@@ -70,7 +70,7 @@ export class DbService {
 
     const gym = this.gymsRef.doc<ApiModel.GymInfo>(fid);
 
-    return from(gym.update({badge: newBadge}));
+    return from(gym.update({b: newBadge}));
   }
 
   getStops() {

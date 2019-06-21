@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MapComponent } from './map/map.component';
-import { SettingsComponent } from './settings/settings.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -20,6 +20,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatFormFieldModule } from '@angular/material/form-field'
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -34,7 +36,6 @@ import { PopupComponent } from './popup/popup.component';
   declarations: [
     AppComponent,
     MapComponent,
-    SettingsComponent,
     PopupComponent
   ],
   imports: [
@@ -42,6 +43,7 @@ import { PopupComponent } from './popup/popup.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     FlexLayoutModule,
+    FormsModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     MatToolbarModule,
@@ -53,12 +55,14 @@ import { PopupComponent } from './popup/popup.component';
     MatChipsModule,
     MatDialogModule,
     MatSidenavModule,
+    MatListModule,
+    MatFormFieldModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule,
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     HttpClientModule
   ],
+  entryComponents: [PopupComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

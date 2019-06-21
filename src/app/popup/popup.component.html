@@ -6,7 +6,7 @@
 <ng-template #gymBlock>
   <div mat-dialog-content >
     <p>Gym latitude longitude here oder link zu google</p>
-    <img class='gym-preview' [src]='http://{{data.url}}'></img>
+    <img class='gym-preview' [src]='data.url'/>
     <mat-form-field>
       <input matInput [(ngModel)]="data.animal">
     </mat-form-field>
@@ -19,11 +19,11 @@
 
 <ng-template #questBlock>
   <div mat-dialog-content >
-    <p>quest latitude longitude here oder link zu google</p>
+    <p>quest latitude longitude here oder link zu google blub</p>
     <p>Aufgabe: {{data.taskDesc}}</p>
     <p>Typ: {{data.type}}</p>
     <p>Reward: {{data.reward}}</p>
-    <img class='quest-img' [src]='{{data.reward}}'></img>
+    <img class='quest-img' [src]='data.reward'/>
     <p>Status: {{data.status}}</p>
     <mat-form-field>
       <input matInput [(ngModel)]="data.animal">

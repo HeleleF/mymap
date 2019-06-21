@@ -20,12 +20,12 @@ namespace ApiModel {
 
     export interface GymInfo {
         fid: string,
-        gymid?: string,
-        description: string,
-        latitude: number,
-        longitude: number,
-        url?: string,
-        badge: number
+        i?: string,
+        d: string,
+        lat: number,
+        lon: number,
+        u?: string,
+        b: number
     };
 
     export enum QuestStatus {

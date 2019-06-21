@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase';
+import * as firebase from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
 
 import { from } from 'rxjs';
@@ -37,7 +37,7 @@ export class AuthService {
 
   async googleSignin() {
 
-    const provider = new auth.GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
     try {
 

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './shared/auth.service';
 
@@ -14,17 +13,12 @@ export class AppComponent implements OnInit {
   isOnline: boolean;
   title = 'Meine Mappe';
 
-  constructor(private router: Router,
-    private toast: ToastrService,
+  constructor(private toast: ToastrService,
     private auth: AuthService) { }
 
   ngOnInit() {
     window.addEventListener('online', this.updateStatus.bind(this));
     window.addEventListener('offline', this.updateStatus.bind(this));
-  }
-
-  gotoSettings() {
-    this.router.navigate(['settings']);
   }
 
   updateStatus() {

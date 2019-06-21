@@ -11,13 +11,15 @@ import { SettingsComponent } from './settings/settings.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import {
-  MatToolbarModule,
-  MatMenuModule,
-  MatIconModule,
-  MatCardModule,
-  MatButtonModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -26,13 +28,14 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 
-import { httpInterceptorProviders } from './interceptor';
+import { PopupComponent } from './popup/popup.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    SettingsComponent
+    SettingsComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,
@@ -46,14 +49,17 @@ import { httpInterceptorProviders } from './interceptor';
     MatIconModule,
     MatCardModule,
     MatButtonModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatDialogModule,
+    MatSidenavModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
     HttpClientModule
   ],
-  providers: [
-    httpInterceptorProviders
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

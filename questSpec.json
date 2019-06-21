@@ -1,0 +1,1387 @@
+{
+  "2": {
+    "de": "Kämpfe in einer Arena.",
+    "id": 2,
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 1,
+      "conditions": []
+    },
+    "possibleRewards": [
+      "#56",
+      "#296",
+      "Nanabbeere 5",
+      "Trank 5",
+      "Beleber 2",
+      "Staub 200",
+      "Sananabeere 5"
+    ],
+    "key": "quest_battle_gym_singular",
+    "en": "Battle in a Gym.",
+    "ja": "ジムバトルを1回する",
+    "it": "Lotta in una Palestra.",
+    "es": "Combate en un Gimnasio 1 vez.",
+    "fr": "Combats dans une Arène.",
+    "ts": 1558037208074
+  },
+  "3": {
+    "de": "Kämpfe 5-mal in einer Arena.",
+    "id": 3,
+    "possibleRewards": [
+      "#66",
+      "Staub 500",
+      "Beleber 4",
+      "Nanabbeere 10",
+      "Supertrank 3"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 5,
+      "conditions": []
+    },
+    "num": "5",
+    "key": "quest_battle_gym_plural",
+    "en": "Battle in a Gym 5 times.",
+    "ja": "ジムバトルを5回する",
+    "it": "Lotta in una Palestra 5 volte.",
+    "es": "Combate en un Gimnasio 5 veces.",
+    "fr": "Combats 5 fois dans une Arène.",
+    "ts": 1538426056649,
+    "jp": "ジムバトルを5回する.",
+    "ko": "체육관 배틀을 5회 한다.",
+    "ch": "參加 5 次道館對戰.",
+    "po": "Batalhar 5 vezes em um Ginásio."
+  },
+  "4": {
+    "de": "Gewinne einen Arenakampf.",
+    "id": 4,
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 9
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#7",
+      "#4",
+      "#1",
+      "Nanabbeere 10",
+      "Supertrank 3",
+      "Beleber 4",
+      "Staub 500"
+    ],
+    "key": "quest_win_gym_singular",
+    "en": "Win a Gym battle.",
+    "ja": "ジムで1回バトルに勝つ",
+    "it": "Vinci una lotta in Palestra.",
+    "es": "Gana 1 combate de Gimnasio.",
+    "fr": "Gagne un combat d’Arène.",
+    "ts": 1538426056649,
+    "jp": "ジムで1回バトルに勝つ.",
+    "ko": "체육관 배틀에서 1회 이긴다.",
+    "ch": "在道館對戰中獲勝1次.",
+    "po": "Vencer 1 batalha de Ginásio."
+  },
+  "5": {
+    "de": "Gewinne 3 Arenakämpfe.",
+    "id": 5,
+    "possibleRewards": [
+      "#124",
+      "Sonderbonbon 1",
+      "Beleber 6",
+      "Hypertrank 3",
+      "Staub 1000",
+      "Supertrank 3",
+      "Top-Beleber 1"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 9
+        }
+      ]
+    },
+    "num": "3",
+    "key": "quest_win_gym_plural",
+    "en": "Win 3 Gym battles.",
+    "ja": "ジムで3回バトルに勝つ",
+    "it": "Vinci 3 lotte in Palestra.",
+    "es": "Gana 3 combates de Gimnasio.",
+    "fr": "Gagne 3 combats d’Arènes.",
+    "ts": 1541368394042,
+    "jp": "ジムで3回バトルに勝つ.",
+    "ko": "체육관 배틀에서 3회 이긴다.",
+    "ch": "在道館對戰中獲勝 3 次.",
+    "po": "Vencer 3 batalhas de Ginásio."
+  },
+  "8": {
+    "de": "Setze eine sehr effektive Lade-Attacke in 7 Arenakämpfen ein.",
+    "id": 8,
+    "possibleRewards": [
+      "#125",
+      "Sonderbonbon 1",
+      "Hypertrank 3",
+      "Staub 1000",
+      "Beleber 6",
+      "Top-Beleber 1"
+    ],
+    "lowLevelTranslate": {
+      "!challenge_battle19_supereffective_charge_hard": "Lade-TM 1"
+    },
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 7,
+      "conditions": [
+        {
+          "type": 10
+        }
+      ]
+    },
+    "num": "7",
+    "key": "quest_battle_supereffective_charge_plural",
+    "en": "Use a supereffective Charged Attack in 7 Gym battles.",
+    "ja": "効果ばつぐんのスペシャルアタックを使ってジムバトルする・7回",
+    "it": "Usa un attacco caricato superefficace in 7 lotte in Palestra.",
+    "es": "Usa un ataque cargado supereficaz en 7 combates de Gimnasio.",
+    "fr": "Utilise une Attaque Chargée très efficace dans 7 combats.",
+    "ts": 1538426056649,
+    "jp": "効果ばつぐんのスペシャルアタックを使ってジムバトルする・7回.",
+    "ko": "효과가 굉장한 스페셜 어택을 사용해서 체육관 배틀한다 : 7회.",
+    "ch": "在 7 場對戰中使出效果絕佳的特殊招式.",
+    "po": "Usar um ataque carregado supereficaz em 7 batalhas."
+  },
+  "9": {
+    "de": "Fange 10 Pokémon.",
+    "id": 9,
+    "possibleRewards": [
+      "#129",
+      "#216",
+      "Himmihbeere 3",
+      "Sananabeere 1",
+      "Pokeball 5",
+      "Staub 200"
+    ],
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 10,
+      "conditions": []
+    },
+    "num": "10",
+    "key": "quest_catch_pokemon_plural",
+    "en": "Catch 10 Pokémon.",
+    "ja": "ポケモンを10匹捕まえる",
+    "it": "Cattura 10 Pokémon.",
+    "es": "Captura 10 Pokémon.",
+    "fr": "Attrape 10 Pokémon.",
+    "ts": 1546418270155,
+    "jp": "ポケモンを10匹捕まえる.",
+    "ko": "포켓몬 10마리를 잡는다.",
+    "ch": "捕捉 10 隻寶可夢.",
+    "po": "Pegar 10 Pokémon."
+  },
+  "26": {
+    "de": "Fange 5 Pokémon mit Wetterverstärkung.",
+    "id": 26,
+    "possibleRewards": [
+      "#60",
+      "#37",
+      "Sananabeere 1",
+      "Himmihbeere 3",
+      "Pokeball 5",
+      "Staub 200"
+    ],
+    "num": "5",
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 3
+        }
+      ]
+    },
+    "key": "quest_catch_weather_boost_plural",
+    "en": "Catch 5 Pokémon with Weather Boost.",
+    "ja": "天候ブーストを受けているポケモンを5匹捕まえる",
+    "it": "Cattura 5 Pokémon potenziati da condizioni atmosferiche.",
+    "es": "Captura 5 Pokémon potenciado por el tiempo atmosférico.",
+    "fr": "Attrape 5 Pokémon boostés par la météo.",
+    "ts": 1553935248393,
+    "jp": "天候ブーストを受けているポケモンを5匹捕まえる.",
+    "ko": "날씨 부스트를 받고 있는 포켓몬 5마리 잡는다.",
+    "ch": "捕捉 5 隻擁有天氣優勢的寶可夢.",
+    "po": "Pegar 5 Pokémon com fortalecimento de clima."
+  },
+  "27": {
+    "de": "Fange 10 Pokémon mit Wetterverstärkung.",
+    "id": 27,
+    "possibleRewards": [
+      "Himmihbeere 6",
+      "Superball 5",
+      "Staub 500",
+      "Sananabeere 2"
+    ],
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 10,
+      "conditions": [
+        {
+          "type": 3
+        }
+      ]
+    },
+    "num": "10",
+    "key": "quest_catch_weather_boost_plural",
+    "en": "Catch 10 Pokémon with Weather Boost.",
+    "ja": "天候ブーストを受けているポケモンを10匹捕まえる",
+    "it": "Cattura 10 Pokémon potenziati da condizioni atmosferiche.",
+    "es": "Captura 10 Pokémon potenciado por el tiempo atmosférico.",
+    "fr": "Attrape 10 Pokémon boostés par la météo.",
+    "ts": 1538426056649,
+    "jp": "天候ブーストを受けているポケモンを10匹捕まえる.",
+    "ko": "날씨 부스트를 받고 있는 포켓몬 10마리 잡는다.",
+    "ch": "捕捉 10 隻擁有天氣優勢的寶可夢.",
+    "po": "Pegar 10 Pokémon com fortalecimento de clima."
+  },
+  "30": {
+    "de": "Lande 5 gute Würfe.",
+    "id": 30,
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 8,
+          "info": {
+            "hit": false,
+            "throw_type_id": 10
+          }
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#100",
+      "#74",
+      "Himmihbeere 3",
+      "Sananabeere 1",
+      "Pokeball 5",
+      "Staub 200"
+    ],
+    "num": "5",
+    "key": "quest_land_nice_plural",
+    "en": "Make 5 Nice Throws.",
+    "ja": "ナイススローを5回投げる",
+    "it": "Effettua 5 bei tiri.",
+    "es": "Acierta 5 buenos lanzamientos.",
+    "fr": "Fais 5 jolis lancers.",
+    "ts": 1556864722653
+  },
+  "31": {
+    "de": "Lande 3 großartige Würfe.",
+    "id": 31,
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 8,
+          "info": {
+            "hit": false,
+            "throw_type_id": 11
+          }
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#345",
+      "#347",
+      "#92",
+      "Staub 200",
+      "Himmihbeere 3",
+      "Sananabeere 1",
+      "Pokeball 5",
+      "Sonderbonbon 1"
+    ],
+    "num": "3",
+    "key": "quest_land_great_plural",
+    "en": "Make 3 Great Throws.",
+    "ja": "グレートスローを3回投げる",
+    "it": "Effettua 3 ottimi tiri.",
+    "es": "Acierta 3 grandes lanzamientos.",
+    "fr": "Fais 3 Superbes lancers.",
+    "ts": 1553935671893,
+    "jp": "グレートスローを3回投げる.",
+    "ko": "Great가 나오게 3회 던진다.",
+    "ch": "投出 3 次Great.",
+    "po": "Fazer 3 ótimas jogadas."
+  },
+  "36": {
+    "de": "Entwickle ein Pokémon.",
+    "id": 36,
+    "possibleRewards": [
+      "#133",
+      "#16"
+    ],
+    "questSpec": {
+      "type": "QUEST_EVOLVE_POKEMON",
+      "target": 1,
+      "conditions": []
+    },
+    "key": "quest_evolve_singular",
+    "en": "Evolve a Pokémon.",
+    "ja": "ポケモンを1匹進化させる",
+    "it": "Fai evolvere un Pokémon.",
+    "es": "Haz evolucionar 1 Pokémon.",
+    "fr": "Fais évoluer un Pokémon.",
+    "ts": 1556864722653,
+    "jp": "ポケモンを1匹進化させる.",
+    "ko": "포켓몬을 1마리 진화시킨다.",
+    "ch": "讓1隻寶可夢進化.",
+    "po": "Evoluir 1 Pokémon."
+  },
+  "39": {
+    "de": "Brüte ein Ei aus.",
+    "id": 39,
+    "possibleRewards": [
+      "#102",
+      "#325",
+      "Pokeball 5",
+      "Sananabeere 1",
+      "Staub 200",
+      "Himmihbeere 3"
+    ],
+    "questSpec": {
+      "type": "QUEST_HATCH_EGG",
+      "target": 1,
+      "conditions": []
+    },
+    "key": "quest_hatch_egg_singular",
+    "en": "Hatch an Egg.",
+    "ja": "タマゴを1個かえす",
+    "it": "Fai schiudere un Uovo.",
+    "es": "Haz eclosionar 1 Huevo.",
+    "fr": "Fais éclore un Œuf.",
+    "ts": 1556530633650
+  },
+  "40": {
+    "de": "Brüte 3 Eier aus.",
+    "id": 40,
+    "possibleRewards": [
+      "#126",
+      "Himmihbeere 9",
+      "Sananabeere 3",
+      "Sonderbonbon 1",
+      "Pokeball 10",
+      "Staub 1000",
+      "Hyperball 5"
+    ],
+    "questSpec": {
+      "type": "QUEST_HATCH_EGG",
+      "target": 3,
+      "conditions": []
+    },
+    "num": "3",
+    "key": "quest_hatch_egg_plural",
+    "en": "Hatch 3 Eggs.",
+    "ja": "タマゴを3個かえす",
+    "it": "Fai schiudere 3 Uova.",
+    "es": "Haz eclosionar 3 Huevos.",
+    "fr": "Fais éclore 3 Œufs.",
+    "ts": 1538426056649,
+    "jp": "タマゴを3個かえす.",
+    "ko": "알을 3개 부화한다.",
+    "ch": "孵化 3 顆蛋.",
+    "po": "Chocar 3 Ovos."
+  },
+  "41": {
+    "de": "Brüte 5 Eier aus.",
+    "id": 41,
+    "possibleRewards": [
+      "#113",
+      "Sonderbonbon 3"
+    ],
+    "questSpec": {
+      "type": "QUEST_HATCH_EGG",
+      "target": 5,
+      "conditions": []
+    },
+    "num": "5",
+    "key": "quest_hatch_egg_plural",
+    "en": "Hatch 5 Eggs.",
+    "ja": "タマゴを5個かえす",
+    "it": "Fai schiudere 5 Uova.",
+    "es": "Haz eclosionar 5 Huevos.",
+    "fr": "Fais éclore 5 Œufs.",
+    "ts": 1538426056649,
+    "jp": "タマゴを5個かえす.",
+    "ko": "알을 5개 부화한다.",
+    "ch": "孵化 5 顆蛋.",
+    "po": "Chocar 5 Ovos."
+  },
+  "47": {
+    "de": "Lande 5 Curveball-Würfe hintereinander.",
+    "possibleRewards": [
+      "Staub 500",
+      "Sananabeere 2",
+      "Superball 5",
+      "Himmihbeere 6"
+    ],
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": true
+          }
+        },
+        {
+          "type": 15
+        }
+      ]
+    },
+    "id": 47,
+    "num": "5",
+    "key": "quest_land_inarow_curveball_plural",
+    "en": "Make 5 Curveball Throws in a row.",
+    "ja": "カーブボールを5回連続で投げる",
+    "it": "Lancia 5 palle curve di fila.",
+    "es": "Acierta 5 lanzamientos de bola curva seguidos.",
+    "fr": "Fais 5 lancers à effet à la suite.",
+    "ts": 1538426056649,
+    "jp": "カーブボールを5回連続で投げる.",
+    "ko": "커브볼을 5회 연속으로 던진다.",
+    "ch": "連續投出 5 次曲球.",
+    "po": "Jogar 5 bolas curvas seguidas."
+  },
+  "48": {
+    "de": "Lande 3 großartige Curveball-Würfe.",
+    "possibleRewards": [
+      "Staub 1000",
+      "Himmihbeere 9",
+      "Hyperball 5",
+      "Sonderbonbon 1",
+      "Sananabeere 3",
+      "Pokeball 10"
+    ],
+    "id": 48,
+    "num": "3",
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 8,
+          "info": {
+            "hit": false,
+            "throw_type_id": 11
+          }
+        },
+        {
+          "type": 15
+        }
+      ]
+    },
+    "key": "quest_land_great_curveball_plural",
+    "en": "Make 3 Great Curveball Throws.",
+    "ja": "カーブボールのグレートスローを3回投げる",
+    "it": "Lancia 3 palle curve con risultato ottimo.",
+    "es": "Acierta 3 grandes lanzamientos de bola curva.",
+    "fr": "Fais 3 Superbes lancers à effet.",
+    "ts": 1538426056649,
+    "jp": "カーブボールのグレートスローを3回投げる.",
+    "ko": "커브볼로 Great를 3회 던진다.",
+    "ch": "用曲球投出 3 次Great.",
+    "po": "Jogar 3 ótimas bolas curvas."
+  },
+  "49": {
+    "de": "Lande einen fabelhaften Wurf.",
+    "possibleRewards": [
+      "Staub 500",
+      "Superball 5",
+      "Sananabeere 2",
+      "Hyperball 2"
+    ],
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 8,
+          "info": {
+            "hit": false,
+            "throw_type_id": 12
+          }
+        }
+      ]
+    },
+    "id": 49,
+    "key": "quest_land_excellent_singular",
+    "en": "Make an Excellent Throw.",
+    "ja": "エクセレントスローを1回投げる",
+    "it": "Effettua un tiro eccellente.",
+    "es": "Acierta 1 lanzamiento excelente.",
+    "fr": "Fais un Excellent lancer.",
+    "ts": 1538426056649,
+    "jp": "エクセレントスローを1回投げる.",
+    "ko": "Excellent가 나오게 1회 던진다.",
+    "ch": "投出1次Excellent Throw.",
+    "po": "Fazer 1 jogada excelente."
+  },
+  "51": {
+    "de": "Drehe 10 PokéStops oder Arenen.",
+    "questSpec": {
+      "type": "QUEST_SPIN_POKESTOP",
+      "target": 10,
+      "conditions": []
+    },
+    "possibleRewards": [
+      "Himmihbeere 3",
+      "Sananabeere 1",
+      "Staub 200",
+      "Pokeball 5",
+      "Silberne-Sananabeere 5"
+    ],
+    "lowLevelTranslate": {
+      "Staub 500": "Silberne-Sananabeere 5",
+      "!t1_2019_spin_medium": "Silberne-Sananabeere 5"
+    },
+    "id": 51,
+    "num": "10",
+    "key": "quest_visit_pokestops_plural",
+    "en": "Spin 10 PokéStops or Gyms.",
+    "ja": "ポケストップ10個を回す",
+    "it": "Fai girare 10 dischi Pokéstop.",
+    "es": "Da vueltas a 10 fotodiscos en Poképaradas o Gimnasios.",
+    "fr": "Fais tourner 10 PokéStops ou Arènes.",
+    "ts": 1538426056649
+  },
+  "68": {
+    "key": "quest_battle_raid_singular",
+    "en": "Battle in a raid.",
+    "de": "Kämpfe in einem Raid.",
+    "possibleRewards": [
+      "#307",
+      "Trank 5",
+      "Beleber 2",
+      "Staub 200",
+      "Trank 5",
+      "Nanabbeere 5"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 1,
+      "conditions": []
+    },
+    "id": 68,
+    "ja": "レイドバトルを1回する",
+    "it": "Partecipa a un raid.",
+    "es": "Participa en 1 incursión.",
+    "fr": "Combats dans un Raid.",
+    "ts": 1551175172917
+  },
+  "71": {
+    "key": "quest_catch_feed_plural",
+    "en": "Use 5 Berries to help catch Pokémon.",
+    "de": "Verwende 5 Beeren beim Fangen von Pokémon.",
+    "questSpec": {
+      "type": "QUEST_USE_BERRY_IN_ENCOUNTER",
+      "target": 5,
+      "conditions": []
+    },
+    "possibleRewards": [
+      "#70",
+      "Staub 500",
+      "Himmihbeere 6",
+      "Superball 5",
+      "Sananabeere 2"
+    ],
+    "id": 71,
+    "num": "5",
+    "ja": "ポケモンを捕まえるときにきのみ5個を使う",
+    "it": "Usa 5 bacche per catturare Pokémon.",
+    "es": "Usa 5 bayas para ayudarte a capturar Pokémon.",
+    "fr": "Utilise 5 Baies pour t’aider à attraper des Pokémon.",
+    "ts": 1538426056649,
+    "jp": "ポケモンを捕まえるときにきのみ5個を使う.",
+    "ko": "나무열매 5개를 사용하여 포켓몬을 잡는다.",
+    "ch": "捕捉寶可夢時使用 5 個樹果.",
+    "po": "Usar 5 Frutas para ajudar a pegar Pokémon."
+  },
+  "72": {
+    "key": "quest_land_inarow_nice_curveball_plural",
+    "en": "Make 2 Nice Curveball Throws in a row.",
+    "de": "Lande 2 gute Curveball-Würfe hintereinander.",
+    "id": 72,
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 2,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 10
+          }
+        },
+        {
+          "type": 15
+        }
+      ]
+    },
+    "possibleRewards": [
+      "Staub 200",
+      "Pokeball 5",
+      "Himmihbeere 3",
+      "Sananabeere 1"
+    ],
+    "num": "2",
+    "ja": "カーブボールのナイススローを2回連続で投げる",
+    "it": "Lancia 2 palle curve di fila con un bel risultato.",
+    "es": "Acierta 2 buenos lanzamientos de bola curva seguidos.",
+    "fr": "Fais 2 Jolis lancers à effet à la suite.",
+    "ts": 1538426056649,
+    "jp": "カーブボールのナイススローを2回連続で投げる.",
+    "ko": "커브볼로 Nice가 나오게 2회 연속으로던진다.",
+    "ch": "連續用曲球投出 2 次Nice.",
+    "po": "Jogar 2 boas bolas curvas seguidas."
+  },
+  "74": {
+    "de": "Gewinne einen Raid.",
+    "possibleRewards": [
+      "#436",
+      "Nanabbeere 10",
+      "Supertrank 3",
+      "Beleber 4",
+      "Staub 500"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 6
+        }
+      ]
+    },
+    "questSpec2": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 6
+        },
+        {
+          "type": 6
+        }
+      ]
+    },
+    "id": 74,
+    "key": "quest_win_raid_singular",
+    "en": "Win a raid.",
+    "ja": "レイドバトルで1回勝つ",
+    "it": "Vinci un raid.",
+    "es": "Gana en 1 incursión.",
+    "fr": "Gagne un Raid.",
+    "ts": 1538426056649
+  },
+  "78": {
+    "de": "Fange 10 Pokémon vom Typ Normal.",
+    "possibleRewards": [
+      "Himmihbeere 6",
+      "Superball 5",
+      "Sananabeere 2",
+      "Staub 500"
+    ],
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 10,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              1
+            ]
+          }
+        }
+      ]
+    },
+    "id": 78,
+    "num": "10",
+    "key": "quest_catch_type_normal_plural",
+    "en": "Catch 10 Normal-type Pokémon.",
+    "ja": "ノーマルタイプのポケモンを10匹捕まえる",
+    "it": "Cattura 10 Pokémon di tipo Normale.",
+    "es": "Captura 10 Pokémon de tipo Normal.",
+    "fr": "Attrape 10 Pokémon de type Normal.",
+    "ts": 1538426056649
+  },
+  "86": {
+    "key": "quest_battle_supereffective_charge_singular",
+    "de": "Setze eine sehr effektive Lade-Attacke in einem Arenakampf ein.",
+    "possibleRewards": [
+      "Staub 500",
+      "Beleber 4",
+      "Nanabbeere 10",
+      "Supertrank 3"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 10
+        }
+      ]
+    },
+    "id": 86,
+    "en": "Use a supereffective Charged Attack in a Gym battle.",
+    "ja": "効果ばつぐんのスペシャルアタックを使ってジムバトルする・1回",
+    "it": "Usa un attacco caricato superefficace in una lotta in Palestra.",
+    "es": "Usa un ataque cargado supereficaz en 1 combate de Gimnasio.",
+    "fr": "Utilise une Attaque Chargée très efficace en combat.",
+    "ts": 1538426056649,
+    "jp": "効果ばつぐんのスペシャルアタックを使ってジムバトルする・1回.",
+    "ko": "효과가 굉장한 스페셜 어택을 사용해서 체육관 배틀한다 : 1회.",
+    "ch": "在1場對戰中使出效果絕佳的特殊招式.",
+    "po": "Usar um ataque carregado supereficaz em 1 batalha de Ginásio."
+  },
+  "102": {
+    "de": "Abenteuerwoche: Brüte 2 Eier aus.",
+    "id": 102,
+    "possibleRewards": [
+      "#345",
+      "Sonderbonbon 1"
+    ],
+    "questSpec": {
+      "type": "QUEST_HATCH_EGG",
+      "target": 2,
+      "conditions": []
+    },
+    "num": "2",
+    "key": "quest_adventure_hatch_egg_plural",
+    "en": "Adventure Week: Hatch 2 Eggs.",
+    "ja": "アドベンチャーウィーク：タマゴを2個かえす",
+    "it": "Settimana dellʼavventura: fai schiudere 2 Uova.",
+    "es": "Semana de Aventuras: Haz eclosionar 2 Huevos.",
+    "fr": "Semaine de l’aventure : fais éclore 2 Œufs.",
+    "ts": 1559682823622,
+    "jp": "アドベンチャーウィーク：タマゴを2個かえす.",
+    "ko": "어드벤처위크: 알을 2 개 부화시킨다.",
+    "ch": "驚奇冒險週：孵化 2 顆蛋.",
+    "po": "Semana de aventuras: chocar 2 ovos."
+  },
+  "105": {
+    "de": "Abenteuerwoche: Verdiene 3 Bonbons durch Spazieren mit deinem Kumpel.",
+    "questSpec": {
+      "type": "QUEST_GET_BUDDY_CANDY",
+      "target": 3,
+      "conditions": []
+    },
+    "id": 105,
+    "possibleRewards": [
+      "#347"
+    ],
+    "num": "3",
+    "key": "quest_adventure_walk_buddy_plural",
+    "en": "Adventure Week: Earn 3 Candies walking with your buddy.",
+    "ja": "アドベンチャーウィーク：相棒と歩いて3個アメをもらう",
+    "it": "Settimana dellʼavventura: aggiudicati 3 caramelle andando in giro con il tuo compagno.",
+    "es": "Semana de Aventuras: Consigue 3 Caramelos caminando con tu compañero.",
+    "fr": "Semaine de l’aventure : gagne 3 Bonbons en marchant avec ton copain.",
+    "ts": 1559682823624,
+    "jp": "アドベンチャーウィーク：相棒と歩いて3個アメをもらう.",
+    "ko": "어드벤처위크: 파트너와 걸어서 3 개 사탕을 받는다.",
+    "ch": "驚奇冒險週：和夥伴一起走路，取得 3 顆糖果.",
+    "po": "Semana de aventuras: ganhe 3 doces caminhando com seu companheiro."
+  },
+  "109": {
+    "de": "Abenteuerwoche: Drehe 2 PokéStops, die du noch nicht besucht hast.",
+    "id": 109,
+    "questSpec": {
+      "type": "QUEST_SPIN_POKESTOP",
+      "target": 2,
+      "conditions": [
+        {
+          "type": 12
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#410"
+    ],
+    "num": "2",
+    "key": "quest_adventure_visit_pokestop_new_plural",
+    "en": "Adventure Week: Spin 2 PokéStops you haven't visited before.",
+    "ja": "アドベンチャーウィーク：訪れたことがないポケストップ2個を回す",
+    "it": "Settimana dellʼavventura: fai girare 2 dischi di Pokéstop mai visitati prima.",
+    "es": "Semana de Aventuras: Da vueltas a 2 fotodiscos en Poképaradas donde no hayas estado antes.",
+    "fr": "Semaine de l’aventure : fais tourner 2 nouveaux PokéStops.",
+    "jp": "アドベンチャーウィーク：訪れたことがないポケストップ2個を回す.",
+    "ko": "어드벤처위크: 방문한 적이 없는 포켓스톱 2 개 돌린다.",
+    "ch": "驚奇冒險週：拜訪 2 個從未去過的寶可補給站.",
+    "po": "Semana de aventuras: girar 2 fotodiscos de Poképaradas que ainda não tenha visitado.",
+    "ts": 1559682823629
+  },
+  "138": {
+    "key": "quest_catch_type_fighting_plural",
+    "num": "5",
+    "de": "Fange 5 Pokémon vom Typ Kampf.",
+    "en": "Catch 5 Fighting-type Pokémon.",
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              2
+            ]
+          }
+        }
+      ]
+    },
+    "ja": "かくとうタイプのポケモンを5匹捕まえる",
+    "it": "Cattura 5 Pokémon di tipo Lotta.",
+    "es": "Captura 5 Pokémon de tipo Lucha.",
+    "fr": "Attrape 5 Pokémon de type Combat.",
+    "id": 138,
+    "possibleRewards": [
+      "#286"
+    ],
+    "ts": 1551823731383,
+    "jp": "かくとうタイプのポケモンを5匹捕まえる.",
+    "ko": "격투타입 포켓몬을 5마리 잡는다.",
+    "ch": "捕捉 5 隻格鬥屬性的寶可夢.",
+    "po": "Pegar 5 Pokémon de tipo Lutador."
+  },
+  "171": {
+    "key": "quest_catch_type_water_plural",
+    "num": "5",
+    "de": "Fange 5 Pokémon vom Typ Wasser.",
+    "en": "Catch 5 Water-type Pokémon.",
+    "ja": "みずタイプのポケモンを5匹捕まえる",
+    "it": "Cattura 5 Pokémon di tipo Acqua.",
+    "es": "Captura 5 Pokémon de tipo Agua.",
+    "fr": "Attrape 5 Pokémon de type Eau.",
+    "id": 171,
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 5,
+      "conditions": [
+        {
+          "info": {
+            "pokemon_type_ids": [
+              11
+            ]
+          },
+          "type": 1
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#86"
+    ],
+    "ts": 1556742290731,
+    "jp": "みずタイプのポケモンを5匹捕まえる.",
+    "ko": "물타입 포켓몬을 5마리 잡는다.",
+    "ch": "捕捉 5 隻水屬性的寶可夢.",
+    "po": "Pegar 5 Pokémon de tipo Água."
+  },
+  "183": {
+    "key": "quest_win_raid_3_singular",
+    "de": "Gewinne einen Level-3-Raid oder höher.",
+    "questSpec": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 7,
+          "info": {
+            "raid_levels": [
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        {
+          "type": 6
+        }
+      ]
+    },
+    "en": "Win a level 3 or higher raid.",
+    "ja": "レベル3以上のレイドに1回勝つ",
+    "it": "Vinci un raid di livello 3 o superiore.",
+    "es": "Gana en 1 incursión de nivel 3 o superior.",
+    "fr": "Gagne un Raid de niveau 3 ou plus.",
+    "id": 183,
+    "possibleRewards": [
+      "#138",
+      "#140",
+      "Beleber 6",
+      "Staub 1000",
+      "Hypertrank 3",
+      "Sonderbonbon 1",
+      "Top-Beleber 1"
+    ],
+    "num": "3",
+    "ts": 1538426056649,
+    "jp": "レベル3以上のレイドに1回勝つ.",
+    "ko": "레벨 3이상의 레이드에 1회 이긴다.",
+    "ch": "在等級3以上的團體戰中獲勝1次.",
+    "po": "Vencer 1 Reide de nível 3 ou maior."
+  },
+  "186": {
+    "key": "quest_walk_buddy_plural",
+    "num": "5",
+    "questSpec": {
+      "type": "QUEST_GET_BUDDY_CANDY",
+      "target": 5,
+      "conditions": []
+    },
+    "de": "Verdiene 5 Bonbons durch Spazieren mit deinem Kumpel.",
+    "en": "Earn 5 Candies walking with your buddy.",
+    "ja": "相棒と歩いて5個アメをもらう",
+    "it": "Guadagna 5 caramelle camminando con il tuo compagno.",
+    "es": "Consigue 5 Caramelos caminando con tu compañero.",
+    "fr": "Gagne 5 Bonbons en marchant avec ton copain.",
+    "id": 186,
+    "possibleRewards": [
+      "#287"
+    ],
+    "ts": 1556992299942,
+    "jp": "相棒と歩いて5個アメをもらう.",
+    "ko": "파트너와 걸어서 5개 사탕을 얻는다.",
+    "ch": "和夥伴一起走路，取得 5 顆糖果.",
+    "po": "Ganhar 5 doces caminhando com seu companheiro."
+  },
+  "189": {
+    "key": "quest_transfer_pokemon_plural",
+    "num": "3",
+    "questSpec": {
+      "type": "QUEST_TRANSFER_POKEMON",
+      "target": 3,
+      "conditions": []
+    },
+    "de": "Verschicke 3 Pokémon.",
+    "en": "Transfer 3 Pokémon.",
+    "ja": "ポケモンを3匹送る",
+    "it": "Trasferisci 3 Pokémon.",
+    "es": "Transfiere 3 Pokémon.",
+    "fr": "Transfère 3 Pokémon.",
+    "id": 189,
+    "possibleRewards": [
+      "#353"
+    ],
+    "ts": 1556864722653,
+    "jp": "ポケモンを3匹送る.",
+    "ko": "포켓몬을 3마리 보낸다.",
+    "ch": "傳送 3 隻寶可夢.",
+    "po": "Transferir 3 Pokémon."
+  },
+  "242": {
+    "key": "quest_trade_singular",
+    "de": "Tausche ein Pokémon.",
+    "en": "Trade a Pokémon.",
+    "ja": "ポケモンを交換する",
+    "it": "Effettua uno scambio di Pokémon.",
+    "es": "Intercambia 1 Pokémon.",
+    "fr": "Échange un Pokémon.",
+    "id": 242,
+    "questSpec": {
+      "type": "QUEST_TRADE_POKEMON",
+      "target": 1,
+      "conditions": []
+    },
+    "possibleRewards": [
+      "#425"
+    ],
+    "ts": 1538426056649,
+    "jp": "ポケモンを交換する.",
+    "ko": "포켓몬을 교환한다.",
+    "ch": "交換1隻寶可夢.",
+    "po": "Trocar 1 Pokémon."
+  },
+  "282": {
+    "de": "Lande 3 gute Würfe hintereinander.",
+    "possibleRewards": [
+      "Superball 5",
+      "Staub 500",
+      "Sananabeere 2",
+      "Hyperball 2"
+    ],
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 10
+          }
+        }
+      ]
+    },
+    "num": "3",
+    "key": "quest_land_inarow_nice_plural",
+    "en": "Make 3 Nice Throws in a row.",
+    "ja": "ナイススローを3回連続で投げる",
+    "it": "Effettua 3 bei tiri di fila.",
+    "es": "Acierta 3 buenos lanzamientos seguidos.",
+    "fr": "Fais 3 Jolis lancers à la suite.",
+    "id": 282,
+    "ts": 1553935671893,
+    "jp": "ナイススローを3回連続で投げる.",
+    "ko": "Nice가 나오게 3회 연속으로 던진다.",
+    "ch": "連續投出 3 次Nice.",
+    "po": "Fazer 3 boas jogadas seguidas."
+  },
+  "294": {
+    "key": "quest_feed_pinaps_plural",
+    "en": "Use 10 Pinap Berries while catching Pokémon.",
+    "de": "Verwende 10 Sananabeeren beim Fangen von Pokémon.",
+    "questSpec": {
+      "type": "QUEST_USE_BERRY_IN_ENCOUNTER",
+      "target": 10,
+      "conditions": [
+        {
+          "type": 11,
+          "info": {
+            "item_id": 705
+          }
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#294"
+    ],
+    "num": "10",
+    "ja": "ポケモンを捕まえるときにきのみ10個Pinapを使う",
+    "it": "Usa 10 Baccananas per catturare Pokémon.",
+    "es": "Usa 10 Bayas Pinia mientras atrapas Pokémon.",
+    "fr": "Utilise 10 Baies Nanana lorsque tu attrapes des Pokémon.",
+    "id": 294,
+    "ts": 1546414993304,
+    "jp": "ポケモンを捕まえるときにパイルのみ10個を使う.",
+    "ko": "포켓몬을 잡을 때 파인열매를 10 개 사용한다.",
+    "ch": "在捕捉寶可夢時使用 10 顆凰梨果.",
+    "po": "Usar 10 Frutas Caxí enquanto pega Pokémon."
+  },
+  "295": {
+    "key": "quest_catch_type_ground_plural",
+    "num": "10",
+    "de": "Fange 10 Pokémon vom Typ Boden.",
+    "en": "Catch 10 Ground-type Pokémon.",
+    "ja": "じめんタイプのポケモンを10匹捕まえる",
+    "it": "Cattura 10 Pokémon di tipo Terra.",
+    "es": "Captura 10 Pokémon de tipo Tierra.",
+    "fr": "Attrape 10 Pokémon de type Sol.",
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 10,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              5
+            ]
+          }
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#50"
+    ],
+    "id": 295,
+    "ts": 1557235281861,
+    "jp": "じめんタイプのポケモンを10匹捕まえる.",
+    "ko": "땅타입 포켓몬을 10마리 잡는다.",
+    "ch": "捕捉 10 隻地面屬性的寶可夢.",
+    "po": "Pegar 10 Pokémon de tipo Terrestre."
+  },
+  "296": {
+    "de": "Gewinne 5 Arenakämpfe.",
+    "possibleRewards": [
+      "#88"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_GYM_BATTLE",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 9
+        }
+      ]
+    },
+    "num": "5",
+    "key": "quest_win_gym_plural",
+    "en": "Win 5 Gym battles.",
+    "ja": "ジムで5回バトルに勝つ",
+    "it": "Vinci 5 lotte in Palestra.",
+    "es": "Gana 5 combates de Gimnasio.",
+    "fr": "Gagne 5 combats d’Arènes.",
+    "id": 296,
+    "ts": 1546418270155,
+    "jp": "ジムで5回バトルに勝つ.",
+    "ko": "체육관 배틀에서 5회 이긴다.",
+    "ch": "在道館對戰中獲勝 5 次.",
+    "po": "Vencer 5 batalhas de Ginásio."
+  },
+  "299": {
+    "key": "quest_evolve_items_singular",
+    "de": "Verwende ein Item, um Pokémon zu entwickeln.",
+    "en": "Use an item to evolve a Pokémon.",
+    "ja": "道具を使ってポケモンを1匹進化させる",
+    "it": "Fai evolvere 1 Pokémon con strumenti evolutivi.",
+    "es": "Usa objetos para evolucionar Pokémon 1 veces.",
+    "fr": "Utilise 1 fois des objets pour faire évoluer des Pokémon.",
+    "possibleRewards": [
+      "#227"
+    ],
+    "questSpec": {
+      "type": "QUEST_EVOLVE_POKEMON",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 11
+        }
+      ]
+    },
+    "id": 299,
+    "ts": 1546517165992
+  },
+  "337": {
+    "key": "quest_feed_pinaps_plural",
+    "en": "Use 5 Nanab-Berries to help catch Pokémon.",
+    "de": "Verwende 5 Nanabbeeren beim Fangen von Pokémon.",
+    "questSpec": {
+      "type": "QUEST_USE_BERRY_IN_ENCOUNTER",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 11,
+          "info": {
+            "item_id": 703
+          }
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#317"
+    ],
+    "num": "5",
+    "id": 337,
+    "ts": 1556741814888
+  },
+  "338": {
+    "key": "quest_win_raid_2_singular",
+    "de": "Gewinne einen Level-2-Raid oder höher.",
+    "questSpec": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 7,
+          "info": {
+            "raid_levels": [
+              2,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        {
+          "type": 6
+        }
+      ]
+    },
+    "en": "Win a level 2 or higher raid.",
+    "ja": "レベル2以上のレイドに1回勝つ",
+    "it": "Vinci un raid di livello 2 o superiore.",
+    "es": "Gana en 1 incursión de nivel 2 o superior.",
+    "fr": "Gagne un Raid de niveau 2 ou plus.",
+    "possibleRewards": [
+      "#302"
+    ],
+    "num": "1",
+    "id": 338,
+    "ts": 1556741982138,
+    "jp": "レベル2以上のレイドに1回勝つ.",
+    "ko": "레벨2 이상 레이드에 이긴다.",
+    "ch": "在等級2以上的團體戰中獲勝1次.",
+    "po": "Vencer 1 Reide de nível 2 ou maior."
+  },
+  "339": {
+    "de": "Fange 7 Pokémon vom Typ Pflanze, Wasser oder Feuer.",
+    "possibleRewards": [
+      "#58"
+    ],
+    "num": "7",
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 7,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              12,
+              11,
+              10
+            ]
+          }
+        }
+      ]
+    },
+    "key": "quest_catch_basic_types_plural",
+    "en": "Catch 7 Grass-, Water-, or Fire-type Pokémon.",
+    "ja": "くさ、みず、ほのお、いずれかのタイプのポケモンを3匹捕まえる",
+    "it": "Cattura 7 Pokémon di tipo Erba, Acqua o Fuoco.",
+    "es": "Captura 7 Pokémon de tipo Planta, Agua o Fuego.",
+    "fr": "Attrape 7 Pokémon de type Plante, Eau ou Feu.",
+    "id": 339,
+    "ts": 1556742822269,
+    "jp": "くさ、みず、ほのお、いずれかのタイプのポケモンを7匹捕まえる.",
+    "ko": "풀, 물, 불꽃 중 한 가지 타입의 포켓몬을 7마리 이상 잡는다.",
+    "ch": "捕捉 7 隻草、水或火屬性的寶可夢.",
+    "po": "Pegar 7 Pokémon de tipo Planta, Água ou Fogo."
+  },
+  "340": {
+    "de": "Fange 3 Pokémon vom Typ Normal, Elektro oder Gift.",
+    "en": "Catch 3 Normal-, Electric-, or Poison-type Pokémon.",
+    "possibleRewards": [
+      "#312",
+      "#311"
+    ],
+    "num": "5",
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              13,
+              1,
+              4
+            ]
+          }
+        }
+      ]
+    },
+    "key": "t1_2019_catch_types_medium_pkmn",
+    "id": 340,
+    "ts": 1556742822269
+  },
+  "342": {
+    "key": "quest_send_gifts_plural",
+    "num": "10",
+    "de": "Verschicke 10 Geschenke an Freunde.",
+    "questSpec": {
+      "type": "QUEST_SEND_GIFT",
+      "target": 10,
+      "conditions": []
+    },
+    "en": "Send 10 Gifts to friends.",
+    "ja": "ギフトを10個贈る",
+    "it": "Invia 10 pacchi amicizia.",
+    "es": "Envía 10 regalos a amigos.",
+    "fr": "Envoie 10 Cadeaux à des amis.",
+    "possibleRewards": [
+      "#103"
+    ],
+    "id": 342,
+    "ts": 1556743019991,
+    "jp": "ギフトを10個贈る.",
+    "ko": "선물을 10 개 보낸다.",
+    "ch": "傳送 10 個友誼禮物.",
+    "po": "Enviar 10 presentes para amigos."
+  },
+  "351": {
+    "de": "Abenteuerwoche: Drehe 25 PokéStops oder Arenen.",
+    "questSpec": {
+      "type": "QUEST_SPIN_POKESTOP",
+      "target": 25,
+      "conditions": []
+    },
+    "possibleRewards": [
+      "#408"
+    ],
+    "num": "25",
+    "key": "quest_adventure_visit_pokestops_plural",
+    "en": "Adventure Week: Spin 25 PokéStops or Gyms.",
+    "ja": "ポケストップ10個を回す",
+    "it": "Fai girare 25 dischi Pokéstop o Palestra.",
+    "es": "Da vueltas a 25 fotodiscos en Poképaradas o Gimnasios.",
+    "fr": "Fais tourner 25 PokéStops ou Arènes.",
+    "jp": "ポケストップ25個を回す.",
+    "ko": "포켓스톱 또는 체육관을 25개 돌린다.",
+    "ch": "拜訪 25 個寶可補給站.",
+    "po": "Girar 25 fotodiscos de Poképaradas ou Ginásios.",
+    "id": 351,
+    "ts": 1559680131718
+  },
+  "352": {
+    "num": "5",
+    "de": "Abenteuerwoche: Fange 5 Amonitas oder Kabuto.",
+    "possibleRewards": [
+      "#142"
+    ],
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 2,
+          "info": {
+            "pokemon_ids": [
+              138,
+              140,
+              141,
+              139
+            ]
+          }
+        }
+      ]
+    },
+    "id": 352,
+    "ts": 1559682823683
+  },
+  "354": {
+    "de": "Abenteuerwoche: Entwickle ein Liliep oder Anorith.",
+    "possibleRewards": [
+      "#95"
+    ],
+    "questSpec": {
+      "type": "QUEST_EVOLVE_POKEMON",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 2,
+          "info": {
+            "pokemon_ids": [
+              345,
+              347
+            ]
+          }
+        }
+      ]
+    },
+    "key": "quest_adventure_evolve_lilieep",
+    "id": 354,
+    "ts": 1559715090284
+  }
+}

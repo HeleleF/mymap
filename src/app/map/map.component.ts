@@ -5,10 +5,12 @@ import * as mapboxgl from 'mapbox-gl';
 import { ToastrService } from 'ngx-toastr';
 
 import { SwUpdate } from '@angular/service-worker';
-import { take } from 'rxjs/operators';
+import { take, max } from 'rxjs/operators';
 
-import { ApiService } from '../shared/api.service';
 import { DbService } from '../shared/db.service';
+
+import { PopupComponent } from '../popup/popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-map',
@@ -18,11 +20,15 @@ import { DbService } from '../shared/db.service';
 export class MapComponent implements OnInit {
 
   map: mapboxgl.Map;
+
+  /**
+   * wird über die settings verändert; enthält alle momentan sichtbaren layer
+   */
   usedLayers: string[] = [];
+  modal: MatDialog;
 
   constructor(private swUpdate: SwUpdate,
     private db: DbService,
-    private api: ApiService,
     private toast: ToastrService) {
     // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/23467
     Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.MAPBOX_API_TOKEN);
@@ -44,7 +50,7 @@ export class MapComponent implements OnInit {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/outdoors-v9',
+      style: `mapbox://styles/mapbox/${(h => { return (h < 6 || h > 21) ? "dark-v10" : "outdoors-v11" })((new Date).getHours())}`,
       zoom: 13,
       center: [13.204929, 52.637736],
       maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
@@ -54,164 +60,69 @@ export class MapComponent implements OnInit {
 
     this.map.addControl(new mapboxgl.NavigationControl());
 
+    this.map.on('click', this.clickHandler);
+    this.map.on('styleimagemissing', this.styleHandler);
+
     this.map.on('load', () => {
 
       this.toast.success('Map loaded!', 'Map');
 
       this.loadData();
 
-      this.addMapHandler();
-
-      console.log('done');
     });
   }
 
-  private addMapHandler() {
+  private clickHandler(e: mapboxgl.MapMouseEvent & mapboxgl.EventData) {
 
-    this.map.on('click', e => {
+    const features = this.map.queryRenderedFeatures(e.point, {
+      layers: this.usedLayers
+    });
 
-      const features = this.map.queryRenderedFeatures(e.point, {
-        layers: ['gymbadge0', 'gymbadge1', 'gymbadge2', 'gymbadge3', 'gymbadge4']
+    if (features.length) {
+
+      // @ts-ignore: Attribute 'coordinates' does exist, but Typescript cant find it?
+      this.map.flyTo({ center: features[0].geometry.coordinates });
+
+      const ref = this.modal.open(PopupComponent, {
+        width: '300px',
+        data: features[0].properties
+
       });
 
-      if (features.length) {
+      ref.afterClosed().subscribe(d => {
+        console.log(d);
+      });
 
-        // @ts-ignore: Attribute 'coordinates' does exist, but Typescript cant find it?
-        this.map.flyTo({ center: features[0].geometry.coordinates });
-        const {name: n, url: u, desc: d} = features[0].properties;
-        new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(`
-          <div class="popup-header">
-            <h3 class="gym-name">${n}</h3>
-          </div>
-          <div class="popup-body">
-            <p class="gym-description">${d}</p>
-            <img src="http://${u}" class="gym-preview-img"/>
-          </div>`)
-          .addTo(this.map);
-      }
-    });
+    }
   }
+
+  private async styleHandler(e: any) {
+
+    const id = e.id;
+
+    console.log(e, id);
+  };
 
   private loadAndAddImages() {
 
     const imgs = ['gyms/badge0', 'gyms/badge1', 'gyms/badge2', 'gyms/badge3', 'gyms/badge4'];
 
-    return Promise.all(imgs.map(i => this.addImage(i)));
-  }
+    return Promise.all(imgs.map(path => {
+      return new Promise((res, rej) => {
+        this.map.loadImage(`../assets/${path}.png`, (err: Error, img: ImageData) => {
 
-  private addImage(path: string): Promise<string> {
-
-    // dont add if already added?
-
-    return new Promise((resolve, reject) => {
-      this.map.loadImage(`../assets/${path}.png`, (err: Error, img: ImageData) => {
-
-        if (err) {
-          reject(err.message);
-        } else {
-
-          const name = path.split('/').pop();
-
-          this.map.addImage(name, img);
-          resolve(name);
-        }
+          if (err) {
+            rej(err.message);
+          } else {
+  
+            const name = path.split('/').pop();
+  
+            this.map.addImage(name, img);
+            res(name);
+          }
+        });
       });
-    });
-  }
-
-  private createGymLayers(gyms: ApiModel.GymInfo[]): mapboxgl.Layer[] {
-
-    let layers: mapboxgl.Layer[] = [{
-      id: "gymbadge0",
-      type: "symbol",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: []
-        }
-      },
-      layout: {
-        "icon-image": "badge0",
-        "icon-size": 0.5
-      }
-    }, {
-      id: "gymbadge1",
-      type: "symbol",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: []
-        }
-      },
-      layout: {
-        "icon-image": "badge1",
-        "icon-size": 0.5
-      }
-    }, {
-      id: "gymbadge2",
-      type: "symbol",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: []
-        }
-      },
-      layout: {
-        "icon-image": "badge2",
-        "icon-size": 0.5
-      }
-    }, {
-      id: "gymbadge3",
-      type: "symbol",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: []
-        }
-      },
-      layout: {
-        "icon-image": "badge3",
-        "icon-size": 0.5
-      }
-    }, {
-      id: "gymbadge4",
-      type: "symbol",
-      source: {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: []
-        }
-      },
-      layout: {
-        "icon-image": "badge4",
-        "icon-size": 0.5
-      }
-    }];
-
-    gyms.forEach(g => {
-      // @ts-ignore: Attribute 'data' does exist, but Typescript cant find it?
-      layers[g.badge].source.data.features.push({
-        type: "Feature",
-        geometry: {
-          type: "Point",
-          coordinates: [g.longitude, g.latitude],
-        },
-        properties: {
-            id: g.gymid,
-            url: g.url,
-            desc: g.description
-        }
-      })
-    });
-
-    return layers;
+    }));
   }
 
   private async loadData() {
@@ -224,23 +135,59 @@ export class MapComponent implements OnInit {
       this.toast.error(`${err.message}`, 'Map error');
     }
 
-    this.api.getGyms().subscribe(gyms => {
+    this.db.getGymsAsGeoJSON().subscribe(gyms => {
 
-      const layers = this.createGymLayers(gyms);
-
-      layers.forEach(l => {
-        this.map.addLayer(l);
+      this.map.addSource("gyms", {
+        type: "geojson",
+        data: gyms
       });
+
+      this.map.addLayer({
+        id: 'gymsLayer',
+        type: "symbol",
+        source: "gyms",
+        layout: {
+          'icon-image': ['concat', 'badge', ['get', 'badge']],
+          'icon-size': 0.5
+        },
+      });
+      this.usedLayers.push('gymsLayer');
+
+
     },
       err => {
         this.toast.error(`${err.message}`, 'Gym error');
       });
 
-    this.api.getStops().subscribe(stops => {
+    this.db.getStopsAsGeoJSON().subscribe(stops => {
       console.log(stops);
     },
       err => {
         this.toast.error(`${err.message}`, 'Stop error');
+      });
+
+    this.db.getQuestsAsGeoJSON().subscribe(quests => {
+      console.log(quests);
+
+      this.map.addSource("quests", {
+        type: "geojson",
+        data: quests
+      });
+
+      this.map.addLayer({
+        id: 'questsLayer',
+        type: "symbol",
+        source: "quests",
+        layout: {
+          'icon-image': ['get', 'icon'], //????
+          'icon-size': 0.5
+        }
+      });
+      this.usedLayers.push('questsLayer');
+
+    },
+      err => {
+        this.toast.error(`${err.message}`, 'Quest error');
       });
   }
 

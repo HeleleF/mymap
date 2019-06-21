@@ -15,30 +15,6 @@ export class ApiService {
     this.API_URL = 'http://localhost:8123/api';
    }
 
-  getStops() {
-    return this.httpClient.get<ApiModel.StopInfo[]>(`${this.API_URL}/stops`)
-    .pipe(catchError(this.handleError));
-  };
-
-  getGyms() {
-    return this.httpClient.get<ApiModel.GymInfo[]>(`${this.API_URL}/gyms`)
-    .pipe(catchError(this.handleError));
-  }
-
-  setGymBadge(data: ApiModel.GymBadgeInfo) {
-    return this.httpClient.put(`${this.API_URL}/gyms/badge`, {
-      badge: data
-    })
-    .pipe(catchError(this.handleError));
-  }
-
-  setMultipleGymBadges(data: ApiModel.GymBadgeInfo[]) {
-    return this.httpClient.post(`${this.API_URL}/gyms/badge`, {
-      badges: data
-    })
-    .pipe(catchError(this.handleError));
-  }
-
   getBadgesCount() {
     return this.httpClient.get(`${this.API_URL}/gyms/count`)
     .pipe(catchError(this.handleError));

@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>{{data.description}}</h1>
+
+<!-- nur gyms haben ne url, beim quests heißt es anders-->
+<div *ngIf="data.url; then gymBlock else questBlock"></div>
+
+<ng-template #gymBlock>
+  <div mat-dialog-content >
+    <p>Gym latitude longitude here oder link zu google</p>
+    <img class='gym-preview' [src]='http://{{data.url}}'></img>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.animal">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+  </div>
+</ng-template>
+
+<ng-template #questBlock>
+  <div mat-dialog-content >
+    <p>quest latitude longitude here oder link zu google</p>
+    <p>Aufgabe: {{data.taskDesc}}</p>
+    <p>Typ: {{data.type}}</p>
+    <p>Reward: {{data.reward}}</p>
+    <img class='quest-img' [src]='{{data.reward}}'></img>
+    <p>Status: {{data.status}}</p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.animal">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="exclude(0)">Exclude this type</button>
+    <button mat-button (click)="exclude(1)">Exclude this reward</button>
+    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+  </div>
+</ng-template>

@@ -201,16 +201,20 @@ const loadQuests = async (latLng = null) => {
     console.log('Awaiting promises...');
 
     try {
-        await Promise.all(proms);
-    } catch (e) {
-        console.log(e.message);
-        return;
-    }
 
-    if (changed) {
-        await fs.writeFile(QFILE, JSON.stringify(spec, null, 2));
+        await Promise.all(proms);
+
+    } catch (e) {
+        
+        console.log(e.message);
+
+    } finally {
+
+        if (changed) {
+            await fs.writeFile(QFILE, JSON.stringify(spec, null, 2));
+        }
+        console.log('Done.');
     }
-    console.log('Done.');
 };
 
 loadQuests();

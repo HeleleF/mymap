@@ -31,12 +31,14 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 
 import { PopupComponent } from './popup/popup.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    PopupComponent
+    PopupComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

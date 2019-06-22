@@ -20,7 +20,7 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="example-sidenav-container">
-  <mat-sidenav #snav >
+  <mat-sidenav #snav mode="over" [fixedInViewport]="true">
     <mat-nav-list>
       <a mat-list-item routerLink=".">Settings</a>
       <a mat-list-item routerLink="/impressum">Impressum</a>

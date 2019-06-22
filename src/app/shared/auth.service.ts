@@ -4,8 +4,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
 
-import { from } from 'rxjs';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -24,15 +22,8 @@ export class AuthService {
       })
   }
 
-  getAuthorizationToken() {
-
-    if (this.user) {
-
-      return from(this.user.getIdToken());
-
-    } else {
-      return from('');
-    }
+  async getCurrentUser() {
+    return this.user;
   }
 
   async googleSignin() {
@@ -45,10 +36,12 @@ export class AuthService {
 
       this.user = result.user;
       this.toast.success(`Logged in as ${this.user.displayName}!`, 'Login');
+      return true;
 
     } catch (err) {
 
       this.toast.error(`Logging in failed: ${err.message}`, 'Login');
+      return false;
     }
 
   }
@@ -58,12 +51,14 @@ export class AuthService {
     try {
 
       await this.afAuth.auth.signOut();
-      this.toast.success('You are now logged out!', 'Logout');
       this.user = null;
+      this.toast.success('You are now logged out!', 'Logout');   
+      return false;
 
     } catch (err) {
 
       this.toast.error(`Logging out failed: ${err.message}`, 'Logout');
+      return true;
     }
   }
 }

@@ -5,11 +5,10 @@
 
 <ng-template #gymBlock>
   <div mat-dialog-content >
-    <p>Gym latitude longitude here oder link zu google</p>
+    <p>Gym latitude longitude here oder link zu google</p><br/>
+    <p>AName: {{data.desc}}</p><br/>
+    <p>Badge: {{data.badge}}</p><br/>
     <img class='gym-preview' [src]='data.url'/>
-    <mat-form-field>
-      <input matInput [(ngModel)]="data.animal">
-    </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
@@ -19,15 +18,12 @@
 
 <ng-template #questBlock>
   <div mat-dialog-content >
-    <p>quest latitude longitude here oder link zu google blub</p>
-    <p>Aufgabe: {{data.taskDesc}}</p>
-    <p>Typ: {{data.type}}</p>
-    <p>Reward: {{data.reward}}</p>
-    <img class='quest-img' [src]='data.reward'/>
+    <p>quest latitude longitude here oder link zu google blub</p><br/>
+    <p>Aufgabe: {{data.taskDesc}}</p><br/>
+    <p>Typ: {{data.type}}</p><br/>
+    <p>Reward: {{data.reward}}</p><br/>
+    <img class='quest-img' [src]='data.reward'/><br/>
     <p>Status: {{data.status}}</p>
-    <mat-form-field>
-      <input matInput [(ngModel)]="data.animal">
-    </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="exclude(0)">Exclude this type</button>

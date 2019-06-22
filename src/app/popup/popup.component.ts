@@ -9,7 +9,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class PopupComponent {
 
   constructor(public popup: MatDialogRef<PopupComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data) { }
+    @Inject(MAT_DIALOG_DATA) public data) { 
+      console.log('injecting data ', data);
+    }
 
     onNoClick() {
       this.popup.close();

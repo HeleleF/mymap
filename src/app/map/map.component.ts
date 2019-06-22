@@ -21,6 +21,8 @@ export class MapComponent implements OnInit {
 
   map: mapboxgl.Map;
 
+  proms: Promise<any>[] = [];
+
   /**
    * wird über die settings verändert; enthält alle momentan sichtbaren layer
    */
@@ -48,6 +50,9 @@ export class MapComponent implements OnInit {
       });
     }
 
+    this.proms.push(this.db.getGymsAsGeoJSON2(), this.db.getQuestsAsGeoJSON2());
+    console.log('started loading');
+
     this.map = new mapboxgl.Map({
       container: 'map',
       style: `mapbox://styles/mapbox/${(h => { return (h < 6 || h > 21) ? "dark-v10" : "outdoors-v11" })((new Date).getHours())}`,
@@ -62,6 +67,8 @@ export class MapComponent implements OnInit {
 
     this.map.on('click', this.clickHandler.bind(this));
     this.map.on('styleimagemissing', this.styleHandler.bind(this));
+
+    console.log('waiting for map...');
 
     this.map.on('load', () => {
 
@@ -100,14 +107,14 @@ export class MapComponent implements OnInit {
 
     const id = e.id;
 
-    console.log(e, id);
+    console.log('missing ', e, id);
   };
 
   private loadAndAddImages() {
 
     const imgs = ['gyms/badge0', 'gyms/badge1', 'gyms/badge2', 'gyms/badge3', 'gyms/badge4'];
 
-    return Promise.all(imgs.map(path => {
+    return imgs.map(path => {
       return new Promise((res, rej) => {
         this.map.loadImage(`../assets/${path}.png`, (err: Error, img: ImageData) => {
 
@@ -122,19 +129,58 @@ export class MapComponent implements OnInit {
           }
         });
       });
-    }));
+    });
   }
 
   private async loadData() {
 
     try {
 
-      const imgs = await this.loadAndAddImages();
+      const [gyms, quests, ] = await Promise.all([...this.proms, ...this.loadAndAddImages()]);
+
+      //@ts-ignore
+      window.g = gyms;
+      //@ts-ignore
+      window.q = quests;
+
+      this.map.addSource("gyms", {
+        type: "geojson",
+        data: gyms
+      });
+      this.map.addSource("quests", {
+        type: "geojson",
+        data: quests
+      });
+      console.log('sources added');
+  
+      this.map.addLayer({
+        id: 'gymsLayer',
+        type: "symbol",
+        source: "gyms",
+        layout: {
+          'icon-image': ['concat', 'badge', ['get', 'badge']],
+          'icon-size': 0.5
+        },
+      });
+      this.map.addLayer({
+        id: 'questsLayer',
+        type: "symbol",
+        source: "quests",
+        layout: {
+          'icon-image': ['get', 'status'], //????
+          'icon-size': 0.5
+        }
+      });
+      console.log('layers added');
+  
+      this.usedLayers.push('gymsLayer');
+      this.usedLayers.push('questsLayer');
 
     } catch (err) {
       this.toast.error(`${err.message}`, 'Map error');
     }
 
+    /*
     this.db.getGymsAsGeoJSON().subscribe(gyms => {
 
             //@ts-ignore
@@ -193,6 +239,7 @@ export class MapComponent implements OnInit {
       err => {
         this.toast.error(`${err.message}`, 'Quest error');
       });
+      */
   }
 
 }

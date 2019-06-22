@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
+import * as firebase from 'firebase/app';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 
@@ -16,9 +17,9 @@ export class DbService {
   questsRef: AngularFirestoreCollection<ApiModel.QuestInfo>;
 
   constructor(private store: AngularFirestore) {
-    this.gymsRef = this.store.collection<ApiModel.GymInfo>('gyms');
+    this.gymsRef = this.store.collection<ApiModel.GymInfo>('gyms', ref => ref.limit(20));
     this.stopsRef = this.store.collection<ApiModel.StopInfo>('stops');
-    this.questsRef = this.store.collection<ApiModel.QuestInfo>('quests');
+    this.questsRef = this.store.collection<ApiModel.QuestInfo>('quests', ref => ref.limit(20));
    }
 
   getGyms() {
@@ -58,7 +59,41 @@ export class DbService {
           }; 
         })
       } as GeoJSON.FeatureCollection<GeoJSON.Point>;
-    }))
+    }));
+  }
+
+  async getGymsAsGeoJSON2() {
+
+    const { docs } = await this.gymsRef.get().toPromise();
+
+    await this.store.firestore.disableNetwork();
+
+    const features = (docs as QueryDocumentSnapshot<ApiModel.GymInfo>[]).map(doc => {
+
+      const p = doc.data();
+
+      console.log('gyms came from ', doc.metadata.fromCache);
+
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [p.lon, p.lat]
+        },
+        properties: {
+          fid: doc.id,
+          id: p.i,
+          url: p.u,
+          desc: p.d,
+          badge: p.b
+        }
+      }; 
+    });
+
+    return {
+      type: 'FeatureCollection',
+      features: features
+    } as GeoJSON.FeatureCollection<GeoJSON.Point>
   }
 
   addGym(prop: ApiModel.GymInfo) {
@@ -70,7 +105,7 @@ export class DbService {
 
     const gym = this.gymsRef.doc<ApiModel.GymInfo>(fid);
 
-    return from(gym.update({b: newBadge}));
+    return gym.update({b: newBadge});
   }
 
   getStops() {
@@ -137,6 +172,35 @@ export class DbService {
     }))
   }
 
+  async getQuestsAsGeoJSON2() {
+
+    const { docs } = await this.questsRef.get().toPromise();
+
+    await this.store.firestore.disableNetwork();
+
+    const features = (docs as QueryDocumentSnapshot<ApiModel.QuestInfo>[]).map(doc => {
+
+      const p = doc.data();
+      const id = doc.id;
+
+      console.log('quests came from ', doc.metadata.fromCache);
+
+      return {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: GeoHash.decode(id)
+        },
+        properties: {id, ...p}
+      }; 
+    });
+
+    return {
+      type: 'FeatureCollection',
+      features: features
+    } as GeoJSON.FeatureCollection<GeoJSON.Point, ApiModel.QuestInfo>
+  }
+
   addQuest(prop: ApiModel.QuestInfo) {
 
     return from(this.questsRef.add(prop));
@@ -146,6 +210,6 @@ export class DbService {
 
     const quest = this.questsRef.doc<ApiModel.QuestInfo>(fid);
 
-    return from(quest.update({status: newStatus}));
+    return quest.update({status: newStatus});
   }
 }

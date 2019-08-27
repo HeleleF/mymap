@@ -1,0 +1,11 @@
+<div style="width:600px; height: 600px; margin-top:10%; margin-left: 35%">
+  <div class="gym-pic">    
+    <div id="swiper" class="union" (mousedown)="lock($event)" (touchstart)="lock($event)" (mouseup)="move($event)" (touchend)="move($event)">   
+      <img class='gym-under'
+        src='http://lh6.ggpht.com/9oDmEFq0xQbmvp0i2sjYShzkMYd0ndma5oOGSLGjyNjy2WPbdM_xIOoc2gPcK3JsWv_n09Iiw_cVyaGO1WRh' />
+      <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{i}}.png' />
+      <button mat-icon-button class="lefter" (click)="i > 0 && i = i - 1" [disabled]="i == 0"><mat-icon>chevron_left</mat-icon></button>
+      <button mat-icon-button class="righter" (click)="i < 4 && i = i + 1" [disabled]="i == 4"><mat-icon>chevron_right</mat-icon></button>
+    </div>
+  </div>
+</div>

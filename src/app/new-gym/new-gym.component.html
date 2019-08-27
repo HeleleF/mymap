@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Add new gym</h1>
+
+<div mat-dialog-content>
+  <form class="form-container" [formGroup]="gymData">
+
+    <mat-form-field>
+      <input matInput placeholder="Enter the gym name" formControlName="name" required>
+      <mat-error *ngIf="f.name.errors">{{getNameError()}}</mat-error>
+    </mat-form-field><br/>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter the gym id" minlength="32" maxlength="35" formControlName="id" required>
+      <mat-error *ngIf="f.id.errors">{{getIdError()}}</mat-error>
+    </mat-form-field><br/>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter the position" formControlName="pos" required>
+      <mat-error *ngIf="f.pos.errors">{{getPosError()}}</mat-error>
+    </mat-form-field><br/>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter the url" formControlName="url" required>
+      <mat-error *ngIf="f.url.errors">{{getUrlError()}}</mat-error>
+    </mat-form-field><br/>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter the badge" type="number" min="0" max="4" formControlName="badge">
+      <mat-error *ngIf="f.badge.errors">{{getBadgeError()}}</mat-error>
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button cdkFocusInitial (click)="close()">Reset</button>
+  <button mat-button [disabled]="gymData.status != 'VALID'" (click)="create()">Create</button>
+</div>

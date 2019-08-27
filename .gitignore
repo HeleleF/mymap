@@ -4,6 +4,7 @@
 /src/environments
 .firebase
 upload.js
+/src/assets
 
 # compiled output
 /dist

@@ -11,10 +11,10 @@ import { AuthService } from './shared/auth.service';
 export class AppComponent implements OnInit {
 
   isOnline: boolean;
-  title = 'Meine Mappe';
+  title = 'Heriberts Mappe';
 
   constructor(private toast: ToastrService,
-    private auth: AuthService) { }
+    public auth: AuthService) { }
 
   ngOnInit() {
     window.addEventListener('online', this.updateStatus.bind(this));

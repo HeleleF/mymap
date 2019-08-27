@@ -50,6 +50,9 @@ export class GeoHash {
         return chars.join('');
     }
 
+    /**
+     * returns longitude first since Mapbox expects this order for the markers
+     */
     static decode = (hash: string): [number, number] => {
 
         let isLng = true,
@@ -57,8 +60,8 @@ export class GeoHash {
             minLat = -90,
             maxLng = 180,
             minLng = -180,
-            mid,
-            bit,
+            mid: number,
+            bit: number,
             hashValue = 0;
 
         for (let i = 0; i < 12; i++) {
@@ -86,8 +89,8 @@ export class GeoHash {
             }
         }
         return [
-            Math.round(((minLat + maxLat) / 2) * 1e6) / 1e6, 
-            Math.round(((minLng + maxLng) / 2) * 1e6) / 1e6
+            Math.round(((minLng + maxLng) / 2) * 1e6) / 1e6,
+            Math.round(((minLat + maxLat) / 2) * 1e6) / 1e6      
         ];
     }
 }

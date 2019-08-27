@@ -1,4 +1,10 @@
 {
+  "0": {
+    "de": "Unbekannte Aufgabe.",
+    "id": 0,
+    "possibleRewards": [],
+    "ts": 1538426056649
+  },
   "2": {
     "de": "Kämpfe in einer Arena.",
     "id": 2,
@@ -119,6 +125,86 @@
     "ch": "在道館對戰中獲勝 3 次.",
     "po": "Vencer 3 batalhas de Ginásio."
   },
+  "6": {
+    "de": "Gewinne 3 Raids.",
+    "questSpec": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 6
+        }
+      ]
+    },
+    "questSpec2": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 6
+        },
+        {
+          "type": 6
+        }
+      ]
+    },
+    "id": 6,
+    "possibleRewards": [
+      "Top-Beleber 3",
+      "Beleber 8",
+      "Staub 1500",
+      "Top-Trank 3"
+    ],
+    "lowLevelTranslate": {
+      "!challenge_battle19_raid_win_veryhard": "Sofort-TM 1"
+    },
+    "num": "3",
+    "key": "quest_win_raid_plural",
+    "en": "Win 3 raids.",
+    "ja": "レイドバトルで3回勝つ",
+    "it": "Vinci 3 raid.",
+    "es": "Gana en 3 incursiones.",
+    "fr": "Gagne 3 Raids.",
+    "ts": 1549349519072,
+    "jp": "レイドバトルで3回勝つ.",
+    "ko": "레이드배틀에서 3회 이긴다.",
+    "ch": "在團體戰中獲勝 3 次.",
+    "po": "Vencer 3 Reides."
+  },
+  "7": {
+    "key": "quest_win_raid_plural",
+    "de": "Gewinne 5 Raids.",
+    "id": 7,
+    "possibleRewards": [
+      "#142"
+    ],
+    "questSpec": {
+      "type": "QUEST_COMPLETE_RAID_BATTLE",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 6
+        },
+        {
+          "type": 6
+        }
+      ]
+    },
+    "lowLevelTranslate": {
+      "Staub 2500": "Lade-TM 1"
+    },
+    "num": "5",
+    "en": "Win 5 raids.",
+    "ja": "レイドバトルで5回勝つ",
+    "it": "Vinci 5 raid.",
+    "es": "Gana en 5 incursiones.",
+    "fr": "Gagne 5 Raids.",
+    "ts": 1538426056649,
+    "jp": "レイドバトルで5回勝つ.",
+    "ko": "레이드배틀에서 5회 이긴다.",
+    "ch": "在團體戰中獲勝 5 次.",
+    "po": "Vencer 5 Reides."
+  },
   "8": {
     "de": "Setze eine sehr effektive Lade-Attacke in 7 Arenakämpfen ein.",
     "id": 8,
@@ -183,6 +269,77 @@
     "ko": "포켓몬 10마리를 잡는다.",
     "ch": "捕捉 10 隻寶可夢.",
     "po": "Pegar 10 Pokémon."
+  },
+  "11": {
+    "de": "Fange ein Ditto.",
+    "id": 11,
+    "possibleRewards": [
+      "Goldene-Himmihbeere 2",
+      "Hyperball 10",
+      "Sonderbonbon 3",
+      "Staub 1500"
+    ],
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 1,
+      "conditions": [
+        {
+          "info": {
+            "pokemon_ids": [
+              132
+            ]
+          },
+          "type": 2
+        }
+      ]
+    },
+    "key": "quest_catch_special0_singular",
+    "en": "Catch a Ditto.",
+    "ja": "メタモンを1匹捕まえる",
+    "it": "Cattura un Ditto.",
+    "es": "Captura 1 Ditto.",
+    "fr": "Attrape un Métamorph.",
+    "ts": 1542458955382,
+    "jp": "メタモンを1匹捕まえる.",
+    "ko": "메타몽을 1마리 잡는다.",
+    "ch": "捕捉1隻百變怪.",
+    "po": "Pegar 1 Ditto."
+  },
+  "24": {
+    "de": "Fange ein Pokémon vom Typ Drache.",
+    "id": 24,
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 1,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              16
+            ]
+          }
+        }
+      ]
+    },
+    "possibleRewards": [
+      "#147",
+      "Sonderbonbon 3",
+      "Hyperball 10",
+      "Goldene-Himmihbeere 2",
+      "Staub 1500"
+    ],
+    "key": "quest_catch_type_dragon_singular",
+    "en": "Catch a Dragon-type Pokémon.",
+    "ja": "ドラゴンタイプのポケモンを1匹捕まえる",
+    "it": "Cattura un Pokémon di tipo Drago.",
+    "es": "Captura 1 Pokémon de tipo Dragón.",
+    "fr": "Attrape un Pokémon de type Dragon.",
+    "ts": 1538426056649,
+    "jp": "ドラゴンタイプのポケモンを1匹捕まえる.",
+    "ko": "드래곤타입 포켓몬을 1마리 잡는다.",
+    "ch": "捕捉1隻龍屬性的寶可夢.",
+    "po": "Pegar 1 Pokémon de tipo Dragão."
   },
   "26": {
     "de": "Fange 5 Pokémon mit Wetterverstärkung.",
@@ -319,6 +476,114 @@
     "ko": "Great가 나오게 3회 던진다.",
     "ch": "投出 3 次Great.",
     "po": "Fazer 3 ótimas jogadas."
+  },
+  "32": {
+    "de": "Lande 3 großartige Würfe hintereinander.",
+    "id": 32,
+    "possibleRewards": [
+      "#95",
+      "Staub 1000",
+      "Sananabeere 3",
+      "Sonderbonbon 1",
+      "Hyperball 5",
+      "Himmihbeere 9",
+      "Pokeball 10"
+    ],
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 11
+          }
+        }
+      ]
+    },
+    "num": "3",
+    "key": "quest_land_inarow_great_plural",
+    "en": "Make 3 Great Throws in a row.",
+    "ja": "グレートスローを3回連続で投げる",
+    "it": "Effettua 3 ottimi tiri di fila.",
+    "es": "Acierta 3 grandes lanzamientos seguidos.",
+    "fr": "Fais 3 Superbes lancers à la suite.",
+    "ts": 1538426056649,
+    "jp": "グレートスローを3回連続で投げる.",
+    "ko": "Great를 3회 연속으로 던진다.",
+    "ch": "連續投出 3 次Great.",
+    "po": "Fazer 3 ótimas jogadas seguidas."
+  },
+  "33": {
+    "de": "Lande 3 großartige Curveball-Würfe hintereinander.",
+    "id": 33,
+    "possibleRewards": [
+      "Sonderbonbon 3",
+      "Hyperball 10",
+      "Goldene-Himmihbeere 2",
+      "Staub 1500"
+    ],
+    "num": "3",
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 11
+          }
+        },
+        {
+          "type": 15
+        }
+      ]
+    },
+    "key": "quest_land_inarow_great_curveball_plural",
+    "en": "Make 3 Great Curveball Throws in a row.",
+    "ja": "カーブボールのグレートスローを3回連続で投げる",
+    "it": "Lancia 3 palle curve di fila con risultato ottimo.",
+    "es": "Acierta 3 grandes lanzamientos de bola curva seguidos.",
+    "fr": "Fais 3 Superbes lancers à effet à la suite.",
+    "ts": 1538426056649,
+    "jp": "カーブボールのグレートスローを3回連続で投げる.",
+    "ko": "커브볼로 Great가 나오게 3회 연속으로 던진다.",
+    "ch": "連續用曲球投出 3 次Great.",
+    "po": "Jogar 3 ótimas bolas curvas seguidas."
+  },
+  "35": {
+    "de": "Lande 3 fabelhafte Würfe hintereinander.",
+    "id": 35,
+    "possibleRewards": [
+      "#246"
+    ],
+    "num": "3",
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 3,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 12
+          }
+        }
+      ]
+    },
+    "key": "quest_land_inarow_excellent_plural",
+    "en": "Make 3 Excellent Throws in a row.",
+    "ja": "エクセレントスローを3回連続で投げる",
+    "it": "Effettua 3 tiri eccellenti di fila.",
+    "es": "Acierta 3 lanzamientos excelentes seguidos.",
+    "fr": "Fais 3 Excellents lancers à la suite.",
+    "ts": 1538426056649,
+    "jp": "エクセレントスローを3回連続で投げる.",
+    "ko": "Excellent를 3회 연속으로 던진다.",
+    "ch": "連續投出 3 次Excellent.",
+    "po": "Fazer 3 excelentes jogadas seguidas."
   },
   "36": {
     "de": "Entwickle ein Pokémon.",
@@ -753,6 +1018,32 @@
     "ch": "在1場對戰中使出效果絕佳的特殊招式.",
     "po": "Usar um ataque carregado supereficaz em 1 batalha de Ginásio."
   },
+  "88": {
+    "de": "Verwende 5 Power-ups bei Pokémon.",
+    "possibleRewards": [
+      "#1",
+      "#4",
+      "#7"
+    ],
+    "questSpec": {
+      "type": "QUEST_UPGRADE_POKEMON",
+      "target": 5,
+      "conditions": []
+    },
+    "id": 88,
+    "num": "5",
+    "key": "quest_power_up_plural",
+    "en": "Power up Pokémon 5 times.",
+    "ja": "ポケモンを5回強化する",
+    "it": "Potenzia i Pokémon 5 volte.",
+    "es": "Da más poder a un Pokémon 5 veces.",
+    "fr": "Recharge un Pokémon 5 fois.",
+    "ts": 1538426056649,
+    "jp": "ポケモンを5回強化する.",
+    "ko": "포켓몬을 5회 강화한다.",
+    "ch": "強化寶可夢 5 次.",
+    "po": "Fortalecer seus Pokémon 5 vezes."
+  },
   "102": {
     "de": "Abenteuerwoche: Brüte 2 Eier aus.",
     "id": 102,
@@ -988,6 +1279,32 @@
     "ch": "傳送 3 隻寶可夢.",
     "po": "Transferir 3 Pokémon."
   },
+  "236": {
+    "key": "quest_send_gifts_plural",
+    "num": "3",
+    "de": "Verschicke 3 Geschenke an Freunde.",
+    "questSpec": {
+      "type": "QUEST_SEND_GIFT",
+      "target": 3,
+      "conditions": []
+    },
+    "en": "Send 3 Gifts to friends.",
+    "ja": "ギフトを3個贈る",
+    "it": "Invia 3 pacchi amicizia.",
+    "es": "Envía 3 regalos a amigos.",
+    "fr": "Envoie 3 Cadeaux à des amis.",
+    "id": 236,
+    "possibleRewards": [
+      "Staub 1000",
+      "Sonderbonbon 1"
+    ],
+    "ts": 1562490827693,
+    "jp": "ギフトを3個贈る.",
+    "ko": "선물을 3 개 보낸다.",
+    "ch": "傳送 3 個友誼禮物.",
+    "po": "Enviar 3 presentes para amigos.",
+    "disabled": true
+  },
   "242": {
     "key": "quest_trade_singular",
     "de": "Tausche ein Pokémon.",
@@ -1138,6 +1455,41 @@
     "ch": "在道館對戰中獲勝 5 次.",
     "po": "Vencer 5 batalhas de Ginásio."
   },
+  "297": {
+    "de": "Lande 5 großartige Curveball-Würfe hintereinander.",
+    "possibleRewards": [
+      "#327"
+    ],
+    "num": "5",
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 11
+          }
+        },
+        {
+          "type": 15
+        }
+      ]
+    },
+    "key": "quest_land_inarow_great_curveball_plural",
+    "en": "Make 5 Great Curveball Throws in a row.",
+    "ja": "カーブボールのグレートスローを5回連続で投げる",
+    "it": "Lancia 5 palle curve di fila con risultato ottimo.",
+    "es": "Acierta 5 grandes lanzamientos de bola curva seguidos.",
+    "fr": "Fais 5 Superbes lancers à effet à la suite.",
+    "id": 297,
+    "ts": 1546418270155,
+    "jp": "カーブボールのグレートスローを5回連続で投げる.",
+    "ko": "커브볼로 Great가 나오게 5회 연속으로 던진다.",
+    "ch": "連續用曲球投出 5 次Great.",
+    "po": "Jogar 5 ótimas bolas curvas seguidas."
+  },
   "299": {
     "key": "quest_evolve_items_singular",
     "de": "Verwende ein Item, um Pokémon zu entwickeln.",
@@ -1160,6 +1512,41 @@
     },
     "id": 299,
     "ts": 1546517165992
+  },
+  "330": {
+    "de": "Lande 2 großartige Curveball-Würfe hintereinander.",
+    "possibleRewards": [
+      "#270"
+    ],
+    "num": "2",
+    "questSpec": {
+      "type": "QUEST_LAND_THROW",
+      "target": 2,
+      "conditions": [
+        {
+          "type": 14,
+          "info": {
+            "hit": false,
+            "throw_type_id": 11
+          }
+        },
+        {
+          "type": 15
+        }
+      ]
+    },
+    "key": "quest_land_inarow_great_curveball_plural",
+    "en": "Make 2 Great Curveball Throws in a row.",
+    "ja": "カーブボールのグレートスローを2回連続で投げる",
+    "it": "Lancia 2 palle curve di fila con risultato ottimo.",
+    "es": "Acierta 2 grandes lanzamientos de bola curva seguidos.",
+    "fr": "Fais 2 Superbes lancers à effet à la suite.",
+    "id": 330,
+    "jp": "カーブボールのグレートスローを2回連続で投げる.",
+    "ko": "커브볼로 Great가 나오게 2회 연속으로 던진다.",
+    "ch": "連續用曲球投出 2 次Great.",
+    "po": "Jogar 2 ótimas bolas curvas seguidas.",
+    "ts": 1562230310620
   },
   "337": {
     "key": "quest_feed_pinaps_plural",
@@ -1286,6 +1673,33 @@
     "id": 340,
     "ts": 1556742822269
   },
+  "341": {
+    "de": "Fange 5 Pokémon vom Typ Flug, Psycho oder Unlicht.",
+    "possibleRewards": [
+      "#261"
+    ],
+    "num": "5",
+    "questSpec": {
+      "type": "QUEST_CATCH_POKEMON",
+      "target": 5,
+      "conditions": [
+        {
+          "type": 1,
+          "info": {
+            "pokemon_type_ids": [
+              3,
+              14,
+              17
+            ]
+          }
+        }
+      ]
+    },
+    "key": "t1_2019_catch_types_hard_pkmn",
+    "en": "Catch 5 Flying-, Psychic-, or Dark-type Pokémon.",
+    "id": 341,
+    "ts": 1556742921110
+  },
   "342": {
     "key": "quest_send_gifts_plural",
     "num": "10",
@@ -1383,5 +1797,27 @@
     "key": "quest_adventure_evolve_lilieep",
     "id": 354,
     "ts": 1559715090284
+  },
+  "359": {
+    "de": "Entwickle 3 Pokémon.",
+    "event": "GoFest2019",
+    "possibleRewards": [],
+    "questSpec": {
+      "type": "QUEST_EVOLVE_POKEMON",
+      "target": 3,
+      "conditions": []
+    },
+    "key": "quest_evolve_plural",
+    "en": "Evolve 3 Pokémon.",
+    "ja": "ポケモンを3匹進化させる",
+    "it": "Fai evolvere un Pokémon.",
+    "es": "Haz evolucionar 3 Pokémon.",
+    "fr": "Fais évoluer un Pokémon.",
+    "jp": "ポケモンを3匹進化させる.",
+    "ko": "포켓몬을 3마리 진화시킨다.",
+    "ch": "讓3隻寶可夢進化.",
+    "po": "Evoluir 3 Pokémon.",
+    "id": 359,
+    "ts": 1562230489019
   }
 }

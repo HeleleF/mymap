@@ -1,33 +1,48 @@
-<h1 mat-dialog-title>{{data.description}}</h1>
-
 <!-- nur gyms haben ne url, beim quests heißt es anders-->
 <div *ngIf="data.url; then gymBlock else questBlock"></div>
 
 <ng-template #gymBlock>
-  <div mat-dialog-content >
-    <p>Gym latitude longitude here oder link zu google</p><br/>
-    <p>AName: {{data.desc}}</p><br/>
-    <p>Badge: {{data.badge}}</p><br/>
-    <img class='gym-preview' [src]='data.url'/>
+  <h1 mat-dialog-title>{{data.desc}}</h1>
+  <div mat-dialog-content>
+    <div class="gym-pic">
+      <div id="swiper" class="union" (mousedown)="lock($event)" (touchstart)="lock($event)" (mouseup)="move($event)" (touchend)="move($event)">
+        <img class='gym-under' src='https://{{data.url}}' [alt]='data.desc' fallback />
+        <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{i}}.png' />
+        <button mat-icon-button class="lefter" (click)="i > 0 && i = i - 1" [disabled]="i == 0"><mat-icon>chevron_left</mat-icon></button>
+        <button mat-icon-button class="righter" (click)="i < 4 && i = i + 1" [disabled]="i == 4"><mat-icon>chevron_right</mat-icon></button>
+      </div>
+    </div>
+
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="setBadge()" [disabled]="i == data.badge">Save</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   </div>
 </ng-template>
 
 <ng-template #questBlock>
-  <div mat-dialog-content >
-    <p>quest latitude longitude here oder link zu google blub</p><br/>
-    <p>Aufgabe: {{data.taskDesc}}</p><br/>
-    <p>Typ: {{data.type}}</p><br/>
-    <p>Reward: {{data.reward}}</p><br/>
-    <img class='quest-img' [src]='data.reward'/><br/>
-    <p>Status: {{data.status}}</p>
+  <h1 mat-dialog-title>{{data.stopName}}</h1>
+  <div mat-dialog-content>
+    <p class='task'>{{data.taskDesc}}</p><br />
+    <p class='reward' *ngIf="data.quantity">{{data.quantity}} {{data.reward}}</p><br />
+
+    <p class='reward' *ngIf="data.encounter == 'multiple'">Possible: </p><br />
+    <img class='quest-img' src='../../assets/quests/{{data.reward == "#" ? data.encounter : data.reward}}.png' /><br />
+
+    <label id="status-radio-group-label">Set quest status</label>
+    <mat-radio-group aria-labelledby="status-radio-group-label" class="status-radio-group" [(ngModel)]="data.status">
+      <mat-radio-button class="status-radio-button" value="0" matTooltip="Quest not picked up yet">Not done
+      </mat-radio-button>
+      <mat-radio-button class="status-radio-button" value="1" matTooltip="Quest was picked up">In progress
+      </mat-radio-button>
+      <mat-radio-button class="status-radio-button" value="2" matTooltip="Quest finished">Done</mat-radio-button>
+    </mat-radio-group>
+
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="exclude(0)">Exclude this type</button>
-    <button mat-button (click)="exclude(1)">Exclude this reward</button>
-    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="exclude(0)" matTooltip="Don't show quests with this type">Exclude this type</button>
+    <button mat-button (click)="exclude(1)" matTooltip="Don't show quests with this reward" *ngIf="data.encounter != 'multiple'">Exclude this {{data.reward == "#" ? "encounter" : "reward"}}</button>
+    <button mat-button (click)="setStatus()">Save</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   </div>
 </ng-template>

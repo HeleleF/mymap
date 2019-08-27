@@ -2,3 +2,24 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+
+
+  div.user-container {
+
+    height: 160px;
+    text-align: center;
+
+    img.user-image {
+      border-radius: 50%;
+  
+      height: 100px;
+      width: 100px;
+  
+      display: block;
+      margin: auto;   
+    }
+  }

@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 import { ToastrService } from 'ngx-toastr';
+import { first } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,10 @@ export class AuthService {
   user: firebase.User = null;
 
   constructor(private afAuth: AngularFireAuth,
+    private router: Router,
     private toast: ToastrService) { 
 
-      this.afAuth.authState.subscribe(u => { 
+      this.afAuth.authState.subscribe(u => { //TODO: this.user ersetzen durch this.user$, und direkt authState zuordnen
 
         if (u) {
           this.user = u;
@@ -22,20 +25,18 @@ export class AuthService {
       })
   }
 
-  async getCurrentUser() {
-    return this.user;
+  getCurrentUser() {
+    return this.afAuth.authState.pipe(first()).toPromise();
   }
 
   async googleSignin() {
 
-    const provider = new firebase.auth.GoogleAuthProvider();
-
     try {
 
-      const result = await this.afAuth.auth.signInWithPopup(provider);
+      const result = await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); //TODO: mit redirect wäre noch cooler
 
       this.user = result.user;
-      this.toast.success(`Logged in as ${this.user.displayName}!`, 'Login');
+      this.toast.success(`Logged in as ${this.user.displayName}!`, 'Login'); //TODO: eigene methode in appComp und hier den toaster rausnehmen
       return true;
 
     } catch (err) {
@@ -52,7 +53,8 @@ export class AuthService {
 
       await this.afAuth.auth.signOut();
       this.user = null;
-      this.toast.success('You are now logged out!', 'Logout');   
+      this.toast.success('You are now logged out!', 'Logout');
+      this.router.navigate(['/login']);   
       return false;
 
     } catch (err) {

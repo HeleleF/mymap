@@ -12,7 +12,8 @@
           "/*.css",
           "/*.js",
           "/*.json",
-          "/assets/gyms/**"
+          "/assets/gyms/**",
+          "/assets/quests/**"
         ]
       }
     }, {
@@ -30,13 +31,14 @@
     {
       "name": "pogo-api",
       "urls": [
-        "http://localhost:8123/api/**",
-        "https://api.mapbox.com/**"
+        "https://api.mapbox.com/**",
+        "http://lh*.ggpht.com/**",
+        "http://lh*.googleusercontent.com/**"
       ],
       "cacheConfig": {
         "strategy": "performance",
         "maxSize": 500,
-        "maxAge": "21d",
+        "maxAge": "50d",
         "timeout": "7s"
       }
     }

@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: 'img[fallback]'
+  selector: 'img[appFallback]'
 })
 export class ImgFallbackDirective {
 
@@ -13,7 +13,7 @@ export class ImgFallbackDirective {
   loadFallback() {
 
     const elm = this.ref.nativeElement;
-    elm.src = this.fallback || `../assets/gyms/placeholder.webp`; // xss?
+    elm.src = this.fallback || `../assets/gyms/placeholder.webp`;
   }
 
 }

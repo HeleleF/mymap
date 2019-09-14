@@ -3,7 +3,7 @@
 # own stuff
 /src/environments
 .firebase
-./upload.js
+upload.js
 /src/assets
 
 # compiled output

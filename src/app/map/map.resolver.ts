@@ -10,7 +10,7 @@ import { AuthService } from '../shared/auth.service';
 export class MapResolver implements Resolve<boolean> {
 
     constructor(private auth: AuthService,
-        private router: Router
+                private router: Router
     ) { }
 
     async resolve() {
@@ -19,7 +19,7 @@ export class MapResolver implements Resolve<boolean> {
 
         // if null, user is not logged in
         if (currentUser) {
-    
+
             return true;
 
         } else {

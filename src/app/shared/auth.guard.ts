@@ -8,11 +8,11 @@ import { AuthService } from './auth.service';
 export class AuthGuard implements CanActivate {
 
   constructor(private auth: AuthService,
-    private router: Router
+              private router: Router
   ) {}
-  
+
   async canActivate() {
-    
+
     const currentUser = await this.auth.getCurrentUser();
 
     // if null, user is not logged in
@@ -24,5 +24,5 @@ export class AuthGuard implements CanActivate {
     } else {
       return true;
     }
-  } 
+  }
 }

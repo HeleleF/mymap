@@ -15,9 +15,9 @@ export class NewGymComponent {
   gymData: FormGroup;
 
   constructor(private popup: MatDialogRef<NewGymComponent>,
-    private vs: ValidatorService,
-    private fb: FormBuilder,
-    private ms: MessageService) {
+              private vs: ValidatorService,
+              private fb: FormBuilder,
+              private ms: MessageService) {
       this.gymData = this.fb.group({
         name: ['', [Validators.required]],
         pos: ['', [Validators.required, this.vs.createGymPositionValidator()]],
@@ -32,23 +32,23 @@ export class NewGymComponent {
   }
 
   getIdError() {
-    return this.gymData.hasError('required', 'id') ? 'Gym ID is required' : 
-    this.gymData.hasError('wrongFormat', 'id') ? 'Wrong ID format': '';
+    return this.gymData.hasError('required', 'id') ? 'Gym ID is required' :
+    this.gymData.hasError('wrongFormat', 'id') ? 'Wrong ID format' : '';
   }
 
   getPosError() {
-    return this.gymData.hasError('required', 'pos') ? 'Gym position is required' : 
-    this.gymData.hasError('malformedPos', 'pos') ? 'Wrong format': '';
+    return this.gymData.hasError('required', 'pos') ? 'Gym position is required' :
+    this.gymData.hasError('malformedPos', 'pos') ? 'Wrong format' : '';
   }
 
   getUrlError() {
     return this.gymData.hasError('required', 'url') ? 'Gym url is required' :
-    this.gymData.hasError('noUrl', 'url') ? 'Not a valid url': 
-    this.gymData.hasError('noImage', 'url') ? 'Not a valid image': '';
+    this.gymData.hasError('noUrl', 'url') ? 'Not a valid url' :
+    this.gymData.hasError('noImage', 'url') ? 'Not a valid image' : '';
   }
 
   getBadgeError() {
-    return this.gymData.hasError('wrongBadge', 'badge') ? 'Not a valid badge': '';
+    return this.gymData.hasError('wrongBadge', 'badge') ? 'Not a valid badge' : '';
   }
 
   get f() {
@@ -63,7 +63,7 @@ export class NewGymComponent {
 
     const v = this.gymData.value;
 
-    let { groups : { lat: latitude, lng: longitude } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+    const { groups : { lat: latitude, lng: longitude } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 
     this.ms.addGym({
       b: v.badge,

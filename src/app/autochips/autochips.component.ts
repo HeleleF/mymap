@@ -6,7 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 import { QuestEncounter, Poke } from '../model/api.model';
 
 @Component({
-  selector: 'autochips',
+  selector: 'app-autochips',
   templateUrl: 'autochips.component.html',
   styleUrls: ['autochips.component.scss'],
 })
@@ -16,6 +16,7 @@ export class AutochipsComponent {
   filteredElms: Observable<Poke[]>;
   elms: Poke[] = [];
 
+  // tslint:disable-next-line: no-input-rename
   @Input('elements') allElms: Poke[];
   @Output() updated = new EventEmitter<string[]>();
 
@@ -48,7 +49,7 @@ export class AutochipsComponent {
 
   private _filter(value: string | Poke): Poke[] {
 
-    const filterValue = 'string' === typeof value ? value.toLowerCase(): value.name.toLowerCase();
+    const filterValue = 'string' === typeof value ? value.toLowerCase() : value.name.toLowerCase();
 
     return this.allElms.filter(e => e.name.toLowerCase().indexOf(filterValue) === 0);
   }

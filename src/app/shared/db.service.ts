@@ -18,18 +18,18 @@ export class DbService {
   private expire: number;
 
   constructor(private store: AngularFirestore) {
-    
-    this.gymsRef = this.store.collection<GymInfo>('gyms');//, ref => ref.limit(150));
-    this.questsRef = this.store.collection<QuestInfo>('quests');//, ref => ref.limit(150));
-    
-    this.gymsCached = JSON.parse(localStorage.getItem('gymsCached'));
-    this.questsCached = JSON.parse(localStorage.getItem('questsCached'));
+
+    this.gymsRef = this.store.collection<GymInfo>('gyms'); // , ref => ref.limit(150));
+    this.questsRef = this.store.collection<QuestInfo>('quests'); // , ref => ref.limit(150));
+
+    this.gymsCached = JSON.parse(localStorage.getItem('gymsCached') || '0');
+    this.questsCached = JSON.parse(localStorage.getItem('questsCached') || '0');
     this.expire = +localStorage.getItem('questsExpire');
   }
 
   async getGyms() {
 
-    let opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
+    const opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
 
     const { docs } = await this.gymsRef.get(opts).toPromise();
 
@@ -55,19 +55,19 @@ export class DbService {
           desc: p.d,
           badge: p.b
         }
-      }; 
+      };
     });
 
     return {
       type: 'FeatureCollection',
-      features: features
-    } as GeoJSON.FeatureCollection<GeoJSON.Point>
+      features
+    } as GeoJSON.FeatureCollection<GeoJSON.Point>;
   }
 
   async addGym(p: GymInfo): Promise<GeoJSON.Feature> {
 
     const ref = await this.gymsRef.add(p);
-    
+
     return ({
       type: 'Feature',
       geometry: {
@@ -86,7 +86,7 @@ export class DbService {
 
   async getBadgeCount() {
 
-    let opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
+    const opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
 
     const { docs } = await this.gymsRef.get(opts).toPromise();
 
@@ -99,7 +99,7 @@ export class DbService {
 
       const b = doc.data().b;
 
-      if (b === 0) return acc;
+      if (b === 0) { return acc; }
 
       acc[b - 1] += 1;
 
@@ -124,11 +124,11 @@ export class DbService {
     }
     */
 
-    let opts: firebase.firestore.GetOptions = this.questsCached ? {source: 'cache'} : {};
+    const opts: firebase.firestore.GetOptions = this.questsCached ? {source: 'cache'} : {};
 
     const { docs } = await this.questsRef.get(opts).toPromise();
 
-    // quests are now cached until the next day at 6am 
+    // quests are now cached until the next day at 6am
     if (!this.questsCached) {
       this.questsCached = true;
       localStorage.setItem('questsCached', 'true');
@@ -149,13 +149,13 @@ export class DbService {
           coordinates: GeoHash.decode(id)
         },
         properties: {id, ...p}
-      }; 
+      };
     });
 
     return {
       type: 'FeatureCollection',
-      features: features
-    } as GeoJSON.FeatureCollection<GeoJSON.Point, QuestInfo>
+      features
+    } as GeoJSON.FeatureCollection<GeoJSON.Point, QuestInfo>;
   }
 
   addQuest(prop: QuestInfo) {

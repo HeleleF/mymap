@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,7 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -46,6 +46,7 @@ import { SettingsComponent } from './settings/settings.component';
 
 import { setAppInjector } from './shared/appInjector';
 import { NewGymComponent } from './new-gym/new-gym.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { NewGymComponent } from './new-gym/new-gym.component';
     FilterComponent,
     AutochipsComponent,
     SettingsComponent,
-    NewGymComponent
+    NewGymComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +99,7 @@ import { NewGymComponent } from './new-gym/new-gym.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
 
   // store the Injector for later use in other components
   constructor(private inj: Injector) {

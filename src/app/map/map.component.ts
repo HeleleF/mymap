@@ -1,3 +1,5 @@
+// tslint:disable:max-line-length
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { environment } from '../../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
@@ -37,10 +39,10 @@ export class MapComponent implements OnInit, OnDestroy {
   private sub: Subscription;
 
   constructor(private swUpdate: SwUpdate,
-    private db: DbService,
-    private ms: MessageService,
-    private modal: MatDialog,
-    private toast: ToastrService) {
+              private db: DbService,
+              private ms: MessageService,
+              private modal: MatDialog,
+              private toast: ToastrService) {
     // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/23467
     Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.MAPBOX_API_TOKEN);
 
@@ -65,7 +67,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: `mapbox://styles/mapbox/${(h => { return (h < 6 || h > 21) ? "dark-v10" : "outdoors-v11" })((new Date).getHours())}?optimize=true`, //TODO: use own style with all icons already in it
+      style: `mapbox://styles/mapbox/${(h => (h < 6 || h > 21) ? 'dark-v10' : 'outdoors-v11')((new Date()).getHours())}?optimize=true`, // TODO: use own style with all icons already in it
       zoom: 13,
       center: [13.204929, 52.637736],
       maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
@@ -73,7 +75,7 @@ export class MapComponent implements OnInit, OnDestroy {
       minZoom: 11,
       attributionControl: false
     })
-      .addControl(new mapboxgl.NavigationControl(), 'top-right') //TODO: brauchen wir das wirklich?
+      .addControl(new mapboxgl.NavigationControl(), 'top-right') // TODO: brauchen wir das wirklich?
       .addControl(new MyFilterControl(), 'top-right')
       .addControl(new MyNewGymControl(), 'top-right')
       .addControl(new mapboxgl.AttributionControl({
@@ -92,11 +94,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private clickHandler(e: mapboxgl.MapMouseEvent & mapboxgl.EventData) {
 
-    const features = this.map.queryRenderedFeatures(e.point, { //TODO: es gibt einen param validate=false, der performance rausholen könnte?
-      //validate: false
+    const features = this.map.queryRenderedFeatures(e.point, { // TODO: es gibt einen param validate=false, der performance rausholen könnte?
+      // validate: false
     });
 
-    if (!features.length) return;
+    if (!features.length) { return; }
 
     // @ts-ignore: Attribute 'coordinates' does exist, but Typescript cant find it?
     this.map.easeTo({ center: features[0].geometry.coordinates });
@@ -130,7 +132,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   }
 
-  private async styleHandler(e: any) { //TODO: create a mapbox already containing all the icons
+  private async styleHandler(e: any) { // TODO: create a mapbox already containing all the icons
 
     const id = e.id;
     await new Promise(resolve => {
@@ -145,9 +147,9 @@ export class MapComponent implements OnInit, OnDestroy {
           }
         }
         resolve();
-      })
+      });
     });
-  };
+  }
 
   private loadAndAddImages() {
 
@@ -176,23 +178,23 @@ export class MapComponent implements OnInit, OnDestroy {
     try {
 
       // map is done loading, await the data
-      [this.gyms, this.quests,] = await Promise.all([...this.proms, ...this.loadAndAddImages()]);
+      [this.gyms, this.quests, ] = await Promise.all([...this.proms, ...this.loadAndAddImages()]);
 
       this.map
-        .addSource("gyms", {
-          type: "geojson",
+        .addSource('gyms', {
+          type: 'geojson',
           data: this.gyms
         })
-        .addSource("quests", {
-          type: "geojson",
+        .addSource('quests', {
+          type: 'geojson',
           data: this.quests
         })
         .addLayer({
           id: 'gymsLayer',
-          type: "symbol",
-          source: "gyms",
+          type: 'symbol',
+          source: 'gyms',
           layout: {
-            'icon-image': 'badge{badge}',//['concat', 'badge', ['get', 'badge']], // TODO: syntax geht auch, welche ist performanter?
+            'icon-image': 'badge{badge}', // ['concat', 'badge', ['get', 'badge']], // TODO: syntax geht auch, welche ist performanter?
             'icon-size': 0.5,
             'icon-allow-overlap': true
           },
@@ -201,15 +203,15 @@ export class MapComponent implements OnInit, OnDestroy {
         })
         .addLayer({
           id: 'questsLayer',
-          type: "symbol",
-          source: "quests",
+          type: 'symbol',
+          source: 'quests',
           layout: {
-            'icon-image': ['case', ["==", '#', ['get', 'reward']], ['get', 'encounter'], ['get', 'reward']], //TODO: icon für multiple? vlt ein fragezeichen? und onclick werden die möglichkeiten angezeigt?
+            'icon-image': ['case', ['==', '#', ['get', 'reward']], ['get', 'encounter'], ['get', 'reward']], // TODO: icon für multiple? vlt ein fragezeichen? und onclick werden die möglichkeiten angezeigt?
             'icon-size': 0.5,
             'icon-allow-overlap': true,
             'icon-ignore-placement': true,
-            "text-field": ['case', ['has', 'quantity'], ['get', 'quantity'], ''],
-            "text-offset": [1.5, -1.5], //TODO: text style wäre nice...text verschwindet nicht beim rauszoomen?
+            'text-field': ['case', ['has', 'quantity'], ['get', 'quantity'], ''],
+            'text-offset': [1.5, -1.5], // TODO: text style wäre nice...text verschwindet nicht beim rauszoomen?
             'text-allow-overlap': true,
             'text-ignore-placement': true
           },

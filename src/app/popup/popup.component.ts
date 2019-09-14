@@ -13,10 +13,10 @@ export class PopupComponent {
   private x0: number = null;
   private i: number = null;
 
-  constructor(public popup: MatDialogRef<PopupComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data,
-    private db: DbService,
-    private ms: MessageService) { 
+  constructor(public popup: MatDialogRef<PopupComponent>,
+              @Inject(MAT_DIALOG_DATA) public data,
+              private db: DbService,
+              private ms: MessageService) {
       this.i = this.data.badge;
     }
 
@@ -31,14 +31,14 @@ export class PopupComponent {
       } else {
         this.ms.excludeOneReward(this.data.reward);
       }
-      
+
       this.popup.close();
     }
 
     async setBadge() {
       await this.db.setGymBadge(this.data.fid, this.i);
       this.popup.close({
-        badgeUpdate: this.i, 
+        badgeUpdate: this.i,
         ...this.data
       });
     }
@@ -59,11 +59,12 @@ export class PopupComponent {
     private move(e: TouchEvent | MouseEvent) {
       if (this.x0) {
 
-        let dx = this.unify(e).clientX - this.x0,
-            s = Math.sign(dx);
+        const dx = this.unify(e).clientX - this.x0;
+        const s = Math.sign(dx);
 
-        if (Math.abs(dx) < 80) return;
+        if (Math.abs(dx) < 80) { return; }
 
+        // tslint:disable-next-line: no-unused-expression
         0 > s ? 4 > this.i && this.i++ : 0 < this.i && this.i--;
         this.x0 = null;
 

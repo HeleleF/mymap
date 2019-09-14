@@ -18,7 +18,7 @@ export class FilterComponent {
   readonly rewards: string[];
 
   constructor(private popup: MatDialogRef<FilterComponent>,
-    private ms: MessageService) {
+              private ms: MessageService) {
 
       this.sets = this.ms.getOnce();
       this.types = keys(QuestType);
@@ -26,7 +26,7 @@ export class FilterComponent {
         return {
           dex: i.toString().padStart(3, '0'),
           name: e
-        }
+        };
       });
       this.rewards = keys(QuestReward);
   }

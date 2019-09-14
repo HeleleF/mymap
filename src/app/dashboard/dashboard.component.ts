@@ -12,8 +12,8 @@ export class DashboardComponent implements OnInit {
   badges: number[];
   user: firebase.User;
 
-  constructor(private db: DbService, 
-    private auth: AuthService) {
+  constructor(private db: DbService,
+              private auth: AuthService) {
   }
 
   async ngOnInit() {

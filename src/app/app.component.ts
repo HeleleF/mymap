@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   title = 'Heriberts Mappe';
 
   constructor(private toast: ToastrService,
-    public auth: AuthService) { }
+              public auth: AuthService) { }
 
   ngOnInit() {
     window.addEventListener('online', this.updateStatus.bind(this));

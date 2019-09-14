@@ -43,12 +43,12 @@ export class MessageService {
 
   private createGymFilter(data: GymFilter) {
 
-    let filter = [],
-      badges = [];
+    const filter = [];
+    const badges = [];
 
     if (data.badges.length) {
 
-      badges.push('match', ['get', 'badge'], data.badges)
+      badges.push('match', ['get', 'badge'], data.badges);
       data.negateBadge ? badges.push(false, true) : badges.push(true, false);
 
       filter.push(badges);
@@ -60,20 +60,20 @@ export class MessageService {
 
   private createQuestFilter(data: QuestFilter) {
 
-    let filter = [],
-      types = [],
-      rewards = [],
-      encounters = [];
+    const filter = [];
+    const types = [];
+    const rewards = [];
+    const encounters = [];
 
     if (data.types.length) {
-      types.push('match', ['get', 'type'], data.types)
+      types.push('match', ['get', 'type'], data.types);
       data.negateType ? types.push(false, true) : types.push(true, false);
 
       filter.push(types);
     }
 
     if (data.rewards.length) {
-      rewards.push('match', ['get', 'reward'], data.rewards)
+      rewards.push('match', ['get', 'reward'], data.rewards);
       data.negateReward ? rewards.push(false, true) : rewards.push(true, false);
 
       filter.push(rewards);
@@ -86,7 +86,7 @@ export class MessageService {
     }
 
     if (data.encounters.length) {
-      encounters.push('match', ['get', 'encounter'], data.encounters)
+      encounters.push('match', ['get', 'encounter'], data.encounters);
       data.negateEncounter ? encounters.push(false, true) : encounters.push(true, false);
 
       filter.push(encounters);
@@ -120,7 +120,7 @@ export class MessageService {
     filterObj.quests = this.createQuestFilter(this.filters);
 
     return {
-      type: 'filtersChanged', 
+      type: 'filtersChanged',
       data: filterObj
     };
   }
@@ -141,13 +141,13 @@ export class MessageService {
       const res = await this.db.addGym(gymData);
 
       this.message$.next({
-        type: 'newGym', 
+        type: 'newGym',
         data: res
       });
 
     } catch (e) {
       this.message$.error({
-        type: 'Gym', 
+        type: 'Gym',
         msg: `Couldn't add ${gymData.d} because: ${e.message}`
       });
     }

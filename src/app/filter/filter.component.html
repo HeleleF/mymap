@@ -9,7 +9,7 @@
     <mat-tab label="Filter by encounter">
       <mat-checkbox color="primary" [(ngModel)]="sets.negateEncounter">Negate Encounter?</mat-checkbox><br />
       <mat-checkbox color="primary" [(ngModel)]="sets.hasEncounter">Has Encounter?</mat-checkbox><br />
-      <autochips [elements]="encs" (updated)="changeEncounter($event)"></autochips>
+      <app-autochips [elements]="encs" (updated)="changeEncounter($event)"></app-autochips>
     </mat-tab>
 
     <mat-tab label="Filter by type">

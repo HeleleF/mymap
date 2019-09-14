@@ -14,15 +14,15 @@ export class AuthService {
   user: firebase.User = null;
 
   constructor(private afAuth: AngularFireAuth,
-    private router: Router,
-    private toast: ToastrService) { 
+              private router: Router,
+              private toast: ToastrService) {
 
-      this.afAuth.authState.subscribe(u => { //TODO: this.user ersetzen durch this.user$, und direkt authState zuordnen
+      this.afAuth.authState.subscribe(u => { // TODO: this.user ersetzen durch this.user$, und direkt authState zuordnen
 
         if (u) {
           this.user = u;
         }
-      })
+      });
   }
 
   getCurrentUser() {
@@ -33,10 +33,10 @@ export class AuthService {
 
     try {
 
-      const result = await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); //TODO: mit redirect wäre noch cooler
+      const result = await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); // TODO: mit redirect wäre noch cooler
 
       this.user = result.user;
-      this.toast.success(`Logged in as ${this.user.displayName}!`, 'Login'); //TODO: eigene methode in appComp und hier den toaster rausnehmen
+      this.toast.success(`Logged in as ${this.user.displayName}!`, 'Login'); // TODO: toaster rausnehmen
       return true;
 
     } catch (err) {
@@ -47,14 +47,14 @@ export class AuthService {
 
   }
 
-  async signOut() { 
+  async signOut() {
 
     try {
 
       await this.afAuth.auth.signOut();
       this.user = null;
       this.toast.success('You are now logged out!', 'Logout');
-      this.router.navigate(['/login']);   
+      this.router.navigate(['/login']);
       return false;
 
     } catch (err) {

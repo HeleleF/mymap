@@ -7,14 +7,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuard } from './shared/auth.guard';
 import { MapResolver } from './map/map.resolver';
 import { SettingsComponent } from './settings/settings.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, resolve: [MapResolver] },
   { path: 'settings', component: SettingsComponent, resolve: [MapResolver] },
-  { path: 'map', component: MapComponent, resolve: [MapResolver] }
-  //TODO: wenns nich gibt, auch login
+  { path: 'map', component: MapComponent, resolve: [MapResolver] },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

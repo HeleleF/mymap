@@ -1,3 +1,5 @@
+// tslint:disable:no-bitwise
+
 const b32 = '0123456789bcdefghjkmnpqrstuvwxyz';
 
 export class GeoHash {
@@ -7,44 +9,45 @@ export class GeoHash {
         lat = Math.round(lat * 1e6) / 1e6;
         lng = Math.round(lng * 1e6) / 1e6;
 
-        let chars: string[] = [],
-            bits = 0,
-            bitsTotal = 0,
-            hash_value = 0,
-            maxLat = 90,
-            minLat = -90,
-            maxLon = 180,
-            minLon = -180,
-            mid: number;
+        const chars: string[] = [];
+
+        let bits = 0;
+        let bitsTotal = 0;
+        let hash = 0;
+        let maxLat = 90;
+        let minLat = -90;
+        let maxLng = 180;
+        let minLng = -180;
+        let mid: number;
 
         while (chars.length < 12) {
             if (bitsTotal & 1) {
 
                 mid = (maxLat + minLat) / 2;
                 if (lat > mid) {
-                    hash_value = (hash_value << 1) + 1;
+                    hash = (hash << 1) + 1;
                     minLat = mid;
                 } else {
-                    hash_value = hash_value << 1;
+                    hash = hash << 1;
                     maxLat = mid;
                 }
 
             } else {
-                mid = (maxLon + minLon) / 2;
+                mid = (maxLng + minLng) / 2;
                 if (lng > mid) {
-                    hash_value = (hash_value << 1) + 1;
-                    minLon = mid;
+                    hash = (hash << 1) + 1;
+                    minLng = mid;
                 } else {
-                    hash_value = hash_value << 1;
-                    maxLon = mid;
+                    hash = hash << 1;
+                    maxLng = mid;
                 }
             }
 
             bitsTotal++;
             if (++bits === 5) {
-                chars.push(b32[hash_value]);
+                chars.push(b32[hash]);
                 bits = 0;
-                hash_value = 0;
+                hash = 0;
             }
         }
         return chars.join('');
@@ -55,14 +58,14 @@ export class GeoHash {
      */
     static decode = (hash: string): [number, number] => {
 
-        let isLng = true,
-            maxLat = 90,
-            minLat = -90,
-            maxLng = 180,
-            minLng = -180,
-            mid: number,
-            bit: number,
-            hashValue = 0;
+        let isLng = true;
+        let maxLat = 90;
+        let minLat = -90;
+        let maxLng = 180;
+        let minLng = -180;
+        let mid: number;
+        let bit: number;
+        let hashValue = 0;
 
         for (let i = 0; i < 12; i++) {
 
@@ -90,7 +93,7 @@ export class GeoHash {
         }
         return [
             Math.round(((minLng + maxLng) / 2) * 1e6) / 1e6,
-            Math.round(((minLat + maxLat) / 2) * 1e6) / 1e6      
+            Math.round(((minLat + maxLat) / 2) * 1e6) / 1e6
         ];
     }
 }

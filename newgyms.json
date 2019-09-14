@@ -1,0 +1,514 @@
+[
+    {
+        "description": "Die Hainbuche",
+        "url": "http://lh3.googleusercontent.com/F16xkRRQuXycPwtF7Hu3xAZLo0dHXtSod2d81DdiS056rUmj3tJHOQvM4_r7PiMJnHrWg4iaebK93NsF2q5S",
+        "latitude": 54.240046,
+        "longitude": 12.335548,
+        "gym_id": "686c5bf1c0314e619791134260cd83c0.16",
+        "badge": 3
+    },
+    {
+        "description": "Nachbau eines historischen Badekarrens",
+        "url": "http://lh3.ggpht.com/exN7dZ5T7pvtzzN5uMcwTfXpePc0YmNN8VMZtklnCHme7CgU5bhHMcCV8fMuno9MLhhrbw-8-35JMkzn8nyh",
+        "latitude": 54.389522,
+        "longitude": 12.436595,
+        "gym_id": "e5d850b3e05a4ac9b8d4844d6e83decd.16",
+        "badge": 3
+    },
+    {
+        "description": "Strandhafer",
+        "url": "http://lh5.ggpht.com/KkNs8qJ_KB3CFOEo7RTH0KoUlD8jn6DbE09F4EIvVaBFdslUiqDv5Tt7KbLpwYMqHCs1_Q9EOukQwKtd87Q",
+        "latitude": 54.262985,
+        "longitude": 12.253542,
+        "gym_id": "39c2bf64446f4cd1b270f2554ad66673.16",
+        "badge": 4
+    },
+    {
+        "description": "Grundwassermessrohr",
+        "url": "http://lh3.googleusercontent.com/F_SrI4hYzoWbTamkbN97Q8texsqzaAIAAAH7eBKk8xve9oWZnlhewBkecjfKClToeqZ5lnGgulxJ8IXl5chZ",
+        "latitude": 54.266604,
+        "longitude": 12.272269,
+        "gym_id": "62ca29280f544ff7a80d909a8049c114.16",
+        "badge": 3
+    },
+    {
+        "description": "Lageplan Saaler Bodden",
+        "url": "http://lh3.googleusercontent.com/cQpY0cufUMEmlQ6czGBU5WO5KfOK8Q9bbYIfSj21DCLSCuy4G_53kdrPlHaMqY20LuMvg6zYigpFB7jnUr0",
+        "latitude": 54.367763,
+        "longitude": 12.414601,
+        "gym_id": "ac22e66edbbc4d57b8911b0ef4c6e442.16",
+        "badge": 3
+    },
+    {
+        "description": "Grab Freiherr Von Raesfeld",
+        "url": "http://lh3.ggpht.com/2La5Lzv-zh8qbe1x7M4i7tiVlWrLuPgvahHe5bQLhNk11ceE7pz96BcRTFM_Rjtxrz0f1yv0mSosoVFBeXVH",
+        "latitude": 54.414739,
+        "longitude": 12.462912,
+        "gym_id": "34da2e5f40604158bc83e28a59729ae1.16",
+        "badge": 2
+    },
+    {
+        "description": "Leuchtturm Darßer Ort",
+        "url": "http://lh5.ggpht.com/rmfnVEN4UnOAlXaT0laoMYXAL3WwuwjR0hePKIhm4lopcX_imXJhtoX2b14H72LQE4JVrScFc2vbK5DVxrQ",
+        "latitude": 54.472812,
+        "longitude": 12.50219,
+        "gym_id": "0695b19ed82a44fa90115b51793423e8.16",
+        "badge": 2
+    },
+    {
+        "description": "Kamasutra Statue",
+        "url": "http://lh3.ggpht.com/PFDi98wAApBt9D0YTw_o87eZArOU2G2xEHX6uRc67JFd5DEO9MpLXt3zOfmhyF1rQY9M19LRIKibbBCJ16D0",
+        "latitude": 54.288139,
+        "longitude": 12.323742,
+        "gym_id": "a8e292fdff244c6f845538e1e2d8d4ca.16",
+        "badge": 2
+    },
+    {
+        "description": "Liegendes Paar ",
+        "url": "http://lh3.googleusercontent.com/-5rJp1QQBdx-zXmVczj33gj3C10wLTrvn7StbOUIqW2R9I17R6pwii5GHytmqRzT2D7vufdxAasCmmun3oI",
+        "latitude": 54.364073,
+        "longitude": 12.401185,
+        "gym_id": "09819b3c6eb143399bb311be78f61ab9.16",
+        "badge": 2
+    },
+    {
+        "description": "Fischland-Darss-Zingst Karte",
+        "url": "http://lh3.googleusercontent.com/JTIc7YNCDt2Omgr_WZVdWRGIYRPCPwrrY9abswYbxCDOQbIk9zH5tFxMFqFydbOtx3ZCmq2yhWheaEYI2L2I",
+        "latitude": 54.292255,
+        "longitude": 12.332893,
+        "gym_id": "597bbdf76c9342dc965c6cdf39bffcb7.16",
+        "badge": 1
+    },
+    {
+        "description": "Odin Statue",
+        "url": "http://lh6.ggpht.com/9TtooYdkjZf35EiYZCdvButaXF8HA3LrVjMi3ivu1DJRi8LiwurgcDZzZtDYTKRe2mHT8nq1a0PCF-igXjvJ",
+        "latitude": 54.29029,
+        "longitude": 12.33008,
+        "gym_id": "f9c8f5881fcd47ada610760726e604c8.16",
+        "badge": 1
+    },
+    {
+        "description": "Borner Hof",
+        "url": "http://lh3.googleusercontent.com/mI1BUlbwd2cCZttX2GGWAEm-iP0yhh2qfEh5fNwsKBAOi8Jtxyf4ZiQ9dz6PYlSHiD6aWZ9oSFmM6xEhAepq",
+        "latitude": 54.381833,
+        "longitude": 12.525699,
+        "gym_id": "e32f6b94ab4548888d2dd912cfa6f866.16",
+        "badge": 1
+    },
+    {
+        "description": "Seemann",
+        "url": "http://lh3.ggpht.com/JVqdOOldWxkc4AofF_9gJXI3XNlXfOvBsfgfeRbXEcQmoMHRhy19YtizYXMOiZlNXm708NzqlDVahqq3058",
+        "latitude": 54.258114,
+        "longitude": 12.261736,
+        "gym_id": "a7580d2acd254e919aabe555931f5ecb.16",
+        "badge": 0
+    },
+    {
+        "description": "Blasentang",
+        "url": "http://lh3.ggpht.com/2cedFXupx943wZX6KTuv92P20gOoY24h_2ZEMp53Idy115XWhRYpAM0qRwzRZZN2ITsEFI62XSDQwvO1aLUmpxZ6UFDkVcggwz4sGwiJhLSc2yjz",
+        "latitude": 54.259622,
+        "longitude": 12.244093,
+        "gym_id": "d638bc6dc95d4fed9f2dab6fc6cb5faf.16",
+        "badge": 4
+    },
+    {
+        "description": "Stuck",
+        "url": "http://lh3.ggpht.com/cvk6qQZVTdXlTi2_5ljhGux4T709HOo8G1gxLqWkAFSChrsyJEcwYxeOCNUSsuKss4TR5ZYCR5w1dCXxRuBs",
+        "latitude": 54.255769,
+        "longitude": 12.250471,
+        "gym_id": "6b1a5f8e787b4944a6e20bf7df967a0f.16",
+        "badge": 4
+    },
+    {
+        "description": "Wasserturm",
+        "url": "http://lh6.ggpht.com/MhqHOdOJHCOfNkBraXLzT2r_ilrbDRTD-XeRS7DVa-WGA4UFP2ydvDL8NXM4LzjQ2VcgFm5_wJNCWmK0KrRB",
+        "latitude": 54.251962,
+        "longitude": 12.249461,
+        "gym_id": "84cb6c98aac944568789c79316932531.16",
+        "badge": 2
+    },
+    {
+        "description": "Seebrücke Graal-Müritz",
+        "url": "http://lh4.ggpht.com/YtT1icl0d0AGWtchTURRkLZeIhk6uw14x76mQW6YY8okzIi2NHsqTGEIT146vS8H7Avb2uBev8llb45br0k",
+        "latitude": 54.261869,
+        "longitude": 12.239668,
+        "gym_id": "dd01237d80304beea735b9641b22a70e.11",
+        "badge": 4
+    },
+    {
+        "description": "Hafen Born",
+        "url": "http://lh3.ggpht.com/EkHD5SFvhy9FRgr3cKVV9yueKwmI7Ww6gDpfgxto6V1wxv-fawJBzee_T2MCuMPAuV2NnibmIZiFVVXYHKk",
+        "latitude": 54.381679,
+        "longitude": 12.5309,
+        "gym_id": "8c6d9502d43f479c96df30cea1eda30c.16",
+        "badge": 1
+    },
+    {
+        "description": "Windmühle In Born",
+        "url": "http://lh3.googleusercontent.com/Berj9I03j41mfMcXYelk-KY2s-dnrw3o0n097QQxkiEN5i6EW5E14FdNbbUdrjjJgCfNrBut3P6st7C5ogIk",
+        "latitude": 54.380992,
+        "longitude": 12.521075,
+        "gym_id": "6d6c3e3d40994e3da6ef9b8a1935b56a.16",
+        "badge": 1
+    },
+    {
+        "description": "Mühle Ahrenshoop",
+        "url": "http://lh3.googleusercontent.com/MzRO1OyuuTYsoNITP2BdjG_6YvWuRi5thx2e94ZLILXCsoqWYsmk3_B29jJ3TTmMcjczbsalW9YqdyBAxE4",
+        "latitude": 54.379124,
+        "longitude": 12.421208,
+        "gym_id": "c6c1bf754ee44158878d5bdc2578eea7.16",
+        "badge": 1
+    },
+    {
+        "description": "Schifferkirche Ahrenshoop",
+        "url": "http://lh6.ggpht.com/k2Wdwhvx0FwAVa3pzCioEAk4LN-nnZA9YbGxMJyJix9Kccz8X2-8SXINibZLJwAsbomc5B55i1fK90i4eOOIwg",
+        "latitude": 54.3826,
+        "longitude": 12.424968,
+        "gym_id": "3e267601424f46f2a812e31af9056fe2.16",
+        "badge": 1
+    },
+    {
+        "description": "Musikmuschel",
+        "url": "http://lh3.googleusercontent.com/aj3BHR9U7G54B-5ygU1uutEJa3v_cn-HJ5FFMLOeQ2uFKfcYwUf1BSh1J_5ZRhG1W2g1KOFB9VTH_3ileWY",
+        "latitude": 54.258025,
+        "longitude": 12.239724,
+        "gym_id": "71096c90578f4554b0cb16284d70058a.16",
+        "badge": 4
+    },
+    {
+        "description": "Pavillion Im Rhododendron Park",
+        "url": "http://lh3.ggpht.com/f0ITB29jeX3Twc3CH3nvTtuZuWqV3rOTwQrQvaepWqG3yhqEzFYhTmZkj4BJbYs4r8VzCKAG0CPE5_l7KXU",
+        "latitude": 54.253195,
+        "longitude": 12.227482,
+        "gym_id": "aac8741c68ff4264bd394d4db36e9634.16",
+        "badge": 3
+    },
+    {
+        "description": "Skulptur Fliegenpilz",
+        "url": "http://lh4.ggpht.com/N3soy-OOPDq3tvxU9DfZ8rUM4UAmpGV7YUxDgbYqgyPgOqtJ2qah9YXous4cfR8MK0fMatC4o55D91h6i4_O3g",
+        "latitude": 54.250661,
+        "longitude": 12.227121,
+        "gym_id": "87b045b3dee04e95ac3c4a203d34c7e0.16",
+        "badge": 3
+    },
+    {
+        "description": "Jagdschloss Gelbensande",
+        "url": "http://lh3.ggpht.com/zG8dvAdhPnRy7E3IWHqpe4DxjqOYr0L52aWQNwMqusxkTLZkFKTn3jy9l-TxRIeInbE4IMzxavYSmMal8HnC",
+        "latitude": 54.207615,
+        "longitude": 12.314179,
+        "gym_id": "33a264fd9d6b453aa36779cd1bbdae3e.16",
+        "badge": 2
+    },
+    {
+        "description": "Dorfkirche Gelbensande",
+        "url": "http://lh5.ggpht.com/yLeZFgcxtzOKLoJtS4Gl4JL0CebhdQ8E0HtyeEMPAw2H7sfUsqRNgJbfbfmyQsGRjgxZPGK_I9-UNTr1_ufMpg",
+        "latitude": 54.20011,
+        "longitude": 12.295492,
+        "gym_id": "8f5f95cd7b6b4296bbbd2a0f4176b0d5.16",
+        "badge": 2
+    },
+    {
+        "description": "Gelbensande Gedenkstein",
+        "url": "http://lh5.ggpht.com/MkJHKOZtZk_bzE4635LD3GDG87mBrzt0dtfdanVUNkoiAnrFlJjPzO6CmGAbhsMA7AwHIUR2jBespwXUqhZY",
+        "latitude": 54.199549,
+        "longitude": 12.305813,
+        "gym_id": "9da82e4c39504025aaca6fef3f7f132b.16",
+        "badge": 2
+    },
+    {
+        "description": "Spielplatz Bleiche",
+        "url": "http://lh3.googleusercontent.com/wVzJvfE9ZuHlWmHxH0VuRsy6Tyxpgt1sL-J7hQ8xjxVlbyznTIHDgZe3QjAdn0e8fQGyYyPGW0cpGvbFtuO9vQ",
+        "latitude": 54.203012,
+        "longitude": 12.302503,
+        "gym_id": "f292d3e29fc343bbaf7c0049cda0dad1.16",
+        "badge": 2
+    },
+    {
+        "description": "Infozentrum Wald & Moor",
+        "url": "http://lh3.googleusercontent.com/5pA5mvTbDrtZk5ODLK4zpMKGJJTvfXJ6kr_m8MK3tSEn2_hwLcVCuFklZG4Gyn61Hq4p0omOZIf7ZMfvLPPs",
+        "latitude": 54.2591,
+        "longitude": 12.274823,
+        "gym_id": "dc2d5a7e2dad468c8b1050a4c8951289.16",
+        "badge": 3
+    },
+    {
+        "description": "Dierhagener Landkarte",
+        "url": "http://lh3.googleusercontent.com/2EeUahIY7xW9d6iktBVDeRKu0SbJUemfOk_VaBLQJzl4dV3f3DncYGYMwhDykjZ0kllfWqgscgg_wASqmWTn",
+        "latitude": 54.291149,
+        "longitude": 12.336403,
+        "gym_id": "50989d65d6f54b88b890b7772b4efdc4.16",
+        "badge": 2
+    },
+    {
+        "description": "Kletterspielplatz Dierhagen",
+        "url": "http://lh3.googleusercontent.com/r2Cv8FY9rdP17LYBf6tRt3TAJGyl1d883T-wPg5Sppi7yu5tdmakgK4qk1OhqZCnOpg66vcVScwTuc5pDJHg",
+        "latitude": 54.291318,
+        "longitude": 12.343297,
+        "gym_id": "5f18f36c91d2497eb339a82cf4afc5e7.16",
+        "badge": 1
+    },
+    {
+        "description": "Haus Malta",
+        "url": "http://lh3.ggpht.com/NeSlMVhKy6SXlAc5UpU8yxjQ60IEIVsMsO6cXMOxGi1o4EIC3z-aGmBnwSyczUCOGwhYH5OlVtQF08f_LBau6g",
+        "latitude": 54.264768,
+        "longitude": 12.26897,
+        "gym_id": "509983a4ab0743c0b07fa774d3f18062.16",
+        "badge": 4
+    },
+    {
+        "description": "Bär Vor Kurklinik Graal-Müritz",
+        "url": "http://lh4.ggpht.com/BkRBWxy-Mn3BlR28Caez4klAyPCyTWbm-fEYwLM4Gfrr_1xWycSGv48H5_7gppGmm6MV7QngP0VSZyTlDT6o",
+        "latitude": 54.247196,
+        "longitude": 12.233051,
+        "gym_id": "5bbc0954566b4cc48af6c6af7a9f62c2.16",
+        "badge": 1
+    },
+    {
+        "description": "Blaue Schafe",
+        "url": "http://lh3.ggpht.com/zHsl9tCEfNLbvx2pKQijD_rgnLwah19WS3iHou3oApf_T-IvkIqNxqA7pw8OitFhobHqL5KYc-_Euh7lwCs",
+        "latitude": 54.282771,
+        "longitude": 12.312398,
+        "gym_id": "7cf0592da8cb432998b19daa6e2ca65d.16",
+        "badge": 2
+    },
+    {
+        "description": "Windspiel",
+        "url": "http://lh5.ggpht.com/cE0URzeXingKhqcidzURYS89j_CVsSQnBnLix8OJlhkI73Kejx00VwC82IVgFaPnGZG0S7VLBbcKN7MQl5cOYQ",
+        "latitude": 54.283265,
+        "longitude": 12.312118,
+        "gym_id": "e923c237a59c4850be28bb1fad794755.16",
+        "badge": 1
+    },
+    {
+        "description": "Geschichtshaus Dändorf",
+        "url": "http://lh3.googleusercontent.com/UclGgCXyvTMM2M6t3YW-kQA22bbhG_4R63B5l18SQLYX6hi8XGYjocgPyq99beoZA9ncE4KBF1noHVFG4y8_ONWmz9eX",
+        "latitude": 54.274077,
+        "longitude": 12.367234,
+        "gym_id": "8f74d26b04c74bb795ce5b8163fb4da9.16",
+        "badge": 2
+    },
+    {
+        "description": "Landschaft Mural",
+        "url": "http://lh4.ggpht.com/dbUy3TVJ4jtjbICbkM6GO0IPqtsdKHGYnLdYULdlQMMY-4azazR2BsrEZW0UsKRiGnoIfTwoj_5FxIaDIrfw",
+        "latitude": 54.242139,
+        "longitude": 12.360125,
+        "gym_id": "a52de36f1c7d44cdab455e57dd4f0ab0.16",
+        "badge": 2
+    },
+    {
+        "description": "Harbour Dierhagen",
+        "url": "http://lh6.ggpht.com/CjvdnmBM5vYs5Su3WieTcRleEFaL7huBNr4mFXuk6sbJ4fhRLLKvLF1IkCNeB2h7F8-na7dQ_zEbimu1fcOq",
+        "latitude": 54.293908,
+        "longitude": 12.364031,
+        "gym_id": "5b25994983124b65ae3b78c8c2693f47.16",
+        "badge": 2
+    },
+    {
+        "description": "Naturpfad Ribnitzer Großes Moor",
+        "url": "http://lh5.ggpht.com/AgZepBokaSki6Wwj-T_EZ9XxlpA3sjS4CUTcQ-rU61arJfa-BpBGGwJVL04pU338YOAF0Xuo5dHPTpmQAlVsjA",
+        "latitude": 54.253195,
+        "longitude": 12.328949,
+        "gym_id": "f9d0a15164e9492cb0e235dcbbf488c8.16",
+        "badge": 2
+    },
+    {
+        "description": "Pferdebox",
+        "url": "http://lh3.googleusercontent.com/rXmJxltZtB9AWnxIY1XYAKGUOgdzPAt-wxDGMM9wmSUupY2RSRd2hfkL3nABl3Wdg1RdNdvibjR_hVONo3ucdQ",
+        "latitude": 54.238589,
+        "longitude": 12.338975,
+        "gym_id": "b590159c7d094cabb8c1eec9065f89aa.16",
+        "badge": 3
+    },
+    {
+        "description": "Wandkunst \"Trauben\"",
+        "url": "http://lh4.ggpht.com/PGMeTJsARURHTYrBfB8rQJSYdyyfBy3oPwSvkg1a4JMzJLuqMXWWlqjBmZcdhnvwMIMLjBd96wiGX5vCblOX1g",
+        "latitude": 54.202741,
+        "longitude": 12.307383,
+        "gym_id": "716a31fb15ec4fcc8c369fda9d34411b.16",
+        "badge": 1
+    },
+    {
+        "description": "Leuchtturm Sitzbank",
+        "url": "http://lh5.ggpht.com/OD4e-3KIop5Hk2Iv5kv-rNEy8csTaxt2gI3UeOj38fmybClUddjbqUAtGrrlz0JPZHfj_ixmN1zhc1Q6hQ0",
+        "latitude": 54.472614,
+        "longitude": 12.503196,
+        "gym_id": "11580300a1744469ad7568949fc6604a.16",
+        "badge": 2
+    },
+    {
+        "description": "Stierkopf",
+        "url": "http://lh3.googleusercontent.com/OGVv4Y1PySvUJMYYtJMvUPI9IUL5fH8SMxueuacXhg6ZPFospHJrFNdfUwemPhfxUSGiVunobUGqWH7gC-iZkg",
+        "latitude": 54.387151,
+        "longitude": 12.520298,
+        "gym_id": "f8298d3942f84e17b5db578a4573c0cf.16",
+        "badge": 2
+    },
+    {
+        "description": "Skulptur Fischermann der Sieben Weltmeere",
+        "url": "http://lh5.ggpht.com/4V5Cy8SsF00uwHZ1px9CAcGCBj7F7NweAMRzOCdsguQZwh08LTdRvSZ5lMfKXP8F9QQMlgFG4vdh7TKaimKw",
+        "latitude": 54.382834,
+        "longitude": 12.530846,
+        "gym_id": "074c74b0b48c490595f01891d42756e5.16",
+        "badge": 1
+    },
+    {
+        "description": "Bemalter Stromkasten",
+        "url": "http://lh4.ggpht.com/m0pyNC1PjevehSIyp3aLsOy10vx7YIS8gK-t7N7HbcaEgZxSe5C400Dct8Rx_CKO18PjUYBzTb0bgTzUDLs",
+        "latitude": 54.391509,
+        "longitude": 12.542317,
+        "gym_id": "59f8fe9014d54ff185086e67328dee71.16",
+        "badge": 2
+    },
+    {
+        "description": "Turm Arche",
+        "url": "http://lh6.ggpht.com/PwYWwWP1LrKBl-0sUSTnkqZfeBvv4XPynndji3s1E6TUYFYTtmyPvsNW9mCl6Z3AnoZ7Q5vVrAyDw1YnsWFk",
+        "latitude": 54.409735,
+        "longitude": 12.582007,
+        "gym_id": "1083ac44b3a5472fae7faa607e922c27.16",
+        "badge": 2
+    },
+    {
+        "description": "Denkmal An Die Gefallenen Im 1.Weltkrieg ",
+        "url": "http://lh3.ggpht.com/NWxrhGht31-VLW1jt4Lg2PuBpYm57cs9RQyj5LOzTF5daRpcpWoCaG6ZmYpt1eOaz3muVlVVucLTpgGp0n7Ekg",
+        "latitude": 54.409959,
+        "longitude": 12.590513,
+        "gym_id": "3a3eb1d16ded4367ab5b125b829975ad.16",
+        "badge": 2
+    },
+    {
+        "description": "Sun Clock",
+        "url": "http://lh5.ggpht.com/m0Fr_5_K5Ts1S2iP9m35AkCNx6J2JKoDDjIO0l0OwJssMS-uvISfeBOP4vqZ73yjNw1KOe02Ubs1zmZYssrs",
+        "latitude": 54.446614,
+        "longitude": 12.572441,
+        "gym_id": "3a4cf98ddd9544289fe25a160dd569b6.16",
+        "badge": 1
+    },
+    {
+        "description": "Seemannsehepaar",
+        "url": "http://lh3.googleusercontent.com/6jVeGoOMXJwW1FIqfIhnhELdcA59sF7wfp1RRQc4vJseOsaUo6VyhibuJRA8gI_S5sRdABPJOyprSNBx82Xwzg",
+        "latitude": 54.446957,
+        "longitude": 12.56969,
+        "gym_id": "8dee44020a234d15a2db35cadbf4f1bc.16",
+        "badge": 1
+    },
+    {
+        "description": "Alles Könige",
+        "url": "http://lh3.ggpht.com/LuLSY5jcH0E1wUoXXX_dwgIKI27YqyKO_Y9cRimdlNu1ipgc6o_5PgYDYbMCQxqJDiVadcLv4VywgitzZTVxBg",
+        "latitude": 54.384026,
+        "longitude": 12.425505,
+        "gym_id": "21f7c449e9d145bba0b7174165ff048f.16",
+        "badge": 1
+    },
+    {
+        "description": "Pegasus",
+        "url": "http://lh6.ggpht.com/sbJ6DCNUfO_yWB2X2KJEygTrMkpZXl4EGw5bG7l5eIKvUDEmOX8ocAd2J-uODP9CA_sA74O4CwCpH80mYS6b",
+        "latitude": 54.381364,
+        "longitude": 12.418655,
+        "gym_id": "ecda3a2480ec4eebbb079cb672c98250.16",
+        "badge": 1
+    },
+    {
+        "description": "Bootstresen",
+        "url": "http://lh3.ggpht.com/Qj-XXeh3UClst0M0Zgwc1MF28GlS8O7QZnXh-BLf66c6JH2rBvcGMGadqkyrYtpUhlNrPDNQMZCtQHmXdy8",
+        "latitude": 54.377685,
+        "longitude": 12.416428,
+        "gym_id": "a69b84784f4b475db49a98129a2f969e.16",
+        "badge": 1
+    },
+    {
+        "description": "Steinskulptur Von Matthias Wendt",
+        "url": "http://lh5.ggpht.com/2XocFoR0odvfzXqbzj4qmX0Yfo5fTmuXaA5UgzxwuVd45WWnXWkRSQY6aOLzJY4HtYB5VtGYcpG1pSH5Qcz0",
+        "latitude": 54.380406,
+        "longitude": 12.41916,
+        "gym_id": "92c3536608c5487686e753085b4cf112.16",
+        "badge": 1
+    },
+    {
+        "description": "Hölzerne Katze fängt Fisch",
+        "url": "http://lh4.ggpht.com/mayb6_trCsYjwqLmSiNB7ehQP6bWdVQGLtHO6V76r5EV9p24KTxrj_vf2VF32R-VJ7oXuQEJyMyLS9LEoJgk",
+        "latitude": 54.35407,
+        "longitude": 12.391245,
+        "gym_id": "3f8556b9c5344e90a4f7aa8af91a1838.16",
+        "badge": 2
+    },
+    {
+        "description": "Santewit 2000",
+        "url": "http://lh6.ggpht.com/462rtOF3xdOWxBJ7gJ8t9RqdjBfGdVO61029DzTVRlaNfKxFbePlZGSb66qtC1KoFCsnepRT78WA5IueChMk",
+        "latitude": 54.351737,
+        "longitude": 12.386985,
+        "gym_id": "14cb6a0090d5464b99172623eaa66a37.16",
+        "badge": 2
+    },
+    {
+        "description": "Der Matrose",
+        "url": "http://lh3.ggpht.com/Eo_XWWrg4NA5TO5AlQmaWBMqow2790o_lR2gGWYBq_jj7IZhcFHY7oscpDrhzFQ7VwWhkuSFM2Ekgm210PM",
+        "latitude": 54.351256,
+        "longitude": 12.390504,
+        "gym_id": "a4e688640cb24972a329b1822fd89cba.16",
+        "badge": 1
+    },
+    {
+        "description": "Büchertauschkiste",
+        "url": "http://lh5.ggpht.com/BkVCpXjlaBYwQQGBjqjlapbYdi-g6g1b5PMs_-Fc2LKiXc8Ojsy2mIwumDDnnEzU6MgH9rCjNp2wpBZvbzSa",
+        "latitude": 54.347446,
+        "longitude": 12.390651,
+        "gym_id": "aebf5ac2a4904a68abbc177bc3a2da5b.16",
+        "badge": 1
+    },
+    {
+        "description": "Ankerparade",
+        "url": "http://lh4.ggpht.com/2_q0JFqdZt81MsDCyS18Bp7S3m7RsvZFf2weWRvctIpOZ1ybM9EAdjtDQLfFaIpjTZYagQrDWL2tTzUp6o0T",
+        "latitude": 54.343713,
+        "longitude": 12.39797,
+        "gym_id": "8fe99b75322645b2952bfacdb1dbba08.16",
+        "badge": 1
+    },
+    {
+        "description": "Die Erde",
+        "url": "http://lh4.ggpht.com/EIp0g8a1i9BfBlrXRiZizj1D71OboY2i6mYKleSiZG5Nk_1ts9uAPufgp-gDFqsZBaaSZvNJD0BLm7KpKCUN",
+        "latitude": 54.348801,
+        "longitude": 12.396843,
+        "gym_id": "05a9930a91c640e2ae80a98e24972d60.16",
+        "badge": 1
+    },
+    {
+        "description": "Schifferwiege",
+        "url": "http://lh3.googleusercontent.com/aPbThnO3u41H7yZA5JU9C09shWhtRRDZp2lM17Dg92T-Yj6bX3TiSmWckGC8_L90hyzmlVAYkhW4rniXkXCW3l1C7pE",
+        "latitude": 54.34823,
+        "longitude": 12.397776,
+        "gym_id": "71e38b7d95ed48dbaccc127d9e089c63.16",
+        "badge": 1
+    },
+    {
+        "description": "Großer Sitzender",
+        "url": "http://lh3.ggpht.com/bJsHHoXJuEv-1LXsYyoU1a4MA8rcpYRHsl7jcz7yyZdaqnnA157XVF5M0L0e1g3TurfCdC2qlpH087ASJDTA",
+        "latitude": 54.343765,
+        "longitude": 12.382347,
+        "gym_id": "cd6e39c0958641e4b4e8db211e423611.16",
+        "badge": 3
+    },
+    {
+        "description": "Kirche",
+        "url": "http://lh6.ggpht.com/Wj8nk2TTS-7E3i2wiJ7v9EUusYstcdkEfzU5GeF_1xGC0lBz4O9HXf17e6VMLTw_1E9VQYFgdBbyfNuBb0Xk",
+        "latitude": 54.291458,
+        "longitude": 12.359238,
+        "gym_id": "28c65f75a83f42cba06ed3bd9ab3c16c.16",
+        "badge": 1
+    },
+    {
+        "description": "Zum Gedächtnis an Albrecht Mumm",
+        "url": "http://lh4.ggpht.com/HVIgAkUWxWRIgkfdYeT3ZdyFEmQVCP7sRsaFVaU000gZKwIdV_nyMFe66T7pHsuHWaXuDbe3CgqCvwUhkJYl",
+        "latitude": 54.257272,
+        "longitude": 12.373073,
+        "gym_id": "b7059705ca30455f80cb09855e33f7cb.16",
+        "badge": 4
+    },
+    {
+        "description": "Mural \"Die Kleine Seenadel\"",
+        "url": "http://lh3.googleusercontent.com/ToF0ZmWl7Cf8B1frCY0xNlyWpuVgqheW2IrWMCmvb1I0UYOFT62IWHmSs9fFy1SbDSg9skrzD0kctL9HYpwT",
+        "latitude": 54.259166,
+        "longitude": 12.354902,
+        "gym_id": "31a94f6f1bc54412a3683f1f2578daa2.16",
+        "badge": 4
+    }
+]

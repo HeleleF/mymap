@@ -70,10 +70,11 @@ export class MapComponent implements OnInit, OnDestroy {
       style: `mapbox://styles/mapbox/${(h => (h < 6 || h > 21) ? 'dark-v10' : 'outdoors-v11')((new Date()).getHours())}?optimize=true`, // TODO: use own style with all icons already in it
       zoom: 13,
       center: [13.204929, 52.637736],
-      maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
+      // maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
       maxZoom: 16,
       minZoom: 11,
-      attributionControl: false
+      attributionControl: false,
+      hash: true,
     })
       .addControl(new mapboxgl.NavigationControl(), 'top-right') // TODO: brauchen wir das wirklich?
       .addControl(new MyFilterControl(), 'top-right')

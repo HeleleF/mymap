@@ -18,17 +18,19 @@ export class DashboardComponent implements OnInit {
 
   constructor(private db: DbService,
               private auth: AuthService) {
-                this.badgeNames = getKeys(GymBadge);
+    this.badgeNames = getKeys(GymBadge);
   }
 
-  async ngOnInit() {
+  ngOnInit() {
 
-    this.user = await this.auth.getCurrentUser();
-    this.badges = await this.db.getBadgeCount();
+    Promise.all([this.auth.getCurrentUser(), this.db.getBadgeCount()])
+      .then(([u, b]) => {
+        this.user = u;
+        this.badges = b;
+        this.count = this.badges.reduce((acc, cur) => acc + cur, 0);
 
-    this.count = this.badges.reduce((acc, cur) => acc + cur, 0);
-
-    this.loading = false;
+        this.loading = false;
+      });
   }
 
 }

@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, OnDestroy {
       maxZoom: 16,
       minZoom: 11,
       attributionControl: false,
-      hash: true,
+      // hash: true,
     })
       .addControl(new mapboxgl.NavigationControl(), 'top-right') // TODO: brauchen wir das wirklich?
       .addControl(new MyFilterControl(), 'top-right')

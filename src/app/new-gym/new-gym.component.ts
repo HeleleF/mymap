@@ -63,15 +63,15 @@ export class NewGymComponent {
 
     const v = this.gymData.value;
 
-    const { groups : { lat: latitude, lng: longitude } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+    const { groups : { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 
     this.ms.addGym({
       b: v.badge,
       d: v.name,
       i: v.id,
-      lat: Math.floor(parseFloat(latitude) * 1e6) / 1e6,
-      lon: Math.floor(parseFloat(longitude) * 1e6) / 1e6,
-      u: v.url.replace(/(https?\:\/\/)/, '')
+      lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
+      lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
+      u: v.url.replace(/^https?\:\/\//, '')
     });
     this.popup.close();
   }

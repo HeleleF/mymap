@@ -4,7 +4,7 @@
   <mat-checkbox color="primary" [(ngModel)]="sets.showQuests">Show quest layer</mat-checkbox><br />
   <mat-checkbox color="primary" [(ngModel)]="sets.showGyms">Show gym layer</mat-checkbox><br />
 
-  <mat-tab-group animationDuration="0ms">
+  <mat-tab-group animationDuration="0ms" *ngIf="sets.showQuests">
 
     <mat-tab label="Filter by encounter">
       <mat-checkbox color="primary" [(ngModel)]="sets.negateEncounter">Negate Encounter?</mat-checkbox><br />
@@ -27,6 +27,20 @@
           <mat-checkbox color="primary" [value]="r" [checked]="sets.rewards.includes(r)" (change)="changeReward(r)">{{r}}</mat-checkbox><br />
         </ng-container>
       </div>
+    </mat-tab>
+
+  </mat-tab-group><br />
+
+  <mat-tab-group animationDuration="0ms" *ngIf="sets.showGyms">
+
+    <mat-tab label="Filter by badge">
+      <ng-container *ngFor="let b of badges; index as idx">
+        <mat-checkbox color="primary" [value]="idx" [checked]="sets.badges.includes(idx)" (change)="changeBadge(idx)">{{b}}</mat-checkbox><br />
+      </ng-container>
+    </mat-tab>
+
+    <mat-tab label="Filter by name">
+      <input matInput placeholder="Enter name...">
     </mat-tab>
 
   </mat-tab-group>

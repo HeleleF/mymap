@@ -51,7 +51,7 @@ export class DbService {
         properties: {
           fid: doc.id,
           id: p.i,
-          url: p.u,
+          url: p.u.replace(/^https?\:\/\//, ''),
           desc: p.d,
           badge: p.b
         }
@@ -85,6 +85,10 @@ export class DbService {
   }
 
   async getBadgeCount() {
+
+    // TODO: für alle: immer cache zuerst, bei fehler nachfragen ob ohne
+    // wenn dann nochmal fehler kommt, ansagen
+    // settings kann das überschreiben?
 
     const opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
 

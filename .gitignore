@@ -4,6 +4,7 @@
 /src/environments
 .firebase
 upload.js
+newgyms.json
 /src/assets
 
 # compiled output

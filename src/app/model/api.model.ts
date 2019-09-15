@@ -7,11 +7,11 @@ export enum GymBadge {
     GOLD = 4
 }
 
-export function keys(T: any) {
+export function getKeys(T: any) {
 
     const enumKeys = Object.keys(T);
 
-    return enumKeys.slice(keys.length / 2);
+    return enumKeys.slice(enumKeys.length / 2);
 }
 
 export interface StopInfo {
@@ -255,5 +255,5 @@ export interface FilterSettings {
   types: any;
 
   negateBadge?: boolean;
-  badges: any;
+  badges: number[];
 }

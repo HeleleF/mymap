@@ -19,7 +19,7 @@ export class DbService {
 
   constructor(private store: AngularFirestore) {
 
-    this.gymsRef = this.store.collection<GymInfo>('gyms'); // , ref => ref.limit(150));
+    this.gymsRef = this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0)); // , ref => ref.limit(150));
     this.questsRef = this.store.collection<QuestInfo>('quests'); // , ref => ref.limit(150));
 
     this.gymsCached = JSON.parse(localStorage.getItem('gymsCached') || '0');
@@ -90,7 +90,7 @@ export class DbService {
     // wenn dann nochmal fehler kommt, ansagen
     // settings kann das überschreiben?
 
-    const opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
+    const opts: firebase.firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
 
     const { docs } = await this.gymsRef.get(opts).toPromise();
 
@@ -128,7 +128,7 @@ export class DbService {
     }
     */
 
-    const opts: firebase.firestore.GetOptions = this.questsCached ? {source: 'cache'} : {};
+    const opts: firebase.firestore.GetOptions = this.questsCached ? { source: 'cache' } : {};
 
     const { docs } = await this.questsRef.get(opts).toPromise();
 

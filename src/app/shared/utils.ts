@@ -2,7 +2,7 @@
 
 const b32 = '0123456789bcdefghjkmnpqrstuvwxyz';
 
-export class GeoHash {
+class GeoHash {
 
     static encode = (lat: number, lng: number): string => {
 
@@ -97,3 +97,51 @@ export class GeoHash {
         ];
     }
 }
+
+/**
+ * Turns an array of x elements into an array
+ * of arrays, where each innner array has length `n`.
+ *
+ * ### Example:
+ * ```js
+ * var a = [0,1,2,3,4,5,6,7,8];
+ * part(a, 3);
+ * console.log(a) // -> [ [0,1,2], [3,4,5], [6,7,8] ]
+ * ```
+ * Basically the opposite of `flatten()`.
+ */
+const part = (a: any[], n: number): any[][] => {
+
+    a.forEach((cur: any, idx: number, arr: any[]) => {
+
+        arr[idx] = [cur];
+        for (let i = 1; i < n && arr[idx + i]; i++) {
+            arr[idx].push(arr[idx + i]);
+        }
+        arr = arr.splice(idx + 1, n - 1);
+    });
+    return a;
+};
+
+class OJ {
+
+    static part2<T>(ab: T[], n: number): T[][] {
+
+        const a = ab.slice() as unknown as T[][];
+
+        a.forEach((cur: any, idx: number, arr: any[]) => {
+
+            arr[idx] = [cur];
+            for (let i = 1; i < n && arr[idx + i]; i++) {
+                arr[idx].push(arr[idx + i]);
+            }
+            arr = arr.splice(idx + 1, n - 1);
+        });
+        return a;
+    }
+}
+
+
+
+export { GeoHash, part, OJ };
+

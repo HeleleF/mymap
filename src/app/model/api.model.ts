@@ -227,8 +227,10 @@ export interface Message {
     data: any;
 }
 
-export interface GeneralSettings {
-
+export interface BadgeEntry {
+    d: string;
+    u: string;
+    b: GymBadge;
 }
 
 export interface FilterObject {

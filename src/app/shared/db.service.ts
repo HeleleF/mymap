@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 
 import { GeoHash } from '../shared/utils';
-import { QuestInfo, GymInfo, GymBadge, QuestStatus } from '../model/api.model';
+import { QuestInfo, GymInfo, GymBadge, QuestStatus, BadgeEntry } from '../model/api.model';
+import { map } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
 
+  static readonly ROW_SIZE = 50;
+
   gymsRef: AngularFirestoreCollection<GymInfo>;
   questsRef: AngularFirestoreCollection<QuestInfo>;
   private gymsCached: boolean;
   private questsCached: boolean;
   private expire: number;
+  private lastDocList: QueryDocumentSnapshot<GymInfo>[] = [];
+  private lastRow = 0;
 
   constructor(private store: AngularFirestore) {
 
@@ -29,7 +35,7 @@ export class DbService {
 
   async getGyms() {
 
-    const opts: firebase.firestore.GetOptions = this.gymsCached ? {source: 'cache'} : {};
+    const opts: firebase.firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
 
     const { docs } = await this.gymsRef.get(opts).toPromise();
 
@@ -115,7 +121,75 @@ export class DbService {
   setGymBadge(fid: string, newBadge: GymBadge) {
 
     const gym = this.gymsRef.doc<GymInfo>(fid);
-    return gym.update({b: newBadge});
+    return gym.update({ b: newBadge });
+  }
+
+  getRow(rowNum: number): Observable<BadgeEntry[]> {
+
+    const isNext = rowNum >= this.lastRow;
+    const lastDoc = this.lastDocList[isNext ? rowNum : rowNum + 1];
+
+    const pager = this.store.collection<GymInfo>('gyms', ref => {
+
+      const query = ref.where('b', '>', 0).limit(DbService.ROW_SIZE);
+
+      if (rowNum === 0) {
+        return query.orderBy('b', 'desc').orderBy('d', 'asc');
+      }
+
+      if (!lastDoc) {
+        throw new RangeError(`Cant get row ${rowNum}!`);
+      }
+
+      // tslint:disable-next-line: max-line-length
+      return isNext ? query.orderBy('b', 'desc').orderBy('d', 'asc').startAfter(lastDoc) : query.orderBy('b', 'asc').orderBy('d', 'asc').startAt(lastDoc);
+    });
+
+    return pager.get({ source: 'cache' }).pipe(
+      map((r: QuerySnapshot<GymInfo>) => {
+
+        const ds = r.docs;
+
+        if (isNext) {
+          this.lastDocList[rowNum + 1] = ds[ds.length - 1];
+        } else if (rowNum !== 0) {
+          ds.reverse();
+        }
+        this.lastRow = rowNum;
+
+        return ds.map(s => {
+          const { u, d, b } = s.data();
+          return { u, d, b } as BadgeEntry;
+        });
+      })
+    );
+  }
+
+  getRows(startRow: number, endRow: number) {
+
+    const arr: Observable<BadgeEntry[]>[] = [];
+
+    for (let i = startRow; i <= endRow; i++) {
+      arr.push(this.getRow(i));
+    }
+
+    return forkJoin(arr);
+  }
+
+  getAllBadgeEntries$() {
+    return this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0).orderBy('b', 'desc').orderBy('d', 'asc')).get({ source: 'cache' }).pipe(
+      map((r: QuerySnapshot<GymInfo>) => {
+
+        const bcs = [0, 0, 0, 0];
+
+        const bes = r.docs.map(s => {
+          const { u, d, b } = s.data();
+          bcs[b - 1]++;
+          return { u, d, b } as BadgeEntry; // vrandenburger tor fixen das hat ein altes bild von panoromia was nicht mehr exisitert!!!
+        });
+        return { bcs, bes };
+      })
+    );
   }
 
   async getQuests() {
@@ -152,7 +226,7 @@ export class DbService {
           type: 'Point',
           coordinates: GeoHash.decode(id)
         },
-        properties: {id, ...p}
+        properties: { id, ...p }
       };
     });
 
@@ -171,6 +245,6 @@ export class DbService {
 
     const quest = this.questsRef.doc<QuestInfo>(fid);
 
-    return quest.update({status: newStatus});
+    return quest.update({ status: newStatus });
   }
 }

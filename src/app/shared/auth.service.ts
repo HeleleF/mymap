@@ -29,6 +29,10 @@ export class AuthService {
     return this.afAuth.authState.pipe(first()).toPromise();
   }
 
+  getCurrentUser$() {
+    return this.afAuth.authState.pipe(first());
+  }
+
   async googleSignin() {
 
     try {

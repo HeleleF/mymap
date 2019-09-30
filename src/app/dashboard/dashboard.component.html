@@ -1,21 +1,21 @@
 <mat-card class="example-card" *ngIf="!loading">
   <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>{{ user.displayName }}</mat-card-title>
+    <!--
+    <img mat-card-avatar class="example-header-image" src="{{ (user$ | async)?.photoURL }}">
+    <mat-card-title>{{ (user$ | async)?.displayName }}</mat-card-title>
     <mat-card-subtitle>User</mat-card-subtitle>
+    -->
+    <div class="cnut" *ngFor="let cnt of badges; index as bdg">
+        <p class="badgeCount">{{ cnt }}</p>
+        <img class="smal" src="../../assets/gyms/GymBadgeFrame_{{bdg + 2}}.png">
+      </div><strong>Insgesamt {{count}} Badges</strong>
   </mat-card-header>
   <mat-card-content>
-    <!--
-    <ul>
-      <li *ngFor="let cnt of badges; index as bdg">
-        {{ cnt }} Badges vom Typ {{ badgeNames[bdg + 1] }}
-      </li>
-    </ul><br />
-    <strong>Insgesamt {{count}} Badges</strong>
-    -->
       <p class="badge-header">ARENAORDEN</p>
-      <div #badgelist class="viewport badge-list">
-        <div class="badge-row" *uiScroll="let row of badgeRows">
+      <mat-progress-bar class="loader" mode="indeterminate" *ngIf="dsrc.adapter.isLoading"></mat-progress-bar>
+      <ul #badgelist class="badge-list">
+        <span class="circle-btn"></span>
+        <li class="badge-row" *uiScroll="let row of dsrc">
           <div class="entry" *ngFor="let e of row">
             <div class="img-union">
               <img class="under" loading="lazy" src="https://{{e.u}}" width="126" height="174">
@@ -23,8 +23,10 @@
             </div>
             <p class="gym-name">{{e.d}}</p>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
+
+      
 
   </mat-card-content>
   <mat-card-actions>

@@ -1,64 +1,180 @@
 @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
 
-.viewport {
-  height: 1000px;
-  overflow-y: auto;
-  overflow-anchor: none;
+
+  $badgeListHeight: 1000px;
+
+  $badgeListWidth: 100%;
+  $badgeEntryHeight: 350px;
+  
+  $imgUnionDim: 300px;
+  
+  $gymBadgeDim: 256px;
+  $gymBadgeDimNegHalf: $gymBadgeDim / -2;
+  
+  $gymPicHeight: 174px;
+  $gymPicWidth: 126px;
+  
+  $gymPicMarginTop: $gymPicHeight / -2;
+  $gymPicMarginLeft: $gymPicWidth / -2;
+
+
+$desktopPhoneBreakpoint: 1000px;
+
+@mixin desktop {
+  @media (min-width: #{$desktopPhoneBreakpoint}) {
+    @content;
+  }
+}
+
+
+.cnut {
+  position: relative;
+
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .smal {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    margin-top: -50px;
+    margin-left: -50px;
+  }
+  
+  .badgeCount {
+    font-weight: bold;
+    
+  }
+}
+
+
+.circle-btn {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba($color: #00ac4d, $alpha: 0.4);
+  width: 75px;
+  height: 75px;
+  right: 20px;
+  bottom: 20px;
+}
+
+.loader {
+  width: 100%;
+
+  @include desktop() {
+    width: 990px;
+    margin: auto;
+  }
 }
 
 .badge-header {
   text-align: center;
   font-family: "Lato", sans-serif;
-  width: 990px; /* das gleiche wie .badge-list*/
+  width: 100%;
+
+  @include desktop() {
+    width: 990px;
+    margin: auto;
+  }
 }
 
 .badge-list {
+
+  width: 100%;
+  height: $badgeListHeight;
+
+  overflow-y: auto;
+  overflow-anchor: none;
   list-style-type: none;
+
   border-top: 1px solid rgba(200, 200, 200, 0.4);
   padding: 0;
-  width: 990px; /* das gleiche wie .badge-header*/
-}
 
-.badge-row {
-  height: 350px; /* spalten eintrag ist genauso hoch wie die zeile*/
-  width: 100%; /* am besten ein wert der durch 3 teilbar ist*/
-  display: flex;
-}
-
-.entry {
-    width: calc(100% / 3); /* drei spalten pro zeile*/
-    height: 350px; /* spalten eintrag ist genauso hoch wie die zeile*/
-}
-
-.img-union {
-    height: 300px; /* bisschen kleiner als die zeilen hÃ¶he, damit die schrift noch hinpasst*/
-    width: 300px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+  @include desktop() {
+    width: 1002px;
     margin: auto;
-    position: relative;
-}
+  }
+  
 
-.under {
-  position: absolute;
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  width: 126px;
-  height: 174px;
-  top: 50%;
-  left: 50%;
-  margin-top: -87px; /* die hälfte von .under height*/
-  margin-left: -63px; /* die hälfte von .under width*/
-}
+  .badge-row {
 
-.over {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-top: -128px; /* die hälfte von .over height, wenn das 256 bleibt*/
-  margin-left: -128px; /* die hälfte von .over width, wenn das 256 bleibt*/
-}
+    /* !!!! hier den margin für top und bottom festzulegen verkackt den scroller !!!! */
+    height: $badgeEntryHeight; /* spalten eintrag ist genauso hoch wie die zeile*/
+    width: 100%; /* am besten ein wert der durch 3 teilbar ist*/
+    display: flex;
 
-.gym-name {
-  text-align: center;
-  margin: auto;
-  width: 256px; /* so wie .over height, wenn das 256 bleibt*/
-  font-family: "Lato", sans-serif;
+    .entry {
+      width: calc(100% / 3); /* drei spalten pro zeile*/
+      height: $badgeEntryHeight; /* spalten eintrag ist genauso hoch wie die zeile*/
+  
+      .img-union {
+        height: 200px; /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+        width: 200px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+        margin: auto;
+        position: relative;
+
+        @include desktop() {
+          height: 300px; /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+          width: 300px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+        }
+    
+        .under {
+          position: absolute;
+          clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+          width: 96px;
+          height: 134px;
+          top: 50%;
+          left: 50%;
+          margin-top: -67px; /* die hälfte von .under height*/
+          margin-left: -48px; /* die hälfte von .under width*/
+
+          @include desktop() {
+            height: 174px; /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+            width: 126px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+            margin-top: -87px; /* die hälfte von .over height, wenn das 256 bleibt*/
+            margin-left: -63px; /* die hälfte von .over width, wenn das 256 bleibt*/
+          }
+        }
+        
+        .over {
+          position: absolute;
+          width: 196px;
+          height: 196px;
+          top: 50%;
+          left: 50%;
+          margin-top: -98px; /* die hälfte von .over height, wenn das 256 bleibt*/
+          margin-left: -98px; /* die hälfte von .over width, wenn das 256 bleibt*/
+
+          @include desktop() {
+            height: 256px; /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+            width: 256px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+            margin-top: -128px; /* die hälfte von .over height, wenn das 256 bleibt*/
+            margin-left: -128px; /* die hälfte von .over width, wenn das 256 bleibt*/
+          }
+        }
+    }
+  
+      .gym-name {
+        text-align: center;
+        margin: auto;
+        width: 196px; /* so wie .over height, wenn das 256 bleibt*/
+        height:20px;
+        font-family: "Lato", sans-serif;
+
+        @include desktop() {
+          width: 256px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+        }
+      }
+  }
+  }
 }

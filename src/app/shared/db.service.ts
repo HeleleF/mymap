@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 
-import { GeoHash } from '../shared/utils';
+import { GeoHash, part } from '../shared/utils';
 import { QuestInfo, GymInfo, GymBadge, QuestStatus, BadgeEntry } from '../model/api.model';
 import { map } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
@@ -109,13 +109,13 @@ export class DbService {
 
       const b = doc.data().b;
 
-      if (b === 0) { return acc; }
+      if (b < 2) { return acc; }
 
-      acc[b - 1] += 1;
+      acc[b - 2] += 1;
 
       return acc;
 
-    }, [0, 0, 0, 0]);
+    }, [0, 0, 0]);
   }
 
   setGymBadge(fid: string, newBadge: GymBadge) {
@@ -180,14 +180,14 @@ export class DbService {
     return this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0).orderBy('b', 'desc').orderBy('d', 'asc')).get({ source: 'cache' }).pipe(
       map((r: QuerySnapshot<GymInfo>) => {
 
-        const bcs = [0, 0, 0, 0];
+        // const bcs = [0, 0, 0, 0];
 
         const bes = r.docs.map(s => {
           const { u, d, b } = s.data();
-          bcs[b - 1]++;
+          // bcs[b - 1]++;
           return { u, d, b } as BadgeEntry; // vrandenburger tor fixen das hat ein altes bild von panoromia was nicht mehr exisitert!!!
         });
-        return { bcs, bes };
+        return bes;
       })
     );
   }

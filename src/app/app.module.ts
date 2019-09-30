@@ -28,6 +28,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -48,7 +50,6 @@ import { setAppInjector } from './shared/appInjector';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UiScrollModule } from 'ngx-ui-scroll';
-import { Dashboard2Component } from './dashboard2/dashboard2.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,6 @@ import { Dashboard2Component } from './dashboard2/dashboard2.component';
     SettingsComponent,
     NewGymComponent,
     PageNotFoundComponent,
-    Dashboard2Component
   ],
   imports: [
     BrowserModule,
@@ -94,6 +94,8 @@ import { Dashboard2Component } from './dashboard2/dashboard2.component';
     MatAutocompleteModule,
     MatDividerModule,
     MatInputModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,

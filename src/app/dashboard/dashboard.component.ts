@@ -15,19 +15,19 @@ import { part } from '../shared/utils';
 export class DashboardComponent implements OnInit, AfterViewInit {
 
   badges: number[];
-  user: firebase.User;
+  user$: Observable<firebase.User>;
   count = 0;
   readonly badgeNames: string[];
   loading = true;
-  badgeRows: IDatasource;
-  testOb: Observable<BadgeEntry[]>;
+  dsrc: Datasource;
+  badgeEntries$: Observable<BadgeEntry[]>;
 
   @ViewChildren('badgelist') ul: QueryList<ElementRef<HTMLUListElement>>;
 
   constructor(private db: DbService,
               private auth: AuthService) {
     this.badgeNames = getKeys(GymBadge);
-    this.badgeRows = {
+    this.dsrc = new Datasource({
       get: (startIndex: number, cnt: number) => {
 
         const count = cnt * 3;
@@ -51,14 +51,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
       settings: {
         minIndex: 0,
-        padding: 1.0,
         startIndex: 0,
-        itemSize: 350,
-      },
-      devSettings: {
-        debug: true,
       }
-    };
+    });
   }
 
   ngOnInit() {
@@ -66,14 +61,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // das alles hier kann in obersables umgebaut werden
     // rxjs hat auch reduce
 
-    Promise.all([this.auth.getCurrentUser(), this.db.getBadgeCount()])
-      .then(([u, b]) => {
-        this.user = u;
+    Promise.all([this.db.getBadgeCount()])
+      .then(([b]) => {
         this.badges = b;
         this.count = this.badges.reduce((acc, cur) => acc + cur, 0);
 
         this.loading = false;
       });
+    this.user$ = this.auth.getCurrentUser$();
+    this.badgeEntries$ = this.db.getAllBadgeEntries$();
   }
 
   ngAfterViewInit() {

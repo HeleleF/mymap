@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+.viewport {
+  height: 1000px;
+  overflow-y: auto;
+  overflow-anchor: none;
+}
+
+.badge-header {
+  text-align: center;
+  font-family: "Lato", sans-serif;
+  width: 990px; /* das gleiche wie .badge-list*/
+}
+
+.badge-list {
+  list-style-type: none;
+  border-top: 1px solid rgba(200, 200, 200, 0.4);
+  padding: 0;
+  width: 990px; /* das gleiche wie .badge-header*/
+}
+
+.badge-row {
+  margin: 10px 0;
+  height: 350px; /* spalten eintrag ist genauso hoch wie die zeile*/
+  width: 100%; /* am besten ein wert der durch 3 teilbar ist*/
+  display: flex;
+}
+
+.entry {
+    width: calc(100% / 3); /* drei spalten pro zeile*/
+    height: 350px; /* spalten eintrag ist genauso hoch wie die zeile*/
+}
+
+.img-union {
+    height: 300px; /* bisschen kleiner als die zeilen hÃ¶he, damit die schrift noch hinpasst*/
+    width: 300px; /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+    margin: auto;
+    position: relative;
+}
+
+.under {
+  position: absolute;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  width: 126px;
+  height: 174px;
+  top: 50%;
+  left: 50%;
+  margin-top: -87px; /* die hälfte von .under height*/
+  margin-left: -63px; /* die hälfte von .under width*/
+}
+
+.over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -128px; /* die hälfte von .over height, wenn das 256 bleibt*/
+  margin-left: -128px; /* die hälfte von .over width, wenn das 256 bleibt*/
+}
+
+.gym-name {
+  text-align: center;
+  margin: auto;
+  width: 256px; /* so wie .over height, wenn das 256 bleibt*/
+  font-family: "Lato", sans-serif;
+}

@@ -47,6 +47,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { setAppInjector } from './shared/appInjector';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { UiScrollModule } from 'ngx-ui-scroll';
+import { Dashboard2Component } from './dashboard2/dashboard2.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     AutochipsComponent,
     SettingsComponent,
     NewGymComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    Dashboard2Component
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
+    UiScrollModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,

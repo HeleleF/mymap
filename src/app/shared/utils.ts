@@ -2,7 +2,7 @@
 
 const b32 = '0123456789bcdefghjkmnpqrstuvwxyz';
 
-class GeoHash {
+export class GeoHash {
 
     static encode = (lat: number, lng: number): string => {
 
@@ -99,49 +99,54 @@ class GeoHash {
 }
 
 /**
+ * Returns the keys for a given enum.
+ * Necessary since `Object.keys()` alone also
+ * returns the reverse values (indices).
+ */
+export function getKeys(E: any): string[] {
+
+    const enumKeys = Object.keys(E);
+
+    return enumKeys.slice(enumKeys.length / 2);
+}
+
+/**
  * Turns an array of x elements into an array
  * of arrays, where each innner array has length `n`.
  *
+ * The default value for columns is 3.
+ * The original array is changed ater calling this !!!
+ *
  * ### Example:
  * ```js
- * var a = [0,1,2,3,4,5,6,7,8];
- * part(a, 3);
+ * const a = [0,1,2,3,4,5,6,7,8];
+ * createRows(a);
  * console.log(a) // -> [ [0,1,2], [3,4,5], [6,7,8] ]
  * ```
  * Basically the opposite of `flatten()`.
+ *
+ * If the result of  `array.length / columns` is not an integer,
+ * the last row will have only  `array.length % columns` elements.
+ * ### Example 2:
+ * ```js
+ * const b = [0,1,2,3,4,5,6,7,8];
+ * createRows(b, 4);
+ * console.log(b) // -> [ [0,1,2,3], [3,4,5,6], [7,8] ]
+ * ```
  */
-const part = (a: any[], n: number): any[][] => {
+export function createRows<T>(data: T[], columns = 3): T[][] {
+    data.forEach((cur: any, idx: number, arr: any[]) => {
 
-    a.forEach((cur: any, idx: number, arr: any[]) => {
-
+        // turn element into array -> create a new row
         arr[idx] = [cur];
-        for (let i = 1; i < n && arr[idx + i]; i++) {
+
+        // push additional columns into the row, if they exist
+        for (let i = 1; i < columns && arr[idx + i]; i++) {
             arr[idx].push(arr[idx + i]);
         }
-        arr = arr.splice(idx + 1, n - 1);
+
+        // remove all column elements
+        arr = arr.splice(idx + 1, columns - 1);
     });
-    return a;
-};
-
-class OJ {
-
-    static part2<T>(ab: T[], n: number): T[][] {
-
-        const a = ab.slice() as unknown as T[][];
-
-        a.forEach((cur: any, idx: number, arr: any[]) => {
-
-            arr[idx] = [cur];
-            for (let i = 1; i < n && arr[idx + i]; i++) {
-                arr[idx].push(arr[idx + i]);
-            }
-            arr = arr.splice(idx + 1, n - 1);
-        });
-        return a;
-    }
+    return data as any;
 }
-
-
-
-export { GeoHash, part, OJ };
-

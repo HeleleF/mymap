@@ -30,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import {MatRippleModule} from '@angular/material/core';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -96,6 +97,7 @@ import { UiScrollModule } from 'ngx-ui-scroll';
     MatInputModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatRippleModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
@@ -108,7 +110,7 @@ import { UiScrollModule } from 'ngx-ui-scroll';
 export class AppModule {
 
   // store the Injector for later use in other components
-  constructor(private inj: Injector) {
+  constructor(inj: Injector) {
     setAppInjector(inj);
   }
 }

@@ -11,12 +11,6 @@
   $gymBadgeDim: 256px;
   $gymBadgeDimNegHalf: $gymBadgeDim / -2;
   
-  $gymPicHeight: 174px;
-  $gymPicWidth: 126px;
-  
-  $gymPicMarginTop: $gymPicHeight / -2;
-  $gymPicMarginLeft: $gymPicWidth / -2;
-
 
 $desktopPhoneBreakpoint: 1000px;
 
@@ -27,7 +21,7 @@ $desktopPhoneBreakpoint: 1000px;
 }
 
 
-.cnut {
+.badgeCountRow {
   position: relative;
 
   width: 100px;
@@ -37,7 +31,7 @@ $desktopPhoneBreakpoint: 1000px;
   align-items: center;
   justify-content: center;
 
-  .smal {
+  .badgeCountImage {
     width: 100px;
     height: 100px;
     position: absolute;
@@ -68,11 +62,6 @@ $desktopPhoneBreakpoint: 1000px;
 
 .loader {
   width: 100%;
-
-  @include desktop() {
-    width: 990px;
-    margin: auto;
-  }
 }
 
 .badge-header {
@@ -99,7 +88,7 @@ $desktopPhoneBreakpoint: 1000px;
   padding: 0;
 
   @include desktop() {
-    width: 1002px;
+    width: 1002px; /* 990px für die Liste + 12px für die Scroll-Leiste*/
     margin: auto;
   }
   

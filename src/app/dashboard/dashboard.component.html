@@ -1,3 +1,4 @@
+<mat-progress-bar class="loader" mode="indeterminate" *ngIf="loading" color="accent"></mat-progress-bar>
 <mat-card class="example-card" *ngIf="!loading">
   <mat-card-header>
     <!--
@@ -5,29 +6,25 @@
     <mat-card-title>{{ (user$ | async)?.displayName }}</mat-card-title>
     <mat-card-subtitle>User</mat-card-subtitle>
     -->
-    <div class="cnut" *ngFor="let cnt of badges; index as bdg">
-        <p class="badgeCount">{{ cnt }}</p>
-        <img class="smal" src="../../assets/gyms/GymBadgeFrame_{{bdg + 2}}.png">
-      </div><strong>Insgesamt {{count}} Badges</strong>
+    <div class="badgeCountRow" *ngFor="let cnt of badges; index as bdg" matRipple [matRippleColor]="accent" [matRippleRadius]="50">
+      <p class="badgeCount">{{ cnt }}</p>
+      <img class="badgeCountImage" src="../../assets/gyms/GymBadgeFrame_{{bdg + 1}}.png" [attr.data-badge]="bdg + 1" (click)="jumpToType($event)">
+    </div><strong>Insgesamt {{count}} Badges</strong>
   </mat-card-header>
   <mat-card-content>
-      <p class="badge-header">ARENAORDEN</p>
-      <mat-progress-bar class="loader" mode="indeterminate" *ngIf="dsrc.adapter.isLoading"></mat-progress-bar>
-      <ul #badgelist class="badge-list">
-        <span class="circle-btn"></span>
-        <li class="badge-row" *uiScroll="let row of dsrc">
-          <div class="entry" *ngFor="let e of row">
-            <div class="img-union">
-              <img class="under" loading="lazy" src="https://{{e.u}}" width="126" height="174">
-              <img class="over" src="../../assets/gyms/GymBadgeFrame_{{e.b}}.png">
-            </div>
-            <p class="gym-name">{{e.d}}</p>
+    <p class="badge-header">ARENAORDEN</p>
+    <ul #badgelist class="badge-list">
+      <span class="circle-btn"></span>
+      <li class="badge-row" *uiScroll="let row of dsrc">
+        <div class="entry" *ngFor="let e of row">
+          <div class="img-union">
+            <img class="under" loading="lazy" src="https://{{e.u}}" width="126" height="174">
+            <img class="over" src="../../assets/gyms/GymBadgeFrame_{{e.b}}.png">
           </div>
-        </li>
-      </ul>
-
-      
-
+          <p class="gym-name">{{e.d}}</p>
+        </div>
+      </li>
+    </ul>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button>SHARE</button>

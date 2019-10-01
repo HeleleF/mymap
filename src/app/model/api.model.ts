@@ -7,13 +7,6 @@ export enum GymBadge {
     GOLD = 4
 }
 
-export function getKeys(T: any) {
-
-    const enumKeys = Object.keys(T);
-
-    return enumKeys.slice(enumKeys.length / 2);
-}
-
 export interface StopInfo {
     fid: string;
     id?: string;

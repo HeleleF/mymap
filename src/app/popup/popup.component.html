@@ -6,7 +6,7 @@
   <div mat-dialog-content>
     <div class="gym-pic">
       <div id="swiper" class="union" (mousedown)="lock($event)" (touchstart)="lock($event)" (mouseup)="move($event)" (touchend)="move($event)">
-        <img class='gym-under' src='//images.weserv.nl/?url={{data.url}}' [alt]='data.desc' appFallback />
+        <img class='gym-under' src='//images.weserv.nl/?url={{data.url}}&w=126&h=174' [alt]='data.desc' appFallback />
         <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{i}}.png' />
         <button mat-icon-button class="lefter" (click)="i > 0 && i = i - 1" [disabled]="i == 0"><mat-icon>chevron_left</mat-icon></button>
         <button mat-icon-button class="righter" (click)="i < 4 && i = i + 1" [disabled]="i == 4"><mat-icon>chevron_right</mat-icon></button>

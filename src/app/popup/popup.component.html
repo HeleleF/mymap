@@ -1,12 +1,12 @@
 <!-- nur gyms haben ne url, beim quests heißt es anders-->
-<div *ngIf="data.url; then gymBlock else questBlock"></div>
+<ng-container *ngIf="data.url; then gymBlock else questBlock"></ng-container>
 
 <ng-template #gymBlock>
   <h1 mat-dialog-title>{{data.desc}}</h1>
   <div mat-dialog-content>
     <div class="gym-pic">
       <div id="swiper" class="union" (mousedown)="lock($event)" (touchstart)="lock($event)" (mouseup)="move($event)" (touchend)="move($event)">
-        <img class='gym-under' src='https://{{data.url}}' [alt]='data.desc' appFallback />
+        <img class='gym-under' src='//images.weserv.nl/?url={{data.url}}' [alt]='data.desc' appFallback />
         <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{i}}.png' />
         <button mat-icon-button class="lefter" (click)="i > 0 && i = i - 1" [disabled]="i == 0"><mat-icon>chevron_left</mat-icon></button>
         <button mat-icon-button class="righter" (click)="i < 4 && i = i + 1" [disabled]="i == 4"><mat-icon>chevron_right</mat-icon></button>

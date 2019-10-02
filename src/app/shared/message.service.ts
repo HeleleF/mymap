@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject } from 'rxjs';
-import { GymFilter, QuestFilter, QuestReward, QuestType, FilterSettings, FilterObject, GymInfo, Message } from '../model/api.model';
+
 import { DbService } from './db.service';
+import { GymFilter, QuestFilter, QuestReward, QuestType, FilterSettings, FilterObject, GymInfo, Message } from '../model/api.model';
 
 @Injectable({
   providedIn: 'root'

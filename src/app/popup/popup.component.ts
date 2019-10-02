@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { DbService } from '../shared/db.service';
 import { MessageService } from '../shared/message.service';
 
@@ -11,64 +12,66 @@ import { MessageService } from '../shared/message.service';
 export class PopupComponent {
 
   private x0: number = null;
-  private i: number = null;
+  i: number = null;
 
-  constructor(public popup: MatDialogRef<PopupComponent>,
-              @Inject(MAT_DIALOG_DATA) public data,
-              private db: DbService,
-              private ms: MessageService) {
-      this.i = this.data.badge;
+  constructor(
+    public popup: MatDialogRef<PopupComponent>,
+    @Inject(MAT_DIALOG_DATA) public data,
+    private db: DbService,
+    private ms: MessageService
+  ) {
+    this.i = this.data.badge;
+  }
+
+  async onNoClick() {
+    this.popup.close();
+  }
+
+  exclude(nr: number) {
+
+    if (nr) {
+      this.ms.excludeOneType(this.data.type);
+    } else {
+      this.ms.excludeOneReward(this.data.reward);
     }
 
-    async onNoClick() {
-      this.popup.close();
-    }
+    this.popup.close();
+  }
 
-    exclude(nr: number) {
+  async setBadge() {
+    await this.db.setGymBadge(this.data.fid, this.i);
+    this.popup.close({
+      badgeUpdate: this.i,
+      ...this.data
+    });
+  }
 
-      if (nr) {
-        this.ms.excludeOneType(this.data.type);
-      } else {
-        this.ms.excludeOneReward(this.data.reward);
-      }
+  async setStatus() {
+    await this.db.setQuestStatus(this.data.fid, this.data.status);
+    this.popup.close(this.data);
+  }
 
-      this.popup.close();
-    }
+  private unify(e: TouchEvent | MouseEvent) {
+    return e instanceof TouchEvent ? e.changedTouches[0] : e;
+  }
 
-    async setBadge() {
-      await this.db.setGymBadge(this.data.fid, this.i);
-      this.popup.close({
-        badgeUpdate: this.i,
-        ...this.data
-      });
-    }
+  lock(e: TouchEvent | MouseEvent) {
+    this.x0 = this.unify(e).clientX;
+  }
 
-    async setStatus() {
-      await this.db.setQuestStatus(this.data.fid, this.data.status);
-      this.popup.close(this.data);
-    }
+  move(e: TouchEvent | MouseEvent) {
+    if (this.x0) {
 
-    private unify(e: TouchEvent | MouseEvent) {
-      return e instanceof TouchEvent ? e.changedTouches[0] : e;
-    }
+      const dx = this.unify(e).clientX - this.x0;
+      const s = Math.sign(dx);
 
-    private lock(e: TouchEvent | MouseEvent) {
-      this.x0 = this.unify(e).clientX;
-    }
+      if (Math.abs(dx) < 80) { return; }
 
-    private move(e: TouchEvent | MouseEvent) {
-      if (this.x0) {
+      // tslint:disable-next-line: no-unused-expression
+      0 > s ? 4 > this.i && this.i++ : 0 < this.i && this.i--;
+      this.x0 = null;
 
-        const dx = this.unify(e).clientX - this.x0;
-        const s = Math.sign(dx);
-
-        if (Math.abs(dx) < 80) { return; }
-
-        // tslint:disable-next-line: no-unused-expression
-        0 > s ? 4 > this.i && this.i++ : 0 < this.i && this.i--;
-        this.x0 = null;
-
-        console.log(this.i);
+      console.log(this.i);
     }
   }
 

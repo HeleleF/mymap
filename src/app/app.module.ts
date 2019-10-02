@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { MapComponent } from './map/map.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -28,29 +27,30 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import {MatRippleModule} from '@angular/material/core';
+import { MatRippleModule } from '@angular/material/core';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { ToastrModule } from 'ngx-toastr';
+import { UiScrollModule } from 'ngx-ui-scroll';
 import { HttpClientModule } from '@angular/common/http';
 
+import { ImgFallbackDirective } from './directives/img-fallback.directive';
+
+import { MapComponent } from './map/map.component';
 import { PopupComponent } from './popup/popup.component';
 import { LoginComponent } from './login/login.component';
-import { ImgFallbackDirective } from './directives/img-fallback.directive';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FilterComponent } from './filter/filter.component';
 import { AutochipsComponent } from './autochips/autochips.component';
 import { SettingsComponent } from './settings/settings.component';
-
-import { setAppInjector } from './shared/appInjector';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { UiScrollModule } from 'ngx-ui-scroll';
+
+import { setAppInjector } from './shared/appInjector';
 
 @NgModule({
   declarations: [
@@ -95,7 +95,6 @@ import { UiScrollModule } from 'ngx-ui-scroll';
     MatAutocompleteModule,
     MatDividerModule,
     MatInputModule,
-    MatProgressSpinnerModule,
     MatProgressBarModule,
     MatRippleModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

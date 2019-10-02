@@ -252,3 +252,12 @@ export interface FilterSettings {
   negateBadge?: boolean;
   badges: number[];
 }
+
+export interface User {
+    uid: string;
+    photoURL?: string;
+    displayName?: string;
+    isAdmin?: boolean;
+
+    // mehr wenn wir brauchen
+}

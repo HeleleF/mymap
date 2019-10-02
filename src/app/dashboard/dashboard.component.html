@@ -2,9 +2,11 @@
 <mat-card class="example-card" *ngIf="!loading">
   <mat-card-header>
     <!--
-    <img mat-card-avatar class="example-header-image" src="{{ (user$ | async)?.photoURL }}">
-    <mat-card-title>{{ (user$ | async)?.displayName }}</mat-card-title>
-    <mat-card-subtitle>User</mat-card-subtitle>
+    <ng-container *ngIf="auth.user$ | async as user>
+      <img mat-card-avatar class="example-header-image" src="{{ user.photoURL }}">
+      <mat-card-title>{{ user.displayName }}</mat-card-title>
+      <mat-card-subtitle>{{ user.isAdmin ? 'Admin' : 'User' }}</mat-card-subtitle>
+    </ng-container>
     -->
     <div class="badgeCountRow" *ngFor="let cnt of badges; index as bdg" matRipple [matRippleColor]="accent" [matRippleRadius]="50">
       <p class="badgeCount">{{ cnt }}</p>

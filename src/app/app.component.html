@@ -2,7 +2,7 @@
 
   <!-- Left side TODO: hier kommt das main logo der seite hin-->
   <span>
-    <button mat-button routerLink="/">{{title}}</button>
+    <button mat-button routerLink="/map">{{title}}</button>
   </span>
 
   <!-- füllt den platz in der mitte aus-->
@@ -10,14 +10,15 @@
 
 
   <!-- vertical burger rechts -->
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" [disabled]="!authenticated">
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" [disabled]="!(auth.user$ | async)">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
 
-    <div mat-menu-item *ngIf="authenticated" class="user-container" disableRipple="true">
-          <img class="user-image" [src]="auth.user.photoURL">
-          <span class="user-name">{{auth.user.displayName}}</span>
+    <div mat-menu-item *ngIf="auth.user$ | async as user" class="user-container" disableRipple="true">
+          <img class="user-image" [src]="user.photoURL">
+          <span class="user-name">{{user.displayName}}</span>
+          <span class="user-admin color-accent">{{ user.isAdmin ? 'Admin' : 'User' }}</span>
     </div>
 
     <mat-divider></mat-divider>
@@ -38,6 +39,7 @@
     </button>
 
   </mat-menu>
+
 
 </mat-toolbar>
 

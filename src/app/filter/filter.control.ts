@@ -1,8 +1,9 @@
-import { IControl, Map } from 'mapbox-gl';
-import { FilterComponent } from './filter.component';
 import { MatDialog } from '@angular/material/dialog';
-
 import { AppInjector } from '../shared/appInjector';
+
+import { IControl, Map } from 'mapbox-gl';
+
+import { FilterComponent } from './filter.component';
 
 export class MyFilterControl implements IControl {
 

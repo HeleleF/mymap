@@ -11,22 +11,20 @@ import { AuthService } from './shared/auth.service';
 export class AppComponent implements OnInit {
 
   isOnline: boolean;
-  title = 'Heriberts Mappe';
+  title = 'Helenchen\'s Web App';
 
-  constructor(private toast: ToastrService,
-              public auth: AuthService) { }
+  constructor(
+    private toast: ToastrService,
+    public auth: AuthService
+  ) { }
 
   ngOnInit() {
     window.addEventListener('online', this.updateStatus.bind(this));
     window.addEventListener('offline', this.updateStatus.bind(this));
   }
 
-  updateStatus() {
+  private updateStatus() {
     this.isOnline = navigator.onLine;
     this.toast.info(`You are now ${this.isOnline ? 'on' : 'off'}line!`, 'Network change');
-  }
-
-  get authenticated() {
-    return this.auth.user !== null;
   }
 }

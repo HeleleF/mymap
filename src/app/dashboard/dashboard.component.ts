@@ -29,8 +29,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('badgelist') ul: QueryList<ElementRef<HTMLUListElement>>;
 
-  constructor(private db: DbService,
-              private auth: AuthService) {
+  constructor(
+    private db: DbService
+  ) {
     this.badgeEntries$ = this.db.getAllBadgeEntries$().pipe(
       tap((obj) => {
         this.rows = obj.badgeRows.flat(); // used for reloading later
@@ -68,7 +69,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.loading = false;
       }
     });
-    this.user$ = this.auth.getCurrentUser$();
   }
 
   ngAfterViewInit() {

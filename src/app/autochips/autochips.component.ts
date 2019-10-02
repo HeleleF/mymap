@@ -1,9 +1,11 @@
 import { Component, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { QuestEncounter, Poke } from '../model/api.model';
+
+import { Poke } from '../model/api.model';
 
 @Component({
   selector: 'app-autochips',
@@ -25,6 +27,7 @@ export class AutochipsComponent {
 
   constructor() {
     this.filteredElms = this.formCtrl.valueChanges.pipe(
+      // tslint:disable-next-line: deprecation
       startWith(null),
       map((e: Poke | null) => e ? this._filter(e) : this.allElms.slice()));
   }

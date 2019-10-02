@@ -1,70 +1,75 @@
 import { Injectable } from '@angular/core';
-
-import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase/app';
-import { ToastrService } from 'ngx-toastr';
-import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+import { auth } from 'firebase/app';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { User } from '../model/api.model';
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  user: firebase.User = null;
+  user$: Observable<User | null>;
 
-  constructor(private afAuth: AngularFireAuth,
-              private router: Router,
-              private toast: ToastrService) {
+  constructor(
+    private afAuth: AngularFireAuth,
+    private afs: AngularFirestore,
+    private router: Router
+  ) {
 
-      this.afAuth.authState.subscribe(u => { // TODO: this.user ersetzen durch this.user$, und direkt authState zuordnen
-
-        if (u) {
-          this.user = u;
+    this.user$ = this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         }
-      });
+        return of(null);
+      })
+    );
   }
 
-  getCurrentUser() {
-    return this.afAuth.authState.pipe(first()).toPromise();
+  /**
+   * Performs the "sign in" process and updates
+   * the user
+   */
+  async googleSignin(): Promise<void> {
+
+    const provider = new auth.GoogleAuthProvider();
+    const credentials = await this.afAuth.auth.signInWithPopup(provider);
+
+    return this.updateUser(credentials.user);
   }
 
-  getCurrentUser$() {
-    return this.afAuth.authState.pipe(first());
+  /**
+   * Performs the "sign out" process and navigates
+   * to the root of the app
+   */
+  async signOut(): Promise<void> {
+    await this.afAuth.auth.signOut();
+    this.router.navigate(['/login']);
   }
 
-  async googleSignin() {
+  /**
+   * hier könnte man zusätzliche user infos reinstecken beim anmelden
+   * dafür kann man aber auch ein firebase functions trigger benutzen
+   * so wie ich das ja machen will
+   */
+  private updateUser({ uid, photoURL, displayName }) {
 
-    try {
+    /*
+    const userRef = this.afs.doc<User>(`users/${uid}`);
 
-      const result = await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); // TODO: mit redirect wäre noch cooler
+    const data = {
+      uid, photoURL, displayName, isAdmin: false
+    };
 
-      this.user = result.user;
-      this.toast.success(`Logged in as ${this.user.displayName}!`, 'Login'); // TODO: toaster rausnehmen
-      return true;
+    return userRef.set(data, { merge: true });
+    */
 
-    } catch (err) {
-
-      this.toast.error(`Logging in failed: ${err.message}`, 'Login');
-      return false;
-    }
-
-  }
-
-  async signOut() {
-
-    try {
-
-      await this.afAuth.auth.signOut();
-      this.user = null;
-      this.toast.success('You are now logged out!', 'Logout');
-      this.router.navigate(['/login']);
-      return false;
-
-    } catch (err) {
-
-      this.toast.error(`Logging out failed: ${err.message}`, 'Logout');
-      return true;
-    }
+    console.log(`Firebase cloud function updating user ${displayName} with photo ${photoURL} and id ${uid}`);
+    this.router.navigate(['/dashboard']);
   }
 }

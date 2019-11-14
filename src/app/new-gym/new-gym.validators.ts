@@ -10,9 +10,7 @@ import { Observable, of } from 'rxjs';
 })
 export class ValidatorService {
 
-    constructor(private http: HttpClient) {
-
-    }
+    constructor(private http: HttpClient) {}
 
     createGymIdValidator(): ValidatorFn {
 

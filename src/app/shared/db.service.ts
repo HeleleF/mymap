@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
-import * as firebase from 'firebase/app';
+import { firestore } from 'firebase/app';
 
 import { GeoHash, createRows } from '../shared/utils';
 import { QuestInfo, GymInfo, GymBadge, QuestStatus, BadgeEntry } from '../model/api.model';
+
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -30,7 +31,7 @@ export class DbService {
 
   async getGyms() {
 
-    const opts: firebase.firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
+    const opts: firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
 
     const { docs } = await this.gymsRef.get(opts).toPromise();
 
@@ -52,7 +53,7 @@ export class DbService {
         properties: {
           fid: doc.id,
           id: p.i,
-          url: p.u.replace(/^https?\:\/\//, ''),
+          url: p.u,
           desc: p.d,
           badge: p.b
         }
@@ -83,34 +84,6 @@ export class DbService {
         badge: p.b
       }
     });
-  }
-
-  async getBadgeCount() {
-
-    // TODO: für alle: immer cache zuerst, bei fehler nachfragen ob ohne
-    // wenn dann nochmal fehler kommt, ansagen
-    // settings kann das überschreiben?
-
-    const opts: firebase.firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
-
-    const { docs } = await this.gymsRef.get(opts).toPromise();
-
-    if (!this.gymsCached) {
-      this.gymsCached = true;
-      localStorage.setItem('gymsCached', 'true');
-    }
-
-    return (docs as QueryDocumentSnapshot<GymInfo>[]).reduce((acc, doc) => {
-
-      const b = doc.data().b;
-
-      if (b < 2) { return acc; }
-
-      acc[b - 2] += 1;
-
-      return acc;
-
-    }, [0, 0, 0]);
   }
 
   setGymBadge(fid: string, newBadge: GymBadge) {
@@ -145,7 +118,7 @@ export class DbService {
     }
     */
 
-    const opts: firebase.firestore.GetOptions = this.questsCached ? { source: 'cache' } : {};
+    const opts: firestore.GetOptions = this.questsCached ? { source: 'cache' } : {};
 
     const { docs } = await this.questsRef.get(opts).toPromise();
 

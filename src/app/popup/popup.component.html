@@ -5,7 +5,7 @@
   <h1 mat-dialog-title>{{data.desc}}</h1>
   <div mat-dialog-content>
     <div class="gym-pic">
-      <div id="swiper" class="union" (mousedown)="lock($event)" (touchstart)="lock($event)" (mouseup)="move($event)" (touchend)="move($event)">
+      <div id="swiper" class="union">
         <img class='gym-under' src='//images.weserv.nl/?url={{data.url}}&w=126&h=174' [alt]='data.desc' appFallback />
         <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{i}}.png' />
         <button mat-icon-button class="lefter" (click)="i > 0 && i = i - 1" [disabled]="i == 0"><mat-icon>chevron_left</mat-icon></button>
@@ -31,17 +31,17 @@
 
     <label id="status-radio-group-label">Set quest status</label>
     <mat-radio-group aria-labelledby="status-radio-group-label" class="status-radio-group" [(ngModel)]="data.status">
-      <mat-radio-button class="status-radio-button" value="0" matTooltip="Quest not picked up yet">Not done
+      <mat-radio-button class="status-radio-button" value="0">Not done
       </mat-radio-button>
-      <mat-radio-button class="status-radio-button" value="1" matTooltip="Quest was picked up">In progress
+      <mat-radio-button class="status-radio-button" value="1">In progress
       </mat-radio-button>
-      <mat-radio-button class="status-radio-button" value="2" matTooltip="Quest finished">Done</mat-radio-button>
+      <mat-radio-button class="status-radio-button" value="2">Done</mat-radio-button>
     </mat-radio-group>
 
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="exclude(0)" matTooltip="Don't show quests with this type">Exclude this type</button>
-    <button mat-button (click)="exclude(1)" matTooltip="Don't show quests with this reward" *ngIf="data.encounter != 'multiple'">Exclude this {{data.reward == "#" ? "encounter" : "reward"}}</button>
+    <button mat-button (click)="exclude(0)">Exclude this type</button>
+    <button mat-button (click)="exclude(1)" *ngIf="data.encounter != 'multiple'">Exclude this {{data.reward == "#" ? "encounter" : "reward"}}</button>
     <button mat-button (click)="setStatus()">Save</button>
     <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
   </div>

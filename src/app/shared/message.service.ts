@@ -154,4 +154,11 @@ export class MessageService {
       });
     }
   }
+
+  broadcast(msg: any) {
+    this.message$.next({
+      type: 'settings',
+      data: msg.style
+    });
+  }
 }

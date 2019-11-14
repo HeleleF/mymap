@@ -6,7 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { User } from '../model/api.model';
 
@@ -22,6 +22,9 @@ export class AuthService {
   ) {
 
     this.user$ = this.afAuth.authState.pipe(
+      tap(u => {
+        console.log(u);
+      }),
       switchMap(user => {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
@@ -38,9 +41,20 @@ export class AuthService {
   async googleSignin(): Promise<void> {
 
     const provider = new auth.GoogleAuthProvider();
-    const credentials = await this.afAuth.auth.signInWithPopup(provider);
+    provider.setCustomParameters({
+      prompt: 'select_account',
+    });
 
-    return this.updateUser(credentials.user);
+    try {
+
+      const credentials = await this.afAuth.auth.signInWithPopup(provider);
+
+      return this.updateUser(credentials.user);
+
+    } catch (e) {
+      console.log(e);
+      return;
+    }
   }
 
   /**

@@ -233,6 +233,13 @@ export interface FilterObject {
     gyms?: any[];
 }
 
+export enum MapStyle {
+    Light = 'lights-v11',
+    Dark = 'dark-v10',
+    Outdoors = 'outdoors-v11',
+    Streets = 'streets-v11',
+}
+
 export interface FilterSettings {
 
   showQuests: boolean;

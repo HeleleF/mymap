@@ -17,6 +17,7 @@ import { MessageService } from '../shared/message.service';
 
 import { MyFilterControl } from '../filter/filter.control';
 import { MyNewGymControl } from '../new-gym/new-gym.control';
+import { MapStyle } from '../model/api.model';
 
 @Component({
   selector: 'app-map',
@@ -66,7 +67,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: `mapbox://styles/mapbox/${(h => (h < 6 || h > 21) ? 'dark-v10' : 'outdoors-v11')((new Date()).getHours())}?optimize=true`,
+      style: this.getStyle(),
       zoom: 13,
       center: [13.204929, 52.637736],
       // maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
@@ -95,12 +96,12 @@ export class MapComponent implements OnInit, OnDestroy {
   private clickHandler(e: mapboxgl.MapMouseEvent & mapboxgl.EventData) {
 
     const features = this.map.queryRenderedFeatures(e.point, {
+
+      layers: ['gymsLayer', 'questsLayer']
       // validate: false
     });
 
     if (!features.length) { return; }
-
-    console.log(features);
 
     // @ts-ignore: Attribute 'coordinates' does exist, but Typescript cant find it?
     this.map.easeTo({ center: features[0].geometry.coordinates });
@@ -180,7 +181,7 @@ export class MapComponent implements OnInit, OnDestroy {
     try {
 
       // map is done loading, await the data
-      [this.gyms, this.quests,] = await Promise.all([...this.proms, ...this.loadAndAddImages()]);
+      [this.gyms, this.quests, ] = await Promise.all([...this.proms, ...this.loadAndAddImages()]);
 
       this.map
         .addSource('gyms', {
@@ -257,6 +258,12 @@ export class MapComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.toast.error(`${err.message}`, 'Map error');
     }
+  }
+
+  private getStyle() {
+    const s: string = localStorage.getItem('mapStyle') || 'Auto';
+
+    return `mapbox://styles/mapbox/${s !== 'Auto' ? MapStyle[s] : (h => (h < 6 || h > 21) ? 'dark-v10' : 'outdoors-v11')((new Date()).getHours())}`;
   }
 
   ngOnDestroy() {

@@ -1,3 +1,16 @@
 <div>
   <p>settings sind hier drin</p>
+  Cache und LocalStorage clearen? wird dann aber teuer?
+  notifications anzeigen wie und wann
+  map aussehen?
 </div>
+<label id="example-radio-group-label">Pick your favorite style</label>
+<mat-radio-group
+  aria-labelledby="example-radio-group-label"
+  class="example-radio-group"
+  [(ngModel)]="currentStyle">
+  <mat-radio-button color="primary" class="example-radio-button" *ngFor="let style of styles" [value]="style">
+    {{style}}
+  </mat-radio-button>
+</mat-radio-group>
+<div>Your current style is: {{currentStyle}}</div>

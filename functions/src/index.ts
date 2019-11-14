@@ -5,14 +5,7 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-export const setUserStatus = functions.auth.user().onCreate(user => {
+export const setUserStatus = functions.region('europe-west1').auth.user().onCreate(user => {
 
-    db.doc(`users/${user.uid}`).set({
-        isAdmin: false
-    }).then(r => {
-        console.log('returned ', r);
-    }).catch(e => {
-        console.log('error in onCreate', e);
-    });
-
+    return db.doc(`users/${user.uid}`).set({ role: 'user', uid: user.uid, photoURL: user.photoURL, displayName: user.displayName })
 });

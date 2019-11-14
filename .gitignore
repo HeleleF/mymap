@@ -3,9 +3,11 @@
 # own stuff
 /src/environments
 .firebase
+*-debug.log
 upload.js
 newgyms.json
 /src/assets
+firestore-tests/node_modules
 
 # compiled output
 /dist

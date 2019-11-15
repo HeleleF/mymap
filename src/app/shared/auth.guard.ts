@@ -14,6 +14,10 @@ export class AuthGuard implements CanActivate {
     private router: Router
   ) {}
 
+  /**
+   * Restricts all routes except 'login'
+   * to users that are already logged in.
+   */
   canActivate(): Observable<boolean> {
 
     return this.auth.user$.pipe(

@@ -10,6 +10,10 @@ import { switchMap, tap } from 'rxjs/operators';
 
 import { User } from '../model/api.model';
 
+/**
+ * A service to handle user authentication via
+ * firebase.
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 

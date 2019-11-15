@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
   quests: GeoJSON.FeatureCollection<GeoJSON.Point> = null;
   gymFilter = [];
   questFilter = [];
-  private sub: Subscription;
+  private subs: Subscription[] = [];
 
   constructor(
     private swUpdate: SwUpdate,
@@ -114,6 +114,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     });
 
+    // afterClosed() auto-completes itself, so unsubscribing is not needed
     ref.afterClosed().subscribe(ret => {
       console.log('popup returned ', ret);
 
@@ -224,7 +225,7 @@ export class MapComponent implements OnInit, OnDestroy {
         .on('mousemove', 'gymsLayer', () => this.map.getCanvas().style.cursor = 'pointer')
         .on('mouseleave', 'gymsLayer', () => this.map.getCanvas().style.cursor = '');
 
-      this.sub = this.ms.onMessage().subscribe({
+      const sub = this.ms.onMessage().subscribe({
 
         next: (f) => {
 
@@ -255,11 +256,20 @@ export class MapComponent implements OnInit, OnDestroy {
 
       });
 
+      this.subs.push(sub);
+
     } catch (err) {
       this.toast.error(`${err.message}`, 'Map error');
     }
   }
 
+  /**
+   * Returns the mapbox style URI based on the 
+   * style value in localStorage. 
+   * 
+   * Default style is 'Auto', which switches between
+   * 'Dark' and 'Outdoors' based on the current time.
+   */
   private getStyle() {
     const s: string = localStorage.getItem('mapStyle') || 'Auto';
 
@@ -267,7 +277,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) { this.sub.unsubscribe(); }
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
 }

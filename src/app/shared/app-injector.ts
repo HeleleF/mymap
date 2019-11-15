@@ -7,6 +7,12 @@ import { Injector } from '@angular/core';
 
 export let AppInjector: Injector;
 
+/**
+ * Stores an instance of Injector.
+ * 
+ * Useful if a class needs a dependency 
+ * but cant rely on dependency injection.
+ */
 export function setAppInjector(injector: Injector) {
     AppInjector = injector;
 }

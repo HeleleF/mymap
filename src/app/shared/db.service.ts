@@ -8,6 +8,9 @@ import { QuestInfo, GymInfo, GymBadge, QuestStatus, BadgeEntry } from '../model/
 
 import { map } from 'rxjs/operators';
 
+/**
+ * A service to query the firestore database.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -29,6 +32,11 @@ export class DbService {
     this.expire = +localStorage.getItem('questsExpire');
   }
 
+  /**
+   * Returns all gyms from firestore as GeoJSON FeatureCollection.
+   * 
+   * Uses the cache if possible.
+   */
   async getGyms() {
 
     const opts: firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
@@ -66,6 +74,10 @@ export class DbService {
     } as GeoJSON.FeatureCollection<GeoJSON.Point>;
   }
 
+  /**
+   * Adds a new gym to firestore and returns
+   * its data as GeoJSON
+   */
   async addGym(p: GymInfo): Promise<GeoJSON.Feature> {
 
     const ref = await this.gymsRef.add(p);
@@ -86,12 +98,21 @@ export class DbService {
     });
   }
 
+  /**
+   * Updates the badge of an existing gym.
+   */
   setGymBadge(fid: string, newBadge: GymBadge) {
 
     const gym = this.gymsRef.doc<GymInfo>(fid);
     return gym.update({ b: newBadge });
   }
 
+  /**
+   * Returns an object that contains the counts of each badge type and an array containing
+   * all gyms as rows of three each.
+   * 
+   * Always uses the cache!
+   */
   getAllBadgeEntries$() {
     return this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0).orderBy('b', 'desc').orderBy('d', 'asc')).get({ source: 'cache' }).pipe(
       map((r: QuerySnapshot<GymInfo>) => {
@@ -108,6 +129,11 @@ export class DbService {
     );
   }
 
+  /**
+   * Returns all quests from firestore as GeoJSON FeatureCollection.
+   * 
+   * Uses the cache if possible.
+   */
   async getQuests() {
 
     // quests in cache are from the previous day, request new ones from server

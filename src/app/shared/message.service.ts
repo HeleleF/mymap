@@ -9,6 +9,9 @@ import {
   GymInfo, Message, ErrorMessage 
 } from '../model/api.model';
 
+/**
+ * A service to pass messages between components.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +25,9 @@ export class MessageService {
     this.message$ = new BehaviorSubject(this.update());
   }
 
+  /**
+   * Provides a way to subscribe to messages.
+   */
   onMessage() {
     return this.message$.asObservable();
   }
@@ -30,6 +36,9 @@ export class MessageService {
     return this.filters;
   }
 
+  /**
+   * Returns the default settings.
+   */
   private getDefaults(): FilterSettings {
     return {
       showGyms: true,
@@ -47,6 +56,10 @@ export class MessageService {
     };
   }
 
+  /**
+   * Creates the Filter for the gym layer as
+   * needed by the mapboxgl api.
+   */
   private createGymFilter(data: GymFilter) {
 
     const filter = [];
@@ -64,6 +77,10 @@ export class MessageService {
     return filter.length > 1 ? ['all', ...filter] : (filter.length === 1 ? filter.flat() : null);
   }
 
+  /**
+   * Creates the Filter for the quest layer as
+   * needed by the mapboxgl api.
+   */
   private createQuestFilter(data: QuestFilter) {
 
     const filter = [];
@@ -115,6 +132,10 @@ export class MessageService {
 
   }
 
+  /**
+   * Updates the filter object and returns it
+   * as a Message.
+   */
   private update(): Message {
 
     const filterObj: FilterObject = {
@@ -131,6 +152,11 @@ export class MessageService {
     };
   }
 
+  /**
+   * Saves the given filters to localStorage and
+   * triggers a 'filtersChanged' message for all
+   * subscribers of this MessageService.
+   */
   persistFilters(data?: FilterSettings) {
 
     console.log('Filter Service recieved ', data);
@@ -141,10 +167,18 @@ export class MessageService {
     return this.message$.next(this.update());
   }
 
+  /**
+   * Triggers the `next()` method with the given message for all 
+   * subscribers of this MessageService.
+   */
   broadcast(msg: Message) {
     return this.message$.next(msg);
   }
 
+  /**
+   * Triggers the `error()` method with the given error for all 
+   * subscribers of this MessageService.
+   */
   fail(msg: ErrorMessage) {
     return this.message$.error(msg);
   }

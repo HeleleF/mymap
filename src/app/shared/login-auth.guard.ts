@@ -14,6 +14,10 @@ export class LoginAuthGuard implements CanActivate {
     private router: Router
   ) {}
 
+  /**
+   * Restricts the 'login' route
+   * to users that are not logged in.
+   */
   canActivate(): Observable<boolean> {
 
     return this.auth.user$.pipe(

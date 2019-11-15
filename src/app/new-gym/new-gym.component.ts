@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { MessageService } from '../shared/message.service';
 import { ValidatorService } from './new-gym.validators';
+import { DbService } from '../shared/db.service';
 
 @Component({
   selector: 'app-new-gym',
@@ -19,6 +20,7 @@ export class NewGymComponent {
     private popup: MatDialogRef<NewGymComponent>,
     private vs: ValidatorService,
     private fb: FormBuilder,
+    private db: DbService,
     private ms: MessageService
   ) {
     this.gymData = this.fb.group({
@@ -62,20 +64,32 @@ export class NewGymComponent {
     this.gymData.reset();
   }
 
-  create() {
+  async create() {
 
     const v = this.gymData.value;
 
     const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 
-    this.ms.addGym({
-      b: v.badge,
-      d: v.name,
-      i: v.id,
-      lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
-      lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
-      u: v.url.replace(/^https?\:\/\//, '')
-    });
+    try {
+
+      const res = await this.db.addGym({
+        b: v.badge,
+        d: v.name,
+        i: v.id,
+        lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
+        lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
+        u: v.url.replace(/^https?\:\/\//, '')
+      });
+
+      this.ms.broadcast({ type: 'newGym', data: res });
+
+    } catch (e) {
+      this.ms.fail({
+        type: 'Gym',
+        err: `Couldn't add "${v.name}" because: ${e.message}`
+      });
+    }
+
     this.popup.close();
   }
 

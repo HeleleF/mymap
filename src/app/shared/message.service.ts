@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { DbService } from './db.service';
-import { GymFilter, QuestFilter, QuestReward, QuestType, FilterSettings, FilterObject, GymInfo, Message } from '../model/api.model';
+import { 
+  GymFilter, QuestFilter, QuestReward, 
+  QuestType, FilterSettings, FilterObject, 
+  GymInfo, Message, ErrorMessage 
+} from '../model/api.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +15,7 @@ import { GymFilter, QuestFilter, QuestReward, QuestType, FilterSettings, FilterO
 export class MessageService {
 
   private message$: BehaviorSubject<Message>;
-  public filters: FilterSettings;
+  filters: FilterSettings;
 
   constructor(private db: DbService) {
     this.filters = JSON.parse(localStorage.getItem('filters')) || this.getDefaults();
@@ -137,28 +141,11 @@ export class MessageService {
     return this.message$.next(this.update());
   }
 
-  async addGym(gymData: GymInfo) {
-
-    try {
-      const res = await this.db.addGym(gymData);
-
-      this.message$.next({
-        type: 'newGym',
-        data: res
-      });
-
-    } catch (e) {
-      this.message$.error({
-        type: 'Gym',
-        msg: `Couldn't add ${gymData.d} because: ${e.message}`
-      });
-    }
+  broadcast(msg: Message) {
+    return this.message$.next(msg);
   }
 
-  broadcast(msg: any) {
-    this.message$.next({
-      type: 'settings',
-      data: msg.style
-    });
+  fail(msg: ErrorMessage) {
+    return this.message$.error(msg);
   }
 }

@@ -250,7 +250,7 @@ export class MapComponent implements OnInit, OnDestroy {
           }
         },
         error: (e) => {
-          this.toast.error(e.msg, `${e.type} error`);
+          this.toast.error(e.err, `${e.type} error`);
         }
 
       });

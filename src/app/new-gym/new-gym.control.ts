@@ -1,7 +1,7 @@
 import { IControl, Map } from 'mapbox-gl';
 import { MatDialog } from '@angular/material/dialog';
 
-import { AppInjector } from '../shared/appInjector';
+import { AppInjector } from '../shared/app-injector';
 
 import { NewGymComponent } from './new-gym.component';
 

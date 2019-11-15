@@ -22,7 +22,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
@@ -50,7 +49,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import { setAppInjector } from './shared/appInjector';
+import { setAppInjector } from './shared/app-injector';
 
 @NgModule({
   declarations: [
@@ -64,7 +63,7 @@ import { setAppInjector } from './shared/appInjector';
     AutochipsComponent,
     SettingsComponent,
     NewGymComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +89,6 @@ import { setAppInjector } from './shared/appInjector';
     MatListModule,
     MatFormFieldModule,
     MatRadioModule,
-    MatTooltipModule,
     MatCheckboxModule,
     MatAutocompleteModule,
     MatDividerModule,

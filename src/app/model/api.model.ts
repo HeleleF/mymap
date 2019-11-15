@@ -234,7 +234,7 @@ export interface FilterObject {
 }
 
 export enum MapStyle {
-    Light = 'lights-v11',
+    Light = 'light-v10',
     Dark = 'dark-v10',
     Outdoors = 'outdoors-v11',
     Streets = 'streets-v11',

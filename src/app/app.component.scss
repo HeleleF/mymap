@@ -1,6 +1,8 @@
 .expanded-toolbar {
     justify-content: space-between;
     align-items: center;
+    z-index: 10;
+    position: relative;
   }
 
   .toolbar-spacer {

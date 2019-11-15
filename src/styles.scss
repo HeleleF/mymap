@@ -66,3 +66,7 @@ body {
   color: mat-color($my-app-accent);
 }
 
+.mapboxgl-canvas {
+  width: 100% !important;
+}
+

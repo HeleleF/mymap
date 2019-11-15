@@ -11,6 +11,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 body {
     margin: 0;
     font-family: sans-serif;
+    height: 100%;
   }
   
   h1, h2 {
@@ -43,7 +44,7 @@ body {
     background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDBWMHoiLz48cGF0aCBkPSJNMTIgMkM4LjE0IDIgNSA1LjE0IDUgOWMwIDUuMjUgNyAxMyA3IDEzczctNy43NSA3LTEzYzAtMy44Ni0zLjE0LTctNy03em00IDhoLTN2M2gtMnYtM0g4VjhoM1Y1aDJ2M2gzdjJ6Ii8+PC9zdmc+') 50% 50% no-repeat;
   }
 
-  .badge-list::-webkit-scrollbar-track
+.badge-list::-webkit-scrollbar-track
 {
   background-color: rgb(255, 255, 255);
 }

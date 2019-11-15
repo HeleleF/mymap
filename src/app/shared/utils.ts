@@ -99,15 +99,17 @@ export class GeoHash {
 }
 
 /**
- * Returns the keys for a given enum.
- * Necessary since `Object.keys()` alone also
- * returns the reverse values (indices).
+ * Returns the keys for a given enum `E`.
+ * 
+ * `str` indicates whether we have to account for reverse mappings
+ * (https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings)
+ * Default is `true`.
  */
-export function getKeys(E: any): string[] {
+export function getKeys(E: any, str = true): string[] {
 
     const enumKeys = Object.keys(E);
 
-    return enumKeys.slice(enumKeys.length / 2);
+    return str ? enumKeys.slice(enumKeys.length / 2) : enumKeys;
 }
 
 /**
@@ -131,7 +133,7 @@ export function getKeys(E: any): string[] {
  * ```js
  * const b = [0,1,2,3,4,5,6,7,8];
  * createRows(b, 4);
- * console.log(b) // -> [ [0,1,2,3], [3,4,5,6], [7,8] ]
+ * console.log(b) // -> [ [0,1,2,3], [4,5,6,7], [8] ]
  * ```
  */
 export function createRows<T>(data: T[], columns = 3): T[][] {

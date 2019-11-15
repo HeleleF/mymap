@@ -14,7 +14,7 @@ export class SettingsComponent implements OnDestroy {
   styles: string[];
 
   constructor() {
-    this.styles = [...getKeys(MapStyle), 'Auto'];
+    this.styles = [...getKeys(MapStyle, false), 'Auto'];
     this.currentStyle = localStorage.getItem('mapStyle') || 'Auto';
   }
 

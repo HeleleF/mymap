@@ -220,6 +220,12 @@ export interface Message {
     data: any;
 }
 
+export interface ErrorMessage {
+    type: 'Gym';
+    err: string;
+    data?: any;
+}
+
 export interface BadgeEntry {
     d: string;
     u: string;

@@ -114,10 +114,10 @@ export function getKeys(E: any, str = true): string[] {
 
 /**
  * Turns an array of x elements into an array
- * of arrays, where each innner array has length `n`.
+ * of arrays, where each innner array has length `columns`.
  *
- * The default value for columns is 3.
- * The original array is changed ater calling this !!!
+ * The default value for `columns` is 3.
+ * The original array is changed after calling this !!!
  *
  * ### Example:
  * ```js

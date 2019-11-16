@@ -14,38 +14,38 @@ describe('Dashboard', () => {
   });
 
   it('should show gold badges first', () => {
-    expect(page.getTopRow()).toEqual('gold');
+    expect(page.getTopRow()).toContain(4);
   });
 
   it('should show gold badges after click', () => {
-    page.clickBadge('gold');
-    expect(page.getTopRow()).toEqual('gold');
+    page.clickBadge(4);
+    expect(page.getTopRow()).toContain(4);
   });
 
   it('should show gold badges after click silver and then gold', () => {
-    page.clickBadge('silver');
-    expect(page.getTopRow()).toEqual('silver');
+    page.clickBadge(3);
+    expect(page.getTopRow()).toContain(3);
 
-    page.clickBadge('gold');
-    expect(page.getTopRow()).toEqual('gold');
+    page.clickBadge(4);
+    expect(page.getTopRow()).toContain(4);
   });
 
   it('should show gold badges after click bronze and then gold', () => {
-    page.clickBadge('bronze');
-    expect(page.getTopRow()).toEqual('bronze');
+    page.clickBadge(2);
+    expect(page.getTopRow()).toContain(2);
 
-    page.clickBadge('gold');
-    expect(page.getTopRow()).toEqual('gold');
+    page.clickBadge(4);
+    expect(page.getTopRow()).toContain(4);
   });
 
   it('should show silver badges after click', () => {
-    page.clickBadge('silver');
-    expect(page.getTopRow()).toEqual('silver');
+    page.clickBadge(3);
+    expect(page.getTopRow()).toContain(3);
   });
 
   it('should show bronze badges after click', () => {
-    page.clickBadge('bronze');
-    expect(page.getTopRow()).toEqual('bronze');
+    page.clickBadge(2);
+    expect(page.getTopRow()).toContain(2);
   });
 
   afterEach(async () => {

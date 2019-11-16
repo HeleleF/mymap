@@ -2,12 +2,12 @@ import { browser, by, element } from 'protractor';
 
 export class DashboardPage {
 
-    clickBadge(badge: string) {
-        throw new Error('Method not implemented.');
+    clickBadge(badge: number) {
+        return element(by.css(`.badgeCountImage[data-badge="${badge}"]`)).click();
     }
 
     getTopRow(): any {
-        throw new Error('Method not implemented.');
+        return element.all(by.css('.over')).map(e => e.getAttribute('src'));
     }
 
     navigateTo() {

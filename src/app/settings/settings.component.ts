@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 
 import { getKeys } from '../shared/utils';
-import { MapStyle } from '../model/api.model';
+import { MapStyle } from '../model/shared.model';
 
 @Component({
   selector: 'app-settings',

@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { DbService } from '../shared/db.service';
-import { MessageService } from '../shared/message.service';
+import { DbService } from '../services/db.service';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-popup',

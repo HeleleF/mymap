@@ -5,7 +5,7 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
-import { Poke } from '../model/api.model';
+import { Poke } from '../model/shared.model';
 
 @Component({
   selector: 'app-autochips',

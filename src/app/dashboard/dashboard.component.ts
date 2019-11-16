@@ -5,9 +5,8 @@ import { Datasource } from 'ngx-ui-scroll';
 import { Observable, of, fromEvent } from 'rxjs';
 import { map, take, shareReplay, tap } from 'rxjs/operators';
 
-import { DbService } from '../shared/db.service';
-import { AuthService } from '../shared/auth.service';
-import { BadgeEntry } from '../model/api.model';
+import { DbService } from '../services/db.service';
+import { BadgeEntry } from '../model/gym.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,9 +28,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   @ViewChildren('badgelist') ul: QueryList<ElementRef<HTMLUListElement>>;
 
-  constructor(
-    private db: DbService
-  ) {
+  constructor(private db: DbService) {
+
     this.badgeEntries$ = this.db.getAllBadgeEntries$().pipe(
       tap((obj) => {
         this.rows = obj.badgeRows.flat(); // used for reloading later
@@ -41,6 +39,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       map(obj => obj.badgeRows),
       shareReplay() // prevents the datasource from always request everything on scroll
     );
+
     this.dsrc = new Datasource({
       get: (startIndex: number, cnt: number) => {
 

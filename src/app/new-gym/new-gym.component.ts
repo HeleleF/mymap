@@ -3,9 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { MessageService } from '../shared/message.service';
-import { ValidatorService } from './new-gym.validators';
-import { DbService } from '../shared/db.service';
+import { MessageService } from '../services/message.service';
+import { ValidatorService } from '../services/validator.service';
+import { DbService } from '../services/db.service';
 
 @Component({
   selector: 'app-new-gym',

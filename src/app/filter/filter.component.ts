@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { MessageService } from '../shared/message.service';
+import { MessageService } from '../services/message.service';
 import { getKeys } from '../shared/utils';
 
-import { QuestType, QuestReward, QuestEncounter, FilterSettings, Poke, GymBadge } from '../model/api.model';
+import { FilterSettings, Poke } from '../model/shared.model';
+import { QuestType, QuestEncounter, QuestReward } from '../model/quest.model';
+import { GymBadge } from '../model/gym.model';
 
 @Component({
   selector: 'app-filter',

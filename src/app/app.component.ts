@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from './shared/auth.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',

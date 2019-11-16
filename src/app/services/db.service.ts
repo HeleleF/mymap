@@ -4,9 +4,10 @@ import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, Qu
 import { firestore } from 'firebase/app';
 
 import { GeoHash, createRows } from '../shared/utils';
-import { QuestInfo, GymInfo, GymBadge, QuestStatus, BadgeEntry } from '../model/api.model';
 
 import { map } from 'rxjs/operators';
+import { GymInfo, GymBadge, BadgeEntry } from '../model/gym.model';
+import { QuestInfo, QuestStatus } from '../model/quest.model';
 
 /**
  * A service to query the firestore database.

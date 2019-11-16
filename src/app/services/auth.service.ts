@@ -8,7 +8,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
-import { User } from '../model/api.model';
+import { User } from '../model/shared.model';
 
 /**
  * A service to handle user authentication via

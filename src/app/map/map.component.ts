@@ -12,12 +12,12 @@ import { take } from 'rxjs/operators';
 
 import { PopupComponent } from '../popup/popup.component';
 
-import { DbService } from '../shared/db.service';
-import { MessageService } from '../shared/message.service';
+import { DbService } from '../services/db.service';
+import { MessageService } from '../services/message.service';
 
 import { MyFilterControl } from '../filter/filter.control';
 import { MyNewGymControl } from '../new-gym/new-gym.control';
-import { MapStyle } from '../model/api.model';
+import { MapStyle } from '../model/shared.model';
 
 @Component({
   selector: 'app-map',
@@ -155,22 +155,22 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadAndAddImages() {
+  private loadAndAddImages(): Promise<string>[] {
 
     const imgs = ['gyms/badge0', 'gyms/badge1', 'gyms/badge2', 'gyms/badge3', 'gyms/badge4'];
 
     return imgs.map(path => {
-      return new Promise((res, rej) => {
+      return new Promise((resolve, reject) => {
         this.map.loadImage(`../assets/${path}.png`, (err: Error, img: ImageData) => {
 
           if (err) {
-            rej(err.message);
+            reject(err.message);
           } else {
 
             const name = path.split('/').pop();
 
             this.map.addImage(name, img);
-            res(name);
+            resolve(name);
           }
         });
       });

@@ -3,11 +3,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { DbService } from './db.service';
-import { 
-  GymFilter, QuestFilter, QuestReward, 
-  QuestType, FilterSettings, FilterObject, 
-  GymInfo, Message, ErrorMessage 
-} from '../model/api.model';
+
+import { FilterSettings, FilterObject, ErrorMessage, Message } from '../model/shared.model';
+import { GymFilter } from '../model/gym.model';
+import { QuestFilter, QuestType, QuestReward } from '../model/quest.model';
 
 /**
  * A service to pass messages between components.

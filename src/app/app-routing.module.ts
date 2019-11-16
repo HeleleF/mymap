@@ -7,8 +7,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-import { AuthGuard } from './shared/auth.guard';
-import { LoginAuthGuard } from './shared/login-auth.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { LoginAuthGuard } from './guards/login-auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

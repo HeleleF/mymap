@@ -32,7 +32,7 @@ export class NewGymComponent {
       pos: ['', [Validators.required, this.vs.createGymPositionValidator()]],
       id: ['', [Validators.required, this.vs.createGymIdValidator()]],
       url: ['', [Validators.required], [this.vs.createGymUrlValidator()]],
-      badge: [0, [this.vs.createGymBadgeValidator()]],
+      badge: ['', [Validators.required, this.vs.createGymBadgeValidator()]],
     }, { updateOn: 'blur' });
   }
 
@@ -71,15 +71,13 @@ export class NewGymComponent {
   async create() {
 
     const v = this.gymData.value;
-    console.log(v);
-    return;
 
     const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 
     try {
 
       const res = await this.db.addGym({
-        b: v.badge,
+        b: +GymBadge[v.badge],
         d: v.name,
         i: v.id,
         lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,

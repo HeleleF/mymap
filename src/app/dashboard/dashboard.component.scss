@@ -11,9 +11,16 @@ $gymBadgeDim: 256px;
 $gymBadgeDimNegHalf: $gymBadgeDim / -2;
 
 $desktopPhoneBreakpoint: 1000px;
+$smallPhoneBreakpoint: 660px;
 
 @mixin desktop {
     @media (min-width: #{$desktopPhoneBreakpoint}) {
+        @content;
+    }
+}
+
+@mixin small-phone {
+    @media (max-width: #{$smallPhoneBreakpoint}) {
         @content;
     }
 }

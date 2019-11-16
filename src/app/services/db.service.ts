@@ -78,6 +78,9 @@ export class DbService {
   /**
    * Adds a new gym to firestore and returns
    * its data as GeoJSON
+   * 
+   * **TODO(helene): Don't add gym if it already exists! 
+   * Query by gym_id to check?**
    */
   async addGym(p: GymInfo): Promise<GeoJSON.Feature> {
 

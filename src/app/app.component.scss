@@ -1,34 +1,35 @@
 .expanded-toolbar {
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
-    position: relative;
-  }
 
-  .toolbar-spacer {
-    flex: 1 1 auto;
-  }
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  position: relative;
+}
 
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
 
-  .user-container {
+.user-container {
 
-    height: 160px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  height: 160px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    .user-name {
+  .user-name {
       height: 10px;
-    }
+  }
 
-    .user-image {
+  .user-image {
+    
       border-radius: 50%;
-  
+
       height: 100px;
       width: 100px;
-  
+
       display: block;
-      margin: auto;   
-    }
+      margin: auto;
   }
+}

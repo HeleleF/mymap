@@ -33,7 +33,7 @@ export class MyFilterControl implements IControl {
         btn.addEventListener('click', ev => {
 
             ev.stopPropagation();
-            this.modal.open(FilterComponent, { width: '600px', height: '700px' });
+            this.modal.open(FilterComponent);
         });
 
         this.container.appendChild(btn);

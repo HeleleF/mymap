@@ -108,8 +108,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const props = features[0].properties;
     const ref = this.modal.open(PopupComponent, {
-      width: '600px',
-      height: '800px',
       data: props
 
     });

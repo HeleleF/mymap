@@ -33,7 +33,7 @@ export class MyNewGymControl implements IControl {
         btn.addEventListener('click', ev => {
 
             ev.stopPropagation();
-            this.modal.open(NewGymComponent, { width: '600px', height: '700px' });
+            this.modal.open(NewGymComponent, { width: '500px' });
         });
 
         this.container.appendChild(btn);

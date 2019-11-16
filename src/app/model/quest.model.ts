@@ -1,12 +1,3 @@
-
-export enum GymBadge {
-    NOT_SEEN = 0,
-    SEEN = 1,
-    BRONZE = 2,
-    SILVER = 3,
-    GOLD = 4
-}
-
 export interface StopInfo {
     fid: string;
     id?: string;
@@ -15,16 +6,6 @@ export interface StopInfo {
     latitude: number;
     longitude: number;
     imageUrl?: string;
-}
-
-export interface GymInfo {
-    fid?: string;
-    i?: string;
-    d: string;
-    lat: number;
-    lon: number;
-    u?: string;
-    b: number;
 }
 
 export enum QuestStatus {
@@ -194,11 +175,6 @@ export interface QuestInfo {
     quantity?: number;
 }
 
-export interface GymFilter {
-    badges?: GymBadge[];
-    negateBadge?: boolean;
-}
-
 export interface QuestFilter {
     types?: string[];
     negateType?: boolean;
@@ -208,69 +184,4 @@ export interface QuestFilter {
     hasEncounter?: boolean;
     encounters?: string[];
     negateEncounter?: boolean;
-}
-
-export interface Poke {
-    dex: string;
-    name: string;
-}
-
-export interface Message {
-    type: 'newGym' | 'filtersChanged' | 'settings';
-    data: any;
-}
-
-export interface ErrorMessage {
-    type: 'Gym';
-    err: string;
-    data?: any;
-}
-
-export interface BadgeEntry {
-    d: string;
-    u: string;
-    b: GymBadge;
-}
-
-export interface FilterObject {
-    showGyms: boolean;
-    showQuests: boolean;
-    quests?: any[];
-    gyms?: any[];
-}
-
-export enum MapStyle {
-    Light = 'light-v10',
-    Dark = 'dark-v10',
-    Outdoors = 'outdoors-v11',
-    Streets = 'streets-v11',
-}
-
-export interface FilterSettings {
-
-  showQuests: boolean;
-  showGyms: boolean;
-
-  hasEncounter?: boolean;
-  negateEncounter?: boolean;
-  encounters: any;
-
-  rewards: any;
-  hasReward?: boolean;
-  negateReward?: boolean;
-
-  negateType?: boolean;
-  types: any;
-
-  negateBadge?: boolean;
-  badges: number[];
-}
-
-export interface User {
-    uid: string;
-    photoURL?: string;
-    displayName?: string;
-    isAdmin?: boolean;
-
-    // mehr wenn wir brauchen
 }

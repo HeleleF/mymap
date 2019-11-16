@@ -1,4 +1,3 @@
-<!-- nur gyms haben ne url, beim quests heißt es anders-->
 <ng-container *ngIf="data.url; then gymBlock else questBlock"></ng-container>
 
 <ng-template #gymBlock>
@@ -16,7 +15,7 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="setBadge()" [disabled]="i == data.badge">Save</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Close</button>
   </div>
 </ng-template>
 
@@ -43,6 +42,6 @@
     <button mat-button (click)="exclude(0)">Exclude this type</button>
     <button mat-button (click)="exclude(1)" *ngIf="data.encounter != 'multiple'">Exclude this {{data.reward == "#" ? "encounter" : "reward"}}</button>
     <button mat-button (click)="setStatus()">Save</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Close</button>
   </div>
 </ng-template>

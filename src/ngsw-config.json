@@ -12,8 +12,7 @@
           "/*.css",
           "/*.js",
           "/*.json",
-          "/assets/gyms/**",
-          "/assets/quests/**"
+          "/assets/gyms/**"
         ]
       }
     }, {
@@ -31,9 +30,7 @@
     {
       "name": "pogo-api",
       "urls": [
-        "https://api.mapbox.com/**",
-        "http://lh*.ggpht.com/**",
-        "http://lh*.googleusercontent.com/**"
+        "https://api.mapbox.com/**"
       ],
       "cacheConfig": {
         "strategy": "performance",

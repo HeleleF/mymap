@@ -28,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRippleModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -63,7 +64,7 @@ import { setAppInjector } from './shared/app-injector';
     AutochipsComponent,
     SettingsComponent,
     NewGymComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,10 +96,11 @@ import { setAppInjector } from './shared/app-injector';
     MatInputModule,
     MatProgressBarModule,
     MatRippleModule,
+    MatSelectModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   entryComponents: [PopupComponent, FilterComponent, NewGymComponent],
   providers: [],

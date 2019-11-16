@@ -5,6 +5,9 @@ import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
+import { getKeys } from '../shared/utils';
+import { GymBadge } from '../model/gym.model';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -32,7 +35,7 @@ export class ValidatorService {
 
     createGymBadgeValidator(): ValidatorFn {
 
-        const validBadges = [0, 1, 2, 3, 4];
+        const validBadges = getKeys(GymBadge);
 
         return (control: AbstractControl): { [key: string]: any } | null => {
             return validBadges.includes(control.value) ? null : { wrongBadge: { value: control.value } };

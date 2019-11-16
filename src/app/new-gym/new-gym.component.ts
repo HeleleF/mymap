@@ -6,6 +6,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from '../services/message.service';
 import { ValidatorService } from '../services/validator.service';
 import { DbService } from '../services/db.service';
+import { getKeys } from '../shared/utils';
+import { GymBadge } from '../model/gym.model';
 
 @Component({
   selector: 'app-new-gym',
@@ -15,6 +17,7 @@ import { DbService } from '../services/db.service';
 export class NewGymComponent {
 
   gymData: FormGroup;
+  readonly badges: string[];
 
   constructor(
     private popup: MatDialogRef<NewGymComponent>,
@@ -23,6 +26,7 @@ export class NewGymComponent {
     private db: DbService,
     private ms: MessageService
   ) {
+    this.badges = getKeys(GymBadge);
     this.gymData = this.fb.group({
       name: ['', [Validators.required]],
       pos: ['', [Validators.required, this.vs.createGymPositionValidator()]],
@@ -67,6 +71,8 @@ export class NewGymComponent {
   async create() {
 
     const v = this.gymData.value;
+    console.log(v);
+    return;
 
     const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 

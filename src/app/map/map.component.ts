@@ -15,8 +15,8 @@ import { PopupComponent } from '../popup/popup.component';
 import { DbService } from '../services/db.service';
 import { MessageService } from '../services/message.service';
 
-import { MyFilterControl } from '../filter/filter.control';
-import { MyNewGymControl } from '../new-gym/new-gym.control';
+import { FilterControl } from '../filter/filter.control';
+import { NewGymControl } from '../new-gym/new-gym.control';
 import { MapStyle } from '../model/shared.model';
 
 @Component({
@@ -70,21 +70,19 @@ export class MapComponent implements OnInit, OnDestroy {
       style: this.getStyle(),
       zoom: 13,
       center: [13.204929, 52.637736],
-      // maxBounds: [[13.011440, 52.379703], [13.786092, 52.784571]],
       maxZoom: 16,
       minZoom: 11,
       attributionControl: false,
-      // hash: true,
     })
-      .addControl(new mapboxgl.NavigationControl(), 'top-right') // TODO: brauchen wir das wirklich?
-      .addControl(new MyFilterControl(), 'top-right')
-      .addControl(new MyNewGymControl(), 'top-right')
+      .addControl(new mapboxgl.NavigationControl(), 'top-right')
+      .addControl(new FilterControl(), 'top-right')
+      .addControl(new NewGymControl(), 'top-right')
       .addControl(new mapboxgl.AttributionControl({
         compact: true,
         customAttribution: 'Icons by <a href="http://roundicons.com">Roundicons free</a>, <a href="http://theartificial.nl">The Artificial</a> and <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> &amp; <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a>'
       }))
-      .on('click', this.clickHandler.bind(this))
-      .on('styleimagemissing', this.styleHandler.bind(this))
+      .on('click', this.onClick.bind(this))
+      .on('styleimagemissing', this.onStyleImageMissing.bind(this))
       .on('load', () => {
 
         this.toast.success('Map loaded!', 'Map');
@@ -93,7 +91,7 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  private clickHandler(e: mapboxgl.MapMouseEvent & mapboxgl.EventData) {
+  private onClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData) {
 
     const features = this.map.queryRenderedFeatures(e.point, {
 
@@ -114,7 +112,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     // afterClosed() auto-completes itself, so unsubscribing is not needed
     ref.afterClosed().subscribe(ret => {
-      console.log('popup returned ', ret);
 
       if (ret && ret.hasOwnProperty('badgeUpdate')) {
 
@@ -128,13 +125,15 @@ export class MapComponent implements OnInit, OnDestroy {
         (this.map.getSource('gyms') as mapboxgl.GeoJSONSource).setData(this.gyms);
       }
 
-      // quests lieber über feature state malen
+      // TODO(helene): Handle updates for quest layer with feature state.
     });
 
 
   }
 
-  private async styleHandler(e: any) { // TODO: create a mapbox already containing all the icons
+  // TODO(helene): Create an own mapbox style that already contains the main icons
+  // like gym badges and maybe the quest rewards?
+  private async onStyleImageMissing(e: any) { 
 
     const id = e.id;
     await new Promise(resolve => {
@@ -179,7 +178,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     try {
 
-      // map is done loading, await the data
+      // TODO(helene): Refactor to use observables everywhere
       [this.gyms, this.quests, ] = await Promise.all([...this.proms, ...this.loadAndAddImages()]);
 
       this.map
@@ -196,7 +195,7 @@ export class MapComponent implements OnInit, OnDestroy {
           type: 'symbol',
           source: 'gyms',
           layout: {
-            'icon-image': 'badge{badge}', // ['concat', 'badge', ['get', 'badge']], // TODO: syntax geht auch, welche ist performanter?
+            'icon-image': 'badge{badge}',
             'icon-size': 0.5,
             'icon-allow-overlap': true
           },
@@ -208,12 +207,13 @@ export class MapComponent implements OnInit, OnDestroy {
           type: 'symbol',
           source: 'quests',
           layout: {
-            'icon-image': ['case', ['==', '#', ['get', 'reward']], ['get', 'encounter'], ['get', 'reward']], // TODO: icon für multiple? vlt ein fragezeichen? und onclick werden die möglichkeiten angezeigt?
+            // TODO(helene): Handle quests with multiple rewards with question mark icon?
+            'icon-image': ['case', ['==', '#', ['get', 'reward']], ['get', 'encounter'], ['get', 'reward']],
             'icon-size': 0.5,
             'icon-allow-overlap': true,
             'icon-ignore-placement': true,
             'text-field': ['case', ['has', 'quantity'], ['get', 'quantity'], ''],
-            'text-offset': [1.5, -1.5], // TODO: text style wäre nice...text verschwindet nicht beim rauszoomen?
+            'text-offset': [1.5, -1.5],
             'text-allow-overlap': true,
             'text-ignore-placement': true
           },

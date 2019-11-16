@@ -5,7 +5,7 @@ import { AppInjector } from '../shared/app-injector';
 
 import { NewGymComponent } from './new-gym.component';
 
-export class MyNewGymControl implements IControl {
+export class NewGymControl implements IControl {
 
     mapRef: Map;
     container: HTMLDivElement;

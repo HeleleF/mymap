@@ -5,7 +5,7 @@ import { IControl, Map } from 'mapbox-gl';
 
 import { FilterComponent } from './filter.component';
 
-export class MyFilterControl implements IControl {
+export class FilterControl implements IControl {
 
     mapRef: Map;
     container: HTMLDivElement;

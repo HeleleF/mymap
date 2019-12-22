@@ -11,7 +11,7 @@ import { MapStyle } from '../model/shared.model';
 export class SettingsComponent implements OnDestroy {
 
   currentStyle: string;
-  styles: string[];
+  readonly styles: string[];
 
   constructor() {
     this.styles = [...getKeys(MapStyle, false), 'Auto'];

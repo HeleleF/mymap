@@ -74,6 +74,9 @@ export class NewGymComponent {
 
     const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 
+    //TODO(helene): Prevent adding the same gym multiple times by 
+    // disabling the create button when clicked
+
     try {
 
       const res = await this.db.addGym({

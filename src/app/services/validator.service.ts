@@ -41,6 +41,7 @@ export class ValidatorService {
             return validBadges.includes(control.value) ? null : { wrongBadge: { value: control.value } };
         };
     }
+
     createGymUrlValidator(): AsyncValidatorFn {
 
         return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
@@ -54,6 +55,16 @@ export class ValidatorService {
                 })
             );
         };
+    }
+
+    parseAndValidate(text: string): {[key: string]: any} {
+
+        const matcher = /description: \"(?<name>.*)\"\s{1,2}url: \"(?<url>.*)\"\s{1,2}location: \"(?<pos>.*)\"\s{1,2}gym_id: \"(?<id>.*)\"\s{1,2}badge: (?<badge>\d)/m;
+
+        const { groups } = matcher.exec(text) || { groups: { name: null, url: null, pos: null, id: null, badge: null } };
+
+        if (groups.badge) groups.badge = GymBadge[groups.badge];
+        return groups;
     }
 }
 

@@ -6,6 +6,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from '../services/message.service';
 import { ValidatorService } from '../services/validator.service';
 import { DbService } from '../services/db.service';
+
 import { getKeys } from '../shared/utils';
 import { GymBadge } from '../model/gym.model';
 
@@ -68,9 +69,21 @@ export class NewGymComponent {
     this.gymData.reset();
   }
 
+  onPaste(ev: ClipboardEvent) {
+
+    // prevent actually pasting the content directly
+    ev.preventDefault();
+    const data = ev.clipboardData.getData('text');
+    if (!data) return;
+
+    this.gymData.setValue(this.vs.parseAndValidate(data));
+  }
+
   async create() {
 
     const v = this.gymData.value;
+
+    this.gymData.disable();
 
     const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 

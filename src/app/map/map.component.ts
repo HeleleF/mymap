@@ -236,7 +236,7 @@ export class MapComponent implements OnInit, OnDestroy {
             case 'newGym':
               this.gyms.features.push(f.data);
               (this.map.getSource('gyms') as mapboxgl.GeoJSONSource).setData(this.gyms);
-              this.toast.success(`Added ${f.data.properties.desc} as a new gym!`, `Gym`);
+              this.toast.success(`Added "${f.data.properties.desc}" as a new gym!`, `Gym`);
               break;
 
             case 'filtersChanged':
@@ -248,7 +248,7 @@ export class MapComponent implements OnInit, OnDestroy {
               break;
 
             default:
-              this.toast.warning(`Couldn't handle type <${f.type}>!`, `Message warning`);
+              this.toast.warning(`Couldn't handle type <${f.type}>!`, `Message`);
               break;
           }
         },

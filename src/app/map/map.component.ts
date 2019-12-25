@@ -113,7 +113,11 @@ export class MapComponent implements OnInit, OnDestroy {
     // afterClosed() auto-completes itself, so unsubscribing is not needed
     ref.afterClosed().subscribe(ret => {
 
-      if (ret && ret.hasOwnProperty('badgeUpdate')) {
+      if (ret && ret.hasOwnProperty('error')) {
+
+        this.toast.error(`Couldn't update gym because: ${ret.error}!`, 'Gym');
+
+      } else if (ret && ret.hasOwnProperty('badgeUpdate')) {
 
         for (let i = this.gyms.features.length; i--;) {
           if (this.gyms.features[i].properties.fid === ret.fid) {

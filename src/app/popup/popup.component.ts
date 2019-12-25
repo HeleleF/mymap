@@ -38,11 +38,19 @@ export class PopupComponent {
   }
 
   async setBadge() {
-    await this.db.setGymBadge(this.data.fid, this.i);
-    this.popup.close({
-      badgeUpdate: this.i,
-      ...this.data
-    });
+
+    try {
+
+      await this.db.setGymBadge(this.data.fid, this.i);
+
+      this.popup.close({
+        badgeUpdate: this.i,
+        ...this.data
+      });
+
+    } catch (e) {
+      this.popup.close({error: e.message});
+    }
   }
 
   async setStatus() {

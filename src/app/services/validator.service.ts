@@ -57,6 +57,10 @@ export class ValidatorService {
         };
     }
 
+    /**
+     * Tries to extract the necessary gym information from a given string
+     * and returns it as a form group structure.
+     */
     parseAndValidate(text: string): {[key: string]: any} {
 
         const matcher = /description: \"(?<name>.*)\"\s{1,2}url: \"(?<url>.*)\"\s{1,2}location: \"(?<pos>.*)\"\s{1,2}gym_id: \"(?<id>.*)\"\s{1,2}badge: (?<badge>\d)/m;

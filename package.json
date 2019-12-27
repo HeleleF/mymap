@@ -42,7 +42,7 @@
     "core-js": "^3.2.1",
     "firebase": "^6.6.1",
     "firebase-tools": "^7.3.2",
-    "mapbox-gl": "^1.5.0",
+    "mapbox-gl": "^1.6.1",
     "ngx-toastr": "^10.2.0",
     "ngx-ui-scroll": "^1.2.0",
     "request-promise-native": "^1.0.7",

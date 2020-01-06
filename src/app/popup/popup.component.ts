@@ -2,7 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { DbService } from '../services/db.service';
-import { MessageService } from '../services/message.service';
+import { FilterService } from '../services/filter.service';
+
+import { getKeys } from '../shared/utils';
+
+import { GymProps, GymBadge } from '../model/gym.model';
+import { QuestProps } from '../model/quest.model';
+import { PopupReturn } from '../model/shared.model';
 
 @Component({
   selector: 'app-popup',
@@ -11,50 +17,93 @@ import { MessageService } from '../services/message.service';
 })
 export class PopupComponent {
 
-  i: number = null;
+  oldBadge: number | undefined;
+  readonly last: number;
+  isGymEdit: boolean = false;
 
   constructor(
-    public popup: MatDialogRef<PopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
+    public popup: MatDialogRef<PopupComponent, PopupReturn>,
+    @Inject(MAT_DIALOG_DATA) public data: GymProps | QuestProps,
     private db: DbService,
-    private ms: MessageService
+    private fs: FilterService
   ) {
-    this.i = this.data.badge;
+
+    if (!this.isQuest(this.data)) {
+      this.oldBadge = this.data.badge;
+    }
+    this.last = getKeys(GymBadge).length - 1;
   }
 
-  async onNoClick() {
-    this.popup.close();
+  private isQuest(p: GymProps | QuestProps): p is QuestProps {
+    return (p as QuestProps).taskDesc !== undefined;
+  }
+
+  upgrade() {
+    if (this.isQuest(this.data)) return;
+    if (this.data.badge < this.last) this.data.badge++;
+  }
+
+  downgrade() {
+    if (this.isQuest(this.data)) return;
+    if (this.data.badge > 0) this.data.badge--;
   }
 
   exclude(nr: number) {
 
-    if (nr) {
-      this.ms.excludeOneType(this.data.type);
-    } else {
-      this.ms.excludeOneReward(this.data.reward);
+    if (this.isQuest(this.data)) {
+      if (nr) {
+        this.fs.excludeOneType(this.data.type);
+      } else {
+        this.fs.excludeOneReward(this.data.reward);
+      }
     }
 
     this.popup.close();
   }
 
-  async setBadge() {
+  setBadge() {
 
-    try {
+    if (this.isQuest(this.data)) return;
 
-      await this.db.setGymBadge(this.data.fid, this.i);
-
-      this.popup.close({
-        badgeUpdate: this.i,
-        ...this.data
+    this.db.setGymBadge(this.data)
+      .then(() => {
+        this.popup.close({ type: 'badgeUpdate', data: this.data });
+      })
+      .catch((err) => {
+        this.popup.close({ type: 'badgeUpdateFailed', data: err.message });
       });
 
-    } catch (e) {
-      this.popup.close({error: e.message});
-    }
   }
 
-  async setStatus() {
-    await this.db.setQuestStatus(this.data.fid, this.data.status);
-    this.popup.close(this.data);
+  setStatus() {
+    if (!this.isQuest(this.data)) return;
+
+    this.db.setQuestStatus(this.data.firestore_id, this.data.status)
+      .then(() => {
+        this.popup.close({ type: 'questUpdate', data: this.data });
+      })
+      .catch((err) => {
+        console.debug(`Quest update failed`, err);
+      });
+
+  }
+
+  toggleEditGym() {
+    this.isGymEdit = !this.isGymEdit;
+  }
+
+  saveGymEdit() {
+
+    if (this.isQuest(this.data)) return;
+
+    this.db.updateGym(this.data)
+    .then(() => {
+      // this.popup.close({ type: 'gymUpdate', data: this.data });
+      this.isGymEdit = false;
+    })
+    .catch((err) => {
+      // this.popup.close({ type: 'gymUpdateFailed', data: err.message });
+      this.isGymEdit = false;
+    });
   }
 }

@@ -1,22 +1,47 @@
-<ng-container *ngIf="data.url; then gymBlock else questBlock"></ng-container>
+<ng-container *ngIf="data.image_url; then (isGymEdit ? gymEditBlock : gymBlock) else questBlock"></ng-container>
 
 <ng-template #gymBlock>
-  <h1 mat-dialog-title>{{data.desc}}</h1>
+  <h1 mat-dialog-title>{{data.name}} <button mat-icon-button (click)="toggleEditGym()"><mat-icon>create</mat-icon></button></h1>
   <div mat-dialog-content>
     <div class="gym-pic">
       <div id="swiper" class="union">
-        <img class='gym-under' src='//images.weserv.nl/?url={{data.url}}&w=126&h=174' [alt]='data.desc' appFallback />
-        <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{i}}.png' />
-        <button mat-icon-button class="lefter" (click)="i > 0 && i = i - 1" [disabled]="i == 0"><mat-icon>chevron_left</mat-icon></button>
-        <button mat-icon-button class="righter" (click)="i < 4 && i = i + 1" [disabled]="i == 4"><mat-icon>chevron_right</mat-icon></button>
+        <img class='gym-under' src='//images.weserv.nl/?url={{data.image_url}}&w=126&h=174' [alt]='data.name' appFallback />
+        <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{data.badge}}.png' />
+        <button mat-icon-button class="lefter" (click)="downgrade()" [disabled]="data.badge == 0"><mat-icon>chevron_left</mat-icon></button>
+        <button mat-icon-button class="righter" (click)="upgrade()" [disabled]="data.badge == last"><mat-icon>chevron_right</mat-icon></button>
       </div>
     </div>
 
   </div>
   <div mat-dialog-actions>
-    <button mat-button (click)="setBadge()" [disabled]="i == data.badge">Save</button>
+    <button mat-button (click)="setBadge()" [disabled]="oldBadge == data.badge">Save</button>
     <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Close</button>
   </div>
+</ng-template>
+
+<ng-template #gymEditBlock>
+
+  <h1 mat-dialog-title>Update this gym</h1>
+
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Update the gym name">
+    </mat-form-field><br/>
+  
+    <mat-form-field>
+      <input matInput placeholder="Update the position">
+    </mat-form-field><br/>
+  
+    <mat-form-field>
+      <input matInput placeholder="Update the url">
+    </mat-form-field><br/>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="saveGymEdit()">Update</button>
+    <button mat-button (click)="toggleEditGym()" cdkFocusInitial>Close</button>
+  </div>
+
 </ng-template>
 
 <ng-template #questBlock>

@@ -73,41 +73,48 @@ export class NewGymComponent {
 
     // prevent actually pasting the content directly
     ev.preventDefault();
-    const data = ev.clipboardData.getData('text');
+
+    const dataTransfer = ev.clipboardData;
+    if (!dataTransfer) return;
+
+    const data = dataTransfer.getData('text');
     if (!data) return;
 
     this.gymData.setValue(this.vs.parseAndValidate(data));
   }
 
-  async create() {
+  create() {
 
     const v = this.gymData.value;
-
     this.gymData.disable();
 
-    const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+    const match = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
 
-    try {
+    if (!match || !match.groups) {
+      // this should never happen since the value of "v.pos" is checked
+      // during validation
+      this.gymData.reset();
+      return;
+    };
 
-      const res = await this.db.addGym({
-        b: +GymBadge[v.badge],
-        d: v.name,
-        i: v.id,
-        lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
-        lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
-        u: v.url.replace(/^https?\:\/\//, '')
-      });
+    const { lat, lng } = match.groups;
 
-      this.ms.broadcast({ type: 'newGym', data: res });
+    this.db.addGym({
+      b: +GymBadge[v.badge],
+      d: v.name,
+      i: v.id,
+      lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
+      lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
+      u: v.url.replace(/^https?\:\/\//, '')
+    }).subscribe((newGym) => {
 
-    } catch (e) {
-      this.ms.fail({
-        type: 'Gym',
-        err: `Couldn't add "${v.name}" because: ${e.message}`
-      });
-    }
-
-    this.popup.close();
+      if (newGym) {
+        this.ms.broadcast({ type: 'newGym', data: newGym });
+      } else {
+        this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because:` });
+      }
+      
+      this.popup.close();
+    });  
   }
-
 }

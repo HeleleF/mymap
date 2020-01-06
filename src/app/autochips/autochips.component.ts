@@ -19,11 +19,11 @@ export class AutochipsComponent {
   elms: Poke[] = [];
 
   // tslint:disable-next-line: no-input-rename
-  @Input('elements') allElms: Poke[];
+  @Input('elements') allElms!: Poke[];
   @Output() updated = new EventEmitter<string[]>();
 
-  @ViewChild('elmInput', { static: false }) elmInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  @ViewChild('elmInput', { static: false }) elmInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', { static: false }) matAutocomplete!: MatAutocomplete;
 
   constructor() {
     this.filteredElms = this.formCtrl.valueChanges.pipe(

@@ -47,7 +47,7 @@ export class ValidatorService {
         return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
 
             return this.http.get(control.value, { responseType: 'blob' }).pipe(
-                map(blob => {
+                map((blob) => {
                     return blob.type.includes('image') && blob.size > 0 ? null : { noImage: { value: control.value } };
                 }),
                 catchError(() => {
@@ -65,9 +65,15 @@ export class ValidatorService {
 
         const matcher = /description: \"(?<name>.*)\"\s{1,2}url: \"(?<url>.*)\"\s{1,2}location: \"(?<pos>.*)\"\s{1,2}gym_id: \"(?<id>.*)\"\s{1,2}badge: (?<badge>\d)/m;
 
-        const { groups } = matcher.exec(text) || { groups: { name: null, url: null, pos: null, id: null, badge: null } };
+        const match = matcher.exec(text); // || { groups: { name: null, url: null, pos: null, id: null, badge: null } };
 
-        if (groups.badge) groups.badge = GymBadge[groups.badge];
+        if (!match || !match.groups) {
+            return { name: null, url: null, pos: null, id: null, badge: null };
+        }
+
+        const { groups } = match;
+
+        if (groups.badge) groups.badge = GymBadge[+groups.badge];
         return groups;
     }
 }

@@ -3,20 +3,20 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 8001 --open",
+    "start": "ng serve --port 8001 --open --source-map=false",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prodtest": "ng build --prod --source-map && http-server-spa dist/MyMap/ index.html 8001"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/HeleleF/mymap.git"
-  },
+  "repository": "github:HeleleF/mymap"
+  ,
   "private": true,
   "browserslist": [
-    "last 2 Chrome versions"
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Safari versions"
   ],
   "dependencies": {
     "@angular/animations": "^8.2.6",
@@ -37,7 +37,7 @@
     "@firebase/auth": "^0.12.0",
     "@firebase/auth-types": "^0.8.0",
     "@firebase/firestore": "^1.5.2",
-    "@types/mapbox-gl": "^0.54.5",
+    "@types/mapbox-gl": "^1.6.1",
     "@types/request-promise-native": "^1.0.16",
     "core-js": "^3.2.1",
     "firebase": "^6.6.1",

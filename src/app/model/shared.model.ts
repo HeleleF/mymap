@@ -56,3 +56,8 @@ export interface User {
 
     // mehr wenn wir brauchen
 }
+
+export interface PopupReturn {
+    type: 'badgeUpdateFailed' | 'badgeUpdate' | 'questUpdate' | 'gymUpdateFailed' | 'gymUpdate';
+    data: any;
+}

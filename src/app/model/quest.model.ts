@@ -176,12 +176,23 @@ export interface QuestInfo {
 }
 
 export interface QuestFilter {
-    types?: string[];
+    types: string[];
     negateType?: boolean;
     hasReward?: boolean;
-    rewards?: string[];
+    rewards: string[];
     negateReward?: boolean;
     hasEncounter?: boolean;
-    encounters?: string[];
+    encounters: string[];
     negateEncounter?: boolean;
+}
+
+export interface QuestProps {
+    stopName: string;
+    taskDesc: string;
+    status: QuestStatus;
+    type: QuestType;
+    reward: string;
+    encounter?: string;
+    quantity?: number;
+    firestore_id: string;
 }

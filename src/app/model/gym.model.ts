@@ -8,21 +8,59 @@ export enum GymBadge {
 
 export interface GymInfo {
     fid?: string;
-    i?: string;
+    i: string;
     d: string;
     lat: number;
     lon: number;
-    u?: string;
+    u: string;
     b: number;
 }
 
 export interface GymFilter {
-    badges?: GymBadge[];
+    badges: GymBadge[];
     negateBadge?: boolean;
 }
 
+/**
+ * A gym badge entry
+ */
 export interface BadgeEntry {
+    /**
+     * The name of the gym
+     */
     d: string;
+    /**
+     * The URI for the gym image without the scheme
+     */
     u: string;
+    /**
+     * The current badge type for this gym
+     */
     b: GymBadge;
+}
+
+/**
+ * GeoJSON Properties for a gym
+ */
+export interface GymProps {
+    /**
+     * The name of the gym
+     */
+    name: string;
+    /**
+     * The URI for the gym image without the scheme
+     */
+    image_url: string;
+    /**
+     * The unique firestore document ID, generated automatically
+     */
+    firestore_id: string;
+    /**
+     * The unique portal ID from the ingress intel map
+     */
+    portal_id: string;
+    /**
+     * The current badge type for this gym
+     */
+    badge: number;
 }

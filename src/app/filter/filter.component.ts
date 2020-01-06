@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { MessageService } from '../services/message.service';
 import { getKeys } from '../shared/utils';
 
 import { FilterSettings, Poke } from '../model/shared.model';
 import { QuestType, QuestEncounter, QuestReward } from '../model/quest.model';
 import { GymBadge } from '../model/gym.model';
+import { FilterService } from '../services/filter.service';
 
 @Component({
   selector: 'app-filter',
@@ -22,9 +22,9 @@ export class FilterComponent {
   readonly badges: string[];
 
   constructor(private popup: MatDialogRef<FilterComponent>,
-              private ms: MessageService) {
+              private fs: FilterService) {
 
-      this.sets = this.ms.getOnce();
+      this.sets = this.fs.filters;
       this.types = getKeys(QuestType);
       this.encs = getKeys(QuestEncounter).map((e, i) => {
         return {
@@ -69,12 +69,12 @@ export class FilterComponent {
 
   saveAndExit() {
 
-    this.ms.persistFilters(this.sets);
+    this.fs.persistFilters(this.sets);
     this.popup.close();
   }
 
   reset() {
-    this.ms.persistFilters();
+    this.fs.persistFilters();
     this.popup.close();
   }
 }

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot, QuerySnapshot } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { firestore } from 'firebase/app';
+
+import { from, of, throwError } from 'rxjs';
+import { map, flatMap, tap, catchError } from 'rxjs/operators';
 
 import { GeoHash, createRows } from '../shared/utils';
 
-import { map } from 'rxjs/operators';
-import { GymInfo, GymBadge, BadgeEntry } from '../model/gym.model';
-import { QuestInfo, QuestStatus } from '../model/quest.model';
+import { GymInfo, BadgeEntry, GymProps } from '../model/gym.model';
+import { QuestInfo, QuestStatus, QuestProps } from '../model/quest.model';
 
 /**
  * A service to query the firestore database.
@@ -17,20 +19,21 @@ import { QuestInfo, QuestStatus } from '../model/quest.model';
 })
 export class DbService {
 
-  gymsRef: AngularFirestoreCollection<GymInfo>;
-  questsRef: AngularFirestoreCollection<QuestInfo>;
-  private gymsCached: boolean;
-  private questsCached: boolean;
+  private gymsRef: AngularFirestoreCollection<GymInfo>;
+  private questsRef: AngularFirestoreCollection<QuestInfo>;
+
+  gymsCached: boolean;
+  questsCached: boolean;
   private expire: number;
 
   constructor(private store: AngularFirestore) {
 
-    this.gymsRef = this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0)); // , ref => ref.limit(150));
-    this.questsRef = this.store.collection<QuestInfo>('quests'); // , ref => ref.limit(150));
+    this.gymsRef = this.store.collection<GymInfo>('gyms'); // , ref => ref.limit(150));
+    this.questsRef = this.store.collection<QuestInfo>('quests', ref => ref.limit(150));
 
     this.gymsCached = JSON.parse(localStorage.getItem('gymsCached') || '0');
     this.questsCached = JSON.parse(localStorage.getItem('questsCached') || '0');
-    this.expire = +localStorage.getItem('questsExpire');
+    this.expire = Number(localStorage.getItem('questsExpire'));
   }
 
   /**
@@ -38,77 +41,108 @@ export class DbService {
    * 
    * Uses the cache if possible.
    */
-  async getGyms() {
+  getGyms() {
+
+    // return throwError(new Error('Gyms sind nicht da!'));
 
     const opts: firestore.GetOptions = this.gymsCached ? { source: 'cache' } : {};
 
-    const { docs } = await this.gymsRef.get(opts).toPromise();
-
-    if (!this.gymsCached) {
-      this.gymsCached = true;
-      localStorage.setItem('gymsCached', 'true');
-    }
-
-    const features = (docs as QueryDocumentSnapshot<GymInfo>[]).map(doc => {
-
-      const p = doc.data();
-
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [p.lon, p.lat]
-        },
-        properties: {
-          fid: doc.id,
-          id: p.i,
-          url: p.u,
-          desc: p.d,
-          badge: p.b
+    return this.gymsRef.get(opts).pipe(
+      tap(() => {
+        if (!this.gymsCached) {
+          this.gymsCached = true;
+          localStorage.setItem('gymsCached', 'true');
         }
-      };
-    });
+      }),
+      map(({ docs }) => {
 
-    return {
-      type: 'FeatureCollection',
-      features
-    } as GeoJSON.FeatureCollection<GeoJSON.Point>;
+        const features = (docs as QueryDocumentSnapshot<GymInfo>[]).map(doc => {
+
+          const p = doc.data();
+
+          return {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [p.lon, p.lat]
+            },
+            properties: {
+              firestore_id: doc.id,
+              portal_id: p.i,
+              image_url: p.u,
+              name: p.d,
+              badge: p.b
+            }
+          };
+        });
+
+        return {
+          type: 'FeatureCollection',
+          features
+        } as GeoJSON.FeatureCollection<GeoJSON.Point, GymProps>;
+
+      })
+    );
   }
 
   /**
    * Adds a new gym to firestore and returns
    * its data as GeoJSON
-   * 
-   * **TODO(helene): Don't add gym if it already exists! 
-   * Query by gym_id to check?**
    */
-  async addGym(p: GymInfo): Promise<GeoJSON.Feature> {
+  addGym(p: GymInfo) {
 
-    const ref = await this.gymsRef.add(p);
+    const sameGyms = this.store.collection<GymInfo>('gyms', ref => ref.where('i', '==', p.i));
 
-    return ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [p.lon, p.lat]
-      },
-      properties: {
-        fid: ref.id,
-        id: p.i,
-        url: p.u,
-        desc: p.d,
-        badge: p.b
-      }
-    });
+    // query for gyms with this gym id
+    return sameGyms.get().pipe(
+
+      flatMap((snap) => {
+
+        // at least one other gym with this id already exists, return error
+        if (snap.size) {
+          return of(null);
+        }
+
+        // gym id is not used yet, add the gym
+        return from(this.gymsRef.add(p)).pipe(
+
+          map((newGymRef) => {
+
+            return ({
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [p.lon, p.lat]
+              },
+              properties: {
+                firestore_id: newGymRef.id,
+                portal_id: p.i,
+                image_url: p.u,
+                name: p.d,
+                badge: p.b
+              }
+            }) as GeoJSON.Feature<GeoJSON.Point, GymProps>;
+
+          })
+
+        );
+      })
+    );
   }
 
   /**
    * Updates the badge of an existing gym.
    */
-  setGymBadge(fid: string, newBadge: GymBadge) {
+  setGymBadge({ firestore_id, badge }: GymProps) {
 
-    const gym = this.gymsRef.doc<GymInfo>(fid);
-    return gym.update({ b: newBadge });
+    const gym = this.gymsRef.doc<GymInfo>(firestore_id);
+    return gym.update({ b: badge });
+  }
+
+  updateGym({firestore_id, badge, }: GymProps) {
+
+    const gym = this.gymsRef.doc<GymInfo>(firestore_id);
+    return gym.update({ b: badge });
   }
 
   /**
@@ -117,13 +151,16 @@ export class DbService {
    * 
    * Always uses the cache!
    */
-  getAllBadgeEntries$() {
-    return this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0).orderBy('b', 'desc').orderBy('d', 'asc')).get({ source: 'cache' }).pipe(
-      map((r: QuerySnapshot<GymInfo>) => {
+  getAllBadgeEntries() {
+
+    const col = this.store.collection<GymInfo>('gyms', ref => ref.where('b', '>', 0).orderBy('b', 'desc').orderBy('d', 'asc'));
+
+    return col.get({ source: 'cache' }).pipe(
+      map(({ docs }) => {
 
         const badgeTypeCounts = [0, 0, 0, 0];
 
-        const badgeEntries = r.docs.map(s => {
+        const badgeEntries = (docs as QueryDocumentSnapshot<GymInfo>[]).map(s => {
           const { u, d, b } = s.data();
           badgeTypeCounts[b - 1]++;
           return { u, d, b } as BadgeEntry;
@@ -138,48 +175,54 @@ export class DbService {
    * 
    * Uses the cache if possible.
    */
-  async getQuests() {
+  getQuests() {
 
     // quests in cache are from the previous day, request new ones from server
     /*
     if (this.questsCached && (this.expire < Date.now())) {
-      console.log('expired');
+      console.debug('expired');
       this.questsCached = false;
     }
     */
 
+    // return throwError(new Error('Quests sind nicht da!'));
+
     const opts: firestore.GetOptions = this.questsCached ? { source: 'cache' } : {};
 
-    const { docs } = await this.questsRef.get(opts).toPromise();
+    return this.questsRef.get(opts).pipe(
+      tap(() => {
 
-    // quests are now cached until the next day at 6am
-    if (!this.questsCached) {
-      this.questsCached = true;
-      localStorage.setItem('questsCached', 'true');
+        // quests are now cached until the next day at 6am
+        if (!this.questsCached) {
+          this.questsCached = true;
+          localStorage.setItem('questsCached', 'true');
 
-      this.expire = new Date().setHours(30, 0, 0, 0);
-      localStorage.setItem('questsExpire', `${this.expire}`);
-    }
+          this.expire = new Date().setHours(30, 0, 0, 0);
+          localStorage.setItem('questsExpire', `${this.expire}`);
+        }
+      }),
+      map(({ docs }) => {
+        const features = (docs as QueryDocumentSnapshot<QuestInfo>[]).map(doc => {
 
-    const features = (docs as QueryDocumentSnapshot<QuestInfo>[]).map(doc => {
+          const p = doc.data();
+          const id = doc.id;
 
-      const p = doc.data();
-      const id = doc.id;
+          return {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: GeoHash.decode(id)
+            },
+            properties: { firestore_id: id, ...p }
+          };
+        });
 
-      return {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: GeoHash.decode(id)
-        },
-        properties: { id, ...p }
-      };
-    });
-
-    return {
-      type: 'FeatureCollection',
-      features
-    } as GeoJSON.FeatureCollection<GeoJSON.Point, QuestInfo>;
+        return {
+          type: 'FeatureCollection',
+          features
+        } as GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
+      })
+    );
   }
 
   addQuest(prop: QuestInfo) {

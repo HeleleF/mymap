@@ -23,7 +23,7 @@ export class PopupComponent {
 
   constructor(
     public popup: MatDialogRef<PopupComponent, PopupReturn>,
-    @Inject(MAT_DIALOG_DATA) public data: GymProps | QuestProps,
+    @Inject(MAT_DIALOG_DATA) public data: GymProps & { pos: number[] } | QuestProps,
     private db: DbService,
     private fs: FilterService
   ) {

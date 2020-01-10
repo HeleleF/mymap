@@ -204,12 +204,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
     if (!features.length) { return; }
 
-    // @ts-ignore: Attribute 'coordinates' does exist, but Typescript cant find it?
-    this.map.easeTo({ center: features[0].geometry.coordinates });
+    const loc = (features[0].geometry as GeoJSON.Point).coordinates;
+
+    this.map.easeTo({ center: loc as [number, number] });
 
     const props = features[0].properties as GymProps | QuestProps;
     const ref: MatDialogRef<PopupComponent, PopupReturn> = this.modal.open(PopupComponent, {
-      data: props
+      data: {...props, pos: loc}
     });
 
     ref.afterClosed().subscribe({
@@ -233,7 +234,7 @@ export class MapComponent implements OnInit, OnDestroy {
   
             if (idx === -1) {
   
-              this.toast.error(`Couldn't update gym "${g.name}" because it does not exist!`, 'Gym');
+              this.toast.error(`Couldn't update gym "${g.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
   
             } else {
   
@@ -249,6 +250,9 @@ export class MapComponent implements OnInit, OnDestroy {
   
           default: break;
         }
+      },
+      error: (e) => {
+        this.toast.error(`Popup closed with error ${e.message}`, 'Popup', { disableTimeOut: true })
       }
     });
   }

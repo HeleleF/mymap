@@ -139,10 +139,12 @@ export class DbService {
     return gym.update({ b: badge });
   }
 
-  updateGym({firestore_id, badge, }: GymProps) {
+  updateGym({firestore_id, name, image_url, pos }: GymProps & { pos: number[] }) {
+
+    const [ lon, lat ] = pos;
 
     const gym = this.gymsRef.doc<GymInfo>(firestore_id);
-    return gym.update({ b: badge });
+    return gym.update({ d: name, u: image_url, lat, lon });
   }
 
   /**

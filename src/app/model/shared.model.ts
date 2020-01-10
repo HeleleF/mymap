@@ -4,7 +4,7 @@ export interface Poke {
 }
 
 export interface Message {
-    type: 'newGym' | 'filtersChanged' | 'settings';
+    type: 'newGym' | 'settings';
     data: any;
 }
 

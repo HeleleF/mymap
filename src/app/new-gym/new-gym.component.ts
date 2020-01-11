@@ -106,15 +106,21 @@ export class NewGymComponent {
       lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
       lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
       u: v.url.replace(/^https?\:\/\//, '')
-    }).subscribe((newGym) => {
+    }).subscribe({
+      next: (newGym) => {
 
-      if (newGym) {
-        this.ms.broadcast({ type: 'newGym', data: newGym });
-      } else {
-        this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because:` });
+        if (newGym) {
+          this.ms.broadcast({ type: 'newGym', data: newGym });
+        } else {
+          this.ms.fail({ type: 'Gym', err: `The gym "${v.name}" already exists!` });
+        }
+        
+        this.popup.close();
+      },
+      error: (e) => {
+        this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because: ${e.message}` });
+        this.popup.close();
       }
-      
-      this.popup.close();
     });  
   }
 }

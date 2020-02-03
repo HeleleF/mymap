@@ -45,7 +45,8 @@ export class FilterService {
       hasEncounter: false,
       hasReward: false,
       negateReward: false,
-      negateType: false
+      negateType: false,
+      includeLegacy: true,
     };
   }
 
@@ -65,6 +66,10 @@ export class FilterService {
 
       filter.push(badges);
 
+    }
+
+    if (!data.includeLegacy) {
+      filter.push(['!', ['has', 'isLegacy']]);
     }
 
     return filter.length > 1 ? ['all', ...filter] : (filter.length === 1 ? filter.flat() : undefined);

@@ -21,8 +21,10 @@ export class FilterComponent {
   readonly rewards: string[];
   readonly badges: string[];
 
-  constructor(private popup: MatDialogRef<FilterComponent>,
-              private fs: FilterService) {
+  constructor(
+    private popup: MatDialogRef<FilterComponent>,
+    private fs: FilterService
+  ) {
 
       this.sets = this.fs.filters;
       this.types = getKeys(QuestType);

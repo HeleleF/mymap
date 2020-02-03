@@ -27,8 +27,7 @@ export class AutochipsComponent {
 
   constructor() {
     this.filteredElms = this.formCtrl.valueChanges.pipe(
-      // tslint:disable-next-line: deprecation
-      startWith(null),
+      startWith(''),
       map((e: Poke | null) => e ? this._filter(e) : this.allElms.slice()));
   }
 

@@ -1,14 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DbService } from '../services/db.service';
 import { FilterService } from '../services/filter.service';
+import { ValidatorService } from '../services/validator.service';
 
 import { getKeys } from '../shared/utils';
 
 import { GymProps, GymBadge } from '../model/gym.model';
 import { QuestProps } from '../model/quest.model';
 import { PopupReturn } from '../model/shared.model';
+
 
 @Component({
   selector: 'app-popup',
@@ -21,21 +24,35 @@ export class PopupComponent {
   readonly last: number;
   isGymEdit: boolean = false;
 
+  gymUpdate: FormGroup;
+
   constructor(
     public popup: MatDialogRef<PopupComponent, PopupReturn>,
     @Inject(MAT_DIALOG_DATA) public data: GymProps & { pos: number[] } | QuestProps,
     private db: DbService,
-    private fs: FilterService
+    private fs: FilterService,
+    private fb: FormBuilder
   ) {
 
     if (!this.isQuest(this.data)) {
       this.oldBadge = this.data.badge;
     }
     this.last = getKeys(GymBadge).length - 1;
+
+    this.gymUpdate = this.fb.group({
+      name: ['', [Validators.required]],
+      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      isLegacy: [''],
+      imageUrl: ['', [Validators.required]]
+    }, { updateOn: 'blur' });
   }
 
   private isQuest(p: GymProps | QuestProps): p is QuestProps {
     return (p as QuestProps).taskDesc !== undefined;
+  }
+
+  get f() {
+    return this.gymUpdate.controls;
   }
 
   upgrade() {
@@ -89,6 +106,15 @@ export class PopupComponent {
   }
 
   toggleEditGym() {
+
+    if (this.isQuest(this.data)) return;
+    
+    this.gymUpdate.reset({
+      name: this.data.name,
+      pos: this.data.pos,
+      imageUrl: this.data.imageUrl,
+      isLegacy: !!this.data.isLegacy
+    });
     this.isGymEdit = !this.isGymEdit;
   }
 
@@ -96,14 +122,19 @@ export class PopupComponent {
 
     if (this.isQuest(this.data)) return;
 
-    this.db.updateGym(this.data)
+    this.gymUpdate.disable();
+
+    const payload = {...this.data, ...this.gymUpdate.value};
+
+    this.db.updateGym(payload)
     .then(() => {
-      // this.popup.close({ type: 'gymUpdate', data: this.data });
-      this.isGymEdit = false;
+      delete payload.pos;
+      this.popup.close({ type: 'gymUpdate', data: payload });
     })
     .catch((err) => {
-      // this.popup.close({ type: 'gymUpdateFailed', data: err.message });
-      this.isGymEdit = false;
+      this.popup.close({ type: 'gymUpdateFailed', data: err.message });
     });
+    
+    
   }
 }

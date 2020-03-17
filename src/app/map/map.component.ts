@@ -55,13 +55,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private modal: MatDialog,
     private toast: ToastrService
   ) {
-    // workaround for https://github.com/DefinitelyTyped/DefinitelyTyped/issues/23467
-    // @ts-ignore
-    Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.MAPBOX_API_TOKEN);
-
     this.gyms = { type: 'FeatureCollection', features: [] };
     this.quests = { type: 'FeatureCollection', features: [] };
-
   }
 
   ngOnInit() {
@@ -82,6 +77,7 @@ export class MapComponent implements OnInit, OnDestroy {
     // create map
     this.map = new mapboxgl.Map({
       container: 'map',
+      accessToken: environment.MAPBOX_API_TOKEN,
       style: this.getStyle(),
       zoom: 13,
       center: [13.204929, 52.637736],
@@ -96,13 +92,13 @@ export class MapComponent implements OnInit, OnDestroy {
         compact: true,
         customAttribution: 'Icons by <a href="http://roundicons.com">Roundicons free</a>, <a href="http://theartificial.nl">The Artificial</a> and <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> &amp; <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a>'
       }))
-      .on('load', this.onMapLoaded.bind(this));
+      .on('load', this.onLoad.bind(this));
   }
 
   /**
    * Setup handlers after initial loading is done
    */
-  private onMapLoaded() {
+  private onLoad() {
 
     this.toast.info('Map loaded!', 'Map');
 
@@ -116,7 +112,9 @@ export class MapComponent implements OnInit, OnDestroy {
         layout: {
           'icon-image': 'badge{badge}',
           'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.3, 19, 0.5],
-          'icon-allow-overlap': true
+          'icon-allow-overlap': true,
+          'text-field': ['case', ['has', 'isLegacy'], '*', ''],
+          'text-offset': [1.5, -1.5], // TODO(helene): use zoom expression to keep text near icon
         },
         minzoom: 10,
         maxzoom: 21
@@ -158,6 +156,15 @@ export class MapComponent implements OnInit, OnDestroy {
               this.gyms.features.push(feature);
               (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
               this.toast.success(`Added "${feature.properties.name}" as a new gym!`, `Gym`);
+              console.debug('newgym');
+              break;
+
+            case 'selectGym':
+
+              const gym = msg.data as GeoJSON.Feature<GeoJSON.Point, GymProps>;
+
+              this.map.easeTo({ center: gym.geometry.coordinates as [number, number] });
+              console.debug('selectgym');
               break;
 
             default:
@@ -167,7 +174,7 @@ export class MapComponent implements OnInit, OnDestroy {
         },
         error: (e) => {
           console.debug('[ON MESSAGE]', e);
-          this.toast.error(e.err, `${e.type} error`);
+          this.toast.error(e.err, `${e.type} error`, { disableTimeOut: true });
         }
 
       });
@@ -187,7 +194,7 @@ export class MapComponent implements OnInit, OnDestroy {
             .setFilter('gymsLayer', filters.gyms);
         },
         error: (e) => {
-          this.toast.error(`Couldn't apply filters because ${e.message}!`, 'Filter Error');
+          this.toast.error(`Couldn't apply filters because ${e.message}!`, 'Filter Error', { disableTimeOut: true });
         }
       });
   }
@@ -210,7 +217,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const props = features[0].properties as GymProps | QuestProps;
     const ref: MatDialogRef<PopupComponent, PopupReturn> = this.modal.open(PopupComponent, {
-      data: {...props, pos: loc}
+      data: { ...props, pos: loc }
     });
 
     ref.afterClosed().subscribe({
@@ -219,35 +226,56 @@ export class MapComponent implements OnInit, OnDestroy {
         if (!ret) {
           return;
         }
-  
+
         switch (ret.type) {
-  
-          case 'badgeUpdateFailed':
+
+          case 'gymUpdateFailed':
             this.toast.error(`Couldn't update gym because: ${ret.data}!`, 'Gym', { disableTimeOut: true });
             break;
-  
-          case 'badgeUpdate':
-  
-            const g = ret.data as GymProps;
-  
-            const idx = this.gyms.features.findIndex(({ properties: { firestore_id } }) => firestore_id === g.firestore_id);
-  
-            if (idx === -1) {
-  
-              this.toast.error(`Couldn't update gym "${g.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
-  
+
+          case 'badgeUpdateFailed':
+            this.toast.error(`Couldn't update gym badge because: ${ret.data}!`, 'Gym', { disableTimeOut: true });
+            break;
+
+          case 'gymUpdate':
+
+            const u = ret.data as GymProps;
+            const ix = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === u.firestoreId);
+
+            if (ix === -1) {
+
+              this.toast.error(`Couldn't update gym "${u.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
+
             } else {
-  
+
+              this.gyms.features[ix].properties = u;
+              (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
+            }
+
+            break;
+
+          case 'badgeUpdate':
+
+            const g = ret.data as GymProps;
+
+            const idx = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === g.firestoreId);
+
+            if (idx === -1) {
+
+              this.toast.error(`Couldn't update badge for gym "${g.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
+
+            } else {
+
               this.gyms.features[idx].properties.badge = g.badge;
               (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
             }
-  
+
             break;
-  
+
           case 'questUpdate':
             // TODO(helene): Handle updates for quest layer with feature state.
             break;
-  
+
           default: break;
         }
       },
@@ -320,7 +348,7 @@ export class MapComponent implements OnInit, OnDestroy {
    * 'Dark' and 'Outdoors' based on the current time.
    */
   private getStyle() {
-    const s = (localStorage.getItem('mapStyle') || 'Auto') as keyof typeof MapStyle | 'Auto';
+    // const s = (localStorage.getItem('mapStyle') || 'Auto') as keyof typeof MapStyle | 'Auto';
 
     // return `mapbox://styles/mapbox/${s !== 'Auto' ? MapStyle[s] : (h => (h < 6 || h > 21) ? 'dark-v10' : 'outdoors-v11')((new Date()).getHours())}`;
 

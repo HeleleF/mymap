@@ -58,7 +58,7 @@ describe('DbService', () => {
 
     service.getGyms().subscribe(g => {
       expect(g.type).toEqual('FeatureCollection');
-      expect(g.features[0].properties.firestore_id).toEqual('123');
+      expect(g.features[0].properties.firestoreId).toEqual('123');
       expect(g.features[0].geometry.coordinates).toEqual([53.4, 12.3]);
 
       expect(s2).toHaveBeenCalledWith('gymsCached', 'true');

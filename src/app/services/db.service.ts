@@ -67,11 +67,12 @@ export class DbService {
               coordinates: [p.lon, p.lat]
             },
             properties: {
-              firestore_id: doc.id,
-              portal_id: p.i,
-              image_url: p.u,
+              firestoreId: doc.id,
+              portalId: p.i,
+              imageUrl: p.u,
               name: p.d,
-              badge: p.b
+              badge: p.b,
+              isLegacy: p.l
             }
           };
         });
@@ -115,9 +116,9 @@ export class DbService {
                 coordinates: [p.lon, p.lat]
               },
               properties: {
-                firestore_id: newGymRef.id,
-                portal_id: p.i,
-                image_url: p.u,
+                firestoreId: newGymRef.id,
+                portalId: p.i,
+                imageUrl: p.u,
                 name: p.d,
                 badge: p.b
               }
@@ -133,18 +134,18 @@ export class DbService {
   /**
    * Updates the badge of an existing gym.
    */
-  setGymBadge({ firestore_id, badge }: GymProps) {
+  setGymBadge({ firestoreId, badge }: GymProps) {
 
-    const gym = this.gymsRef.doc<GymInfo>(firestore_id);
+    const gym = this.gymsRef.doc<GymInfo>(firestoreId);
     return gym.update({ b: badge });
   }
 
-  updateGym({firestore_id, name, image_url, pos }: GymProps & { pos: number[] }) {
+  updateGym({firestoreId, name, imageUrl, pos, isLegacy }: GymProps & { pos: number[] }) {
 
     const [ lon, lat ] = pos;
 
-    const gym = this.gymsRef.doc<GymInfo>(firestore_id);
-    return gym.update({ d: name, u: image_url, lat, lon });
+    const gym = this.gymsRef.doc<GymInfo>(firestoreId);
+    return gym.update({ d: name, u: imageUrl, l: isLegacy, lat, lon });
   }
 
   /**

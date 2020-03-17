@@ -35,7 +35,7 @@ export class FilterService {
   private getDefaults(): FilterSettings {
     return {
       showGyms: true,
-      showQuests: true,
+      showQuests: false,
       encounters: [],
       rewards: [],
       types: [],

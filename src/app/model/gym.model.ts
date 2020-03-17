@@ -14,11 +14,13 @@ export interface GymInfo {
     lon: number;
     u: string;
     b: number;
+    l?: boolean;
 }
 
 export interface GymFilter {
     badges: GymBadge[];
     negateBadge?: boolean;
+    includeLegacy: boolean;
 }
 
 /**
@@ -50,17 +52,21 @@ export interface GymProps {
     /**
      * The URI for the gym image without the scheme
      */
-    image_url: string;
+    imageUrl: string;
     /**
      * The unique firestore document ID, generated automatically
      */
-    firestore_id: string;
+    firestoreId: string;
     /**
      * The unique portal ID from the ingress intel map
      */
-    portal_id: string;
+    portalId: string;
     /**
      * The current badge type for this gym
      */
     badge: number;
+    /**
+     * Whether this is a legacy gym
+     */
+    isLegacy?: boolean;
 }

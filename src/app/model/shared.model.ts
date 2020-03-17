@@ -4,7 +4,7 @@ export interface Poke {
 }
 
 export interface Message {
-    type: 'newGym' | 'settings';
+    type: 'newGym' | 'settings' | 'selectGym';
     data: any;
 }
 
@@ -46,6 +46,8 @@ export interface FilterSettings {
 
   negateBadge?: boolean;
   badges: number[];
+
+  includeLegacy: boolean;
 }
 
 export interface User {

@@ -9,6 +9,7 @@ import { DbService } from '../services/db.service';
 
 import { getKeys } from '../shared/utils';
 import { GymBadge } from '../model/gym.model';
+import { take, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-gym',
@@ -30,10 +31,10 @@ export class NewGymComponent {
     this.badges = getKeys(GymBadge);
     this.gymData = this.fb.group({
       name: ['', [Validators.required]],
-      pos: ['', [Validators.required, this.vs.createGymPositionValidator()]],
-      id: ['', [Validators.required, this.vs.createGymIdValidator()]],
+      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      id: ['', [Validators.required, ValidatorService.validPortalId]],
       url: ['', [Validators.required], [this.vs.createGymUrlValidator()]],
-      badge: ['', [Validators.required, this.vs.createGymBadgeValidator()]],
+      badge: ['', [Validators.required, ValidatorService.validBadge]],
     }, { updateOn: 'blur' });
   }
 
@@ -106,20 +107,22 @@ export class NewGymComponent {
       lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
       lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
       u: v.url.replace(/^https?\:\/\//, '')
-    }).subscribe({
+    }).pipe(
+      take(1), 
+      finalize(() => {
+        this.popup.close();
+      })
+    ).subscribe({
       next: (newGym) => {
 
         if (newGym) {
           this.ms.broadcast({ type: 'newGym', data: newGym });
         } else {
           this.ms.fail({ type: 'Gym', err: `The gym "${v.name}" already exists!` });
-        }
-        
-        this.popup.close();
+        }    
       },
       error: (e) => {
         this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because: ${e.message}` });
-        this.popup.close();
       }
     });  
   }

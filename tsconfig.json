@@ -20,5 +20,8 @@
       "esnext",
       "dom"
     ]
-  }
+  },
+  "angularCompilerOptions": {
+    "disableTypeScriptVersionCheck": true,
+ },
 }

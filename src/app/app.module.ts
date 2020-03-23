@@ -8,7 +8,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -74,7 +73,6 @@ import { setAppInjector } from './shared/app-injector';
       positionClass: 'toast-bottom-right'
     }),
     UiScrollModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
@@ -102,7 +100,6 @@ import { setAppInjector } from './shared/app-injector';
     AngularFireAuthModule,
     HttpClientModule,
   ],
-  entryComponents: [PopupComponent, FilterComponent, NewGymComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

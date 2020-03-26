@@ -1,14 +1,18 @@
 <ng-container *ngIf="data.imageUrl; then (isGymEdit ? gymEditBlock : gymBlock) else questBlock"></ng-container>
 
 <ng-template #gymBlock>
-  <h1 mat-dialog-title>{{data.name}}{{data.isLegacy}}<button mat-icon-button (click)="toggleEditGym()"><mat-icon>create</mat-icon></button></h1>
+  <h1 mat-dialog-title>{{data.name}}<span *ngIf="data.isLegacy">*</span>
+    <button mat-icon-button (click)="toggleEditGym()">
+      <mat-icon>create</mat-icon>
+    </button>
+  </h1>
   <div mat-dialog-content>
     <div class="gym-pic">
       <div id="swiper" class="union">
-        <img class='gym-under' src='//images.weserv.nl/?url={{data.imageUrl}}&w=126&h=174' [alt]='data.name' appFallback />
-        <img class='gym-over' src='../../assets/gyms/GymBadgeFrame_{{data.badge}}.png' />
-        <button mat-icon-button class="lefter" (click)="downgrade()" [disabled]="data.badge == 0"><mat-icon>chevron_left</mat-icon></button>
-        <button mat-icon-button class="righter" (click)="upgrade()" [disabled]="data.badge == last"><mat-icon>chevron_right</mat-icon></button>
+        <img class="gym-under" src="//images.weserv.nl/?url={{data.imageUrl}}&w=126&h=174" [alt]="data.name" appFallback />
+        <img class="gym-over" src="../../assets/gyms/GymBadgeFrame_{{data.badge}}.png" />
+        <button mat-icon-button class="lefter" (click)="downgrade()" [disabled]="data.badge == 0 || data.isLegacy"><mat-icon>chevron_left</mat-icon></button>
+        <button mat-icon-button class="righter" (click)="upgrade()" [disabled]="data.badge == last || data.isLegacy"><mat-icon>chevron_right</mat-icon></button>
       </div>
     </div>
 
@@ -28,17 +32,17 @@
     <form autocomplete="off" [formGroup]="gymUpdate" style="width: 300px;">
       <mat-form-field>
         <input matInput placeholder="Update the gym name" formControlName="name" required>
-        <mat-error *ngIf="f.name.errors">name falsch</mat-error>
+        <mat-error *ngIf="f.name.errors">Not a valid name</mat-error>
       </mat-form-field><br/>
     
       <mat-form-field>
         <input matInput placeholder="Update the position" formControlName="pos" required>
-        <mat-error *ngIf="f.pos.errors">pos falsh</mat-error>
+        <mat-error *ngIf="f.pos.errors">Not a valid position</mat-error>
       </mat-form-field><br/>
     
       <mat-form-field>
         <input matInput placeholder="Update the url" formControlName="imageUrl" required>
-        <mat-error *ngIf="f.imageUrl.errors">url falsch</mat-error>
+        <mat-error *ngIf="f.imageUrl.errors">Not a valid image url</mat-error>
       </mat-form-field><br/>
   
       <mat-checkbox color="primary" formControlName="isLegacy">Is legacy</mat-checkbox>
@@ -55,18 +59,16 @@
 <ng-template #questBlock>
   <h1 mat-dialog-title>{{data.stopName}}</h1>
   <div mat-dialog-content>
-    <p class='task'>{{data.taskDesc}}</p><br />
-    <p class='reward' *ngIf="data.quantity">{{data.quantity}} {{data.reward}}</p><br />
+    <p class="task">{{data.taskDesc}}</p><br />
+    <p class="reward" *ngIf="data.quantity">{{data.quantity}} {{data.reward}}</p><br />
 
-    <p class='reward' *ngIf="data.encounter == 'multiple'">Possible: </p><br />
-    <img class='quest-img' src='../../assets/quests/{{data.reward == "#" ? data.encounter : data.reward}}.png' /><br />
+    <p class="reward" *ngIf="data.encounter == 'multiple'">Possible: </p><br />
+    <img class="quest-img" src="../../assets/quests/{{data.reward == '#' ? data.encounter : data.reward}}.png" /><br />
 
     <label id="status-radio-group-label">Set quest status</label>
     <mat-radio-group aria-labelledby="status-radio-group-label" class="status-radio-group" [(ngModel)]="data.status">
-      <mat-radio-button class="status-radio-button" value="0">Not done
-      </mat-radio-button>
-      <mat-radio-button class="status-radio-button" value="1">In progress
-      </mat-radio-button>
+      <mat-radio-button class="status-radio-button" value="0">Not done</mat-radio-button>
+      <mat-radio-button class="status-radio-button" value="1">In progress</mat-radio-button>
       <mat-radio-button class="status-radio-button" value="2">Done</mat-radio-button>
     </mat-radio-group>
 

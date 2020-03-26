@@ -1,7 +1,7 @@
 <ng-container *ngIf="data.imageUrl; then (isGymEdit ? gymEditBlock : gymBlock) else questBlock"></ng-container>
 
 <ng-template #gymBlock>
-  <h1 mat-dialog-title>{{data.name}}<span *ngIf="data.isLegacy">*</span>
+  <h1 mat-dialog-title class="gym-name-header">{{data.name}}<span *ngIf="data.isLegacy">*</span>
     <button mat-icon-button (click)="toggleEditGym()">
       <mat-icon>create</mat-icon>
     </button>

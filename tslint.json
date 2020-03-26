@@ -4,6 +4,7 @@
     "codelyzer"
   ],
   "rules": {
+    "curly": [true, "ignore-same-line"],
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {
@@ -55,7 +56,7 @@
       "as-needed"
     ],
     "object-literal-sort-keys": false,
-    "ordered-imports": false,
+    "ordered-imports": true,
     "quotemark": [
       true,
       "single"

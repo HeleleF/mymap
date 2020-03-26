@@ -111,10 +111,10 @@ export class MapComponent implements OnInit, OnDestroy {
         source: 'gymSource',
         layout: {
           'icon-image': 'badge{badge}',
-          'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.3, 19, 0.5],
+          'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.2, 19, 0.5],
           'icon-allow-overlap': true,
           'text-field': ['case', ['has', 'isLegacy'], '*', ''],
-          'text-offset': [1.5, -1.5], // TODO(helene): use zoom expression to keep text near icon
+          'text-offset': ['interpolate', ['linear'], ['zoom'], 12, ['literal', [0.7, -0.7]], 19, ['literal', [1.5, -1.5]]],
         },
         minzoom: 10,
         maxzoom: 21

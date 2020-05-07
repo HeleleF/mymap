@@ -207,11 +207,11 @@ export class MapComponent implements OnInit, OnDestroy {
     const features = this.map.queryRenderedFeatures(e.point, {
       layers: ['gymsLayer', 'questsLayer'],
       validate: false
-    });
+    }) as GeoJSON.Feature<GeoJSON.Point>[];
 
     if (!features.length) { return; }
 
-    const loc = (features[0].geometry as GeoJSON.Point).coordinates;
+    const loc = features[0].geometry.coordinates;
 
     this.map.easeTo({ center: loc as [number, number] });
 
@@ -227,6 +227,8 @@ export class MapComponent implements OnInit, OnDestroy {
           return;
         }
 
+        console.log(ret);
+
         switch (ret.type) {
 
           case 'gymUpdateFailed':
@@ -239,7 +241,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
           case 'gymUpdate':
 
-            const u = ret.data as GymProps;
+            const u = ret.data as GymProps & { pos: number[] };
             const ix = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === u.firestoreId);
 
             if (ix === -1) {
@@ -248,7 +250,15 @@ export class MapComponent implements OnInit, OnDestroy {
 
             } else {
 
-              this.gyms.features[ix].properties = u;
+              this.gyms.features[ix].properties.imageUrl = u.imageUrl;
+              this.gyms.features[ix].properties.name = u.name;
+
+              if (u.isLegacy) {
+                this.gyms.features[ix].properties.isLegacy = true;
+              }
+
+              this.gyms.features[ix].geometry.coordinates = u.pos;
+
               (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
             }
 

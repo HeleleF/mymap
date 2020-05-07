@@ -144,8 +144,13 @@ export class DbService {
 
     const [ lon, lat ] = pos;
 
+    const newValues: Partial<GymInfo> = { d: name, u: imageUrl, lat, lon };
+
+    // if its not legacy, we dont need to add an extra property, since the default is false already
+    if (isLegacy) newValues.l = true;
+
     const gym = this.gymsRef.doc<GymInfo>(firestoreId);
-    return gym.update({ d: name, u: imageUrl, l: isLegacy, lat, lon });
+    return gym.update(newValues);
   }
 
   /**

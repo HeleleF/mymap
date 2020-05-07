@@ -118,7 +118,7 @@ export class PopupComponent {
     this.isGymEdit = !this.isGymEdit;
   }
 
-  saveGymEdit() {
+  async saveGymEdit() {
 
     if (this.isQuest(this.data)) return;
 
@@ -126,15 +126,14 @@ export class PopupComponent {
 
     const payload = {...this.data, ...this.gymUpdate.value};
 
-    this.db.updateGym(payload)
-    .then(() => {
-      delete payload.pos;
+    try {
+
+      await this.db.updateGym(payload);
       this.popup.close({ type: 'gymUpdate', data: payload });
-    })
-    .catch((err) => {
+
+    } catch (err) {
+
       this.popup.close({ type: 'gymUpdateFailed', data: err.message });
-    });
-    
-    
+    } 
   }
 }

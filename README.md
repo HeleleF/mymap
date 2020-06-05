@@ -1,6 +1,6 @@
 # MyMap
 
-Visualizing my gym progress in PokemonGo with [Firebase](), [Angular 9]() and [MapboxGL]().
+Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 9](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
 
 ## Development
 

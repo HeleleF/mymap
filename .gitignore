@@ -8,6 +8,7 @@ upload.js
 newgyms.json
 /src/assets
 firestore-tests/node_modules
+questSpec.json
 
 # compiled output
 /dist

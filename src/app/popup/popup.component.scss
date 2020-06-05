@@ -6,7 +6,12 @@ $phoneBreakpoint: 600px;
     }
 }
 
-div.gym-pic {
+.gym-name-header {
+    width: 300px;
+    overflow-wrap: normal;
+}
+
+.gym-pic {
 
     position: relative;
     height: 320px;
@@ -18,7 +23,7 @@ div.gym-pic {
         width: 260px;
     }
 
-    div.union {
+    .union {
 
         position: absolute;
         width: 256px;
@@ -96,6 +101,10 @@ div.gym-pic {
 
 }
 
-p.stop-name, p.gym-name, p.task, p.reward {
+.stop-name, .gym-name, .task, .reward {
     text-decoration: none
+}
+
+mat-form-field {
+    width: 90%;
 }

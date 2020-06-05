@@ -17,26 +17,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   badges: number[] = [0, 0, 0, 0];
   count = 0;
-  rows: BadgeEntry[];
+  rows: BadgeEntry[] = [];
 
   dsrc: Datasource;
   badgeEntries$: Observable<BadgeEntry[][]>;
 
   loading = true;
 
-  user$: Observable<firebase.User>;
-
-  @ViewChildren('badgelist') ul: QueryList<ElementRef<HTMLUListElement>>;
+  @ViewChildren('badgelist') badgeList!: QueryList<ElementRef<HTMLUListElement>>;
 
   constructor(private db: DbService) {
 
-    this.badgeEntries$ = this.db.getAllBadgeEntries$().pipe(
-      tap((obj) => {
-        this.rows = obj.badgeRows.flat(); // used for reloading later
-        this.badges = obj.badgeTypeCounts;
+    this.badgeEntries$ = this.db.getAllBadgeEntries().pipe(
+      tap((d) => {
+        this.rows = d.badgeRows.flat(); // used for reloading later
+        this.badges = d.badgeTypeCounts;
         this.count = this.badges.reduce((acc, cur) => acc + cur, 0);
       }),
-      map(obj => obj.badgeRows),
+      map(d => d.badgeRows),
       shareReplay() // prevents the datasource from always request everything on scroll
     );
 
@@ -71,24 +69,47 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.ul.changes.pipe(take(1)).subscribe((c: QueryList<ElementRef<HTMLUListElement>>) => {
-      fromEvent(c.first.nativeElement, 'click').pipe(map(e => {
-        return (e.target as Element).closest('div[data-sid]').getAttribute('data-sid');
-      })).subscribe(n => { console.log(`clicked on row ${n}`); });
+    this.badgeList.changes.pipe(take(1)).subscribe({
+      next: (queryList: QueryList<ElementRef<HTMLUListElement>>) => {
 
-      // TODO: übergeordneten li finden, features rausholen und popup?
-      // ich würd sagen brauchen wir nicht?
-      // weil was sollte das popup denn anzeigen? gibt ja nichts...
+        fromEvent(queryList.first.nativeElement, 'click').pipe(
+          map(ev => {
+
+            const elm = ev.target as HTMLElement | null;
+            if (!elm) return null;
+
+            const row = elm.closest('div[data-sid]');
+            if (!row) return null;
+
+            return row.getAttribute('data-sid');
+          })
+        ).subscribe(n => {
+          console.debug(`clicked on row ${n}`);
+        });
+
+        // TODO: übergeordneten li finden, features rausholen und popup?
+        // ich würd sagen brauchen wir nicht?
+        // weil was sollte das popup denn anzeigen? gibt ja nichts...
+      }
     });
   }
 
-  jumpToType(ev: Event) {
-    const b = +(ev.target as HTMLElement).dataset.badge;
+  /**
+   * Reloads the scroller source to start at the first occurence of the
+   * clicked badge type
+   */
+  jumpToType(ev: MouseEvent | TouchEvent) {
+
+    const elm = ev.target as HTMLElement | null;
+    if (!elm || !elm.dataset) return;
 
     // find the first occurence of this badge type
-    const first = this.rows.findIndex(e => e.b === b);
+    const badgeTyp = Number(elm.dataset.badge);
+    const first = this.rows.findIndex(e => e.b === badgeTyp);
 
-    // reload scroller at that row position
-    this.dsrc.adapter.reload(Math.floor(first / 3));
+    if (first !== -1) {
+      // reload scroller at that row position
+      this.dsrc.adapter.reload(Math.floor(first / 3));
+    }
   }
 }

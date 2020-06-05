@@ -8,7 +8,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -18,7 +17,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
@@ -49,6 +47,7 @@ import { AutochipsComponent } from './autochips/autochips.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SearchComponent } from './search/search.component';
 
 import { setAppInjector } from './shared/app-injector';
 
@@ -65,6 +64,7 @@ import { setAppInjector } from './shared/app-injector';
     SettingsComponent,
     NewGymComponent,
     PageNotFoundComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +73,6 @@ import { setAppInjector } from './shared/app-injector';
       positionClass: 'toast-bottom-right'
     }),
     UiScrollModule,
-    FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
@@ -86,7 +85,6 @@ import { setAppInjector } from './shared/app-injector';
     MatTabsModule,
     MatChipsModule,
     MatDialogModule,
-    MatSidenavModule,
     MatListModule,
     MatFormFieldModule,
     MatRadioModule,
@@ -102,7 +100,6 @@ import { setAppInjector } from './shared/app-injector';
     AngularFireAuthModule,
     HttpClientModule,
   ],
-  entryComponents: [PopupComponent, FilterComponent, NewGymComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

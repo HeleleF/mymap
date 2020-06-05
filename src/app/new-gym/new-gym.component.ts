@@ -6,8 +6,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from '../services/message.service';
 import { ValidatorService } from '../services/validator.service';
 import { DbService } from '../services/db.service';
+
 import { getKeys } from '../shared/utils';
 import { GymBadge } from '../model/gym.model';
+import { take, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-gym',
@@ -29,10 +31,10 @@ export class NewGymComponent {
     this.badges = getKeys(GymBadge);
     this.gymData = this.fb.group({
       name: ['', [Validators.required]],
-      pos: ['', [Validators.required, this.vs.createGymPositionValidator()]],
-      id: ['', [Validators.required, this.vs.createGymIdValidator()]],
+      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      id: ['', [Validators.required, ValidatorService.validPortalId]],
       url: ['', [Validators.required], [this.vs.createGymUrlValidator()]],
-      badge: ['', [Validators.required, this.vs.createGymBadgeValidator()]],
+      badge: ['', [Validators.required, ValidatorService.validBadge]],
     }, { updateOn: 'blur' });
   }
 
@@ -68,33 +70,60 @@ export class NewGymComponent {
     this.gymData.reset();
   }
 
-  async create() {
+  onPaste(ev: ClipboardEvent) {
 
-    const v = this.gymData.value;
+    // prevent actually pasting the content directly
+    ev.preventDefault();
 
-    const { groups: { lat, lng } } = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+    const dataTransfer = ev.clipboardData;
+    if (!dataTransfer) return;
 
-    try {
+    const data = dataTransfer.getData('text');
+    if (!data) return;
 
-      const res = await this.db.addGym({
-        b: +GymBadge[v.badge],
-        d: v.name,
-        i: v.id,
-        lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
-        lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
-        u: v.url.replace(/^https?\:\/\//, '')
-      });
-
-      this.ms.broadcast({ type: 'newGym', data: res });
-
-    } catch (e) {
-      this.ms.fail({
-        type: 'Gym',
-        err: `Couldn't add "${v.name}" because: ${e.message}`
-      });
-    }
-
-    this.popup.close();
+    this.gymData.setValue(this.vs.parseAndValidate(data));
   }
 
+  create() {
+
+    const v = this.gymData.value;
+    this.gymData.disable();
+
+    const match = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+
+    if (!match || !match.groups) {
+      // this should never happen since the value of "v.pos" is checked
+      // during validation
+      this.gymData.reset();
+      return;
+    };
+
+    const { lat, lng } = match.groups;
+
+    this.db.addGym({
+      b: +GymBadge[v.badge],
+      d: v.name,
+      i: v.id,
+      lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
+      lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
+      u: v.url.replace(/^https?\:\/\//, '')
+    }).pipe(
+      take(1), 
+      finalize(() => {
+        this.popup.close();
+      })
+    ).subscribe({
+      next: (newGym) => {
+
+        if (newGym) {
+          this.ms.broadcast({ type: 'newGym', data: newGym });
+        } else {
+          this.ms.fail({ type: 'Gym', err: `The gym "${v.name}" already exists!` });
+        }    
+      },
+      error: (e) => {
+        this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because: ${e.message}` });
+      }
+    });  
+  }
 }

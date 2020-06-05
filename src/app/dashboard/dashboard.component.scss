@@ -11,7 +11,7 @@ $gymBadgeDim: 256px;
 $gymBadgeDimNegHalf: $gymBadgeDim / -2;
 
 $desktopPhoneBreakpoint: 1000px;
-$smallPhoneBreakpoint: 660px;
+$smallPhoneBreakpoint: 580px;
 
 @mixin desktop {
     @media (min-width: #{$desktopPhoneBreakpoint}) {
@@ -105,12 +105,20 @@ $smallPhoneBreakpoint: 660px;
         /* am besten ein wert der durch 3 teilbar ist*/
         display: flex;
 
+        @include small-phone() {
+            height: 180px;
+        }
+
         .entry {
           
             width: calc(100% / 3);
             /* drei spalten pro zeile*/
             height: $badgeEntryHeight;
             /* spalten eintrag ist genauso hoch wie die zeile*/
+
+            @include small-phone() {
+                height: 180px;
+            }
 
             .img-union {
                 height: 200px;
@@ -124,6 +132,13 @@ $smallPhoneBreakpoint: 660px;
                     height: 300px;
                     /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
                     width: 300px;
+                    /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                }
+
+                @include small-phone() {
+                    height: 100px;
+                    /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                    width: 100px;
                     /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
                 }
 
@@ -150,6 +165,18 @@ $smallPhoneBreakpoint: 660px;
                         margin-left: -63px;
                         /* die hälfte von .over width, wenn das 256 bleibt*/
                     }
+
+                    @include small-phone() {
+                        height: 72px;
+                        /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                        width: 52px;
+                        /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+                        margin-top: -36px;
+                        /* die hälfte von .over height, wenn das 256 bleibt*/
+                        margin-left: -26px;
+                        /* die hälfte von .over width, wenn das 256 bleibt*/
+                    }
                 }
 
                 .over {
@@ -174,6 +201,18 @@ $smallPhoneBreakpoint: 660px;
                         margin-left: -128px;
                         /* die hälfte von .over width, wenn das 256 bleibt*/
                     }
+
+                    @include small-phone() {
+                        height: 100px;
+                        /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                        width: 100px;
+                        /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+                        margin-top: -50px;
+                        /* die hälfte von .over height, wenn das 256 bleibt*/
+                        margin-left: -50px;
+                        /* die hälfte von .over width, wenn das 256 bleibt*/
+                    }
                 }
             }
 
@@ -187,6 +226,12 @@ $smallPhoneBreakpoint: 660px;
 
                 @include desktop() {
                     width: 256px;
+                    /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                }
+
+                @include small-phone() {
+                    width: 100px;
+                    font-size: 12px;
                     /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
                 }
             }

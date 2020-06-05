@@ -8,6 +8,25 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 
 @include angular-material-theme($my-app-theme);
 
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+
+////////////////////////////////////////////////////
+// THEME COLORS
+////////////////////////////////////////////////////
+
+.color-primary {
+    color: mat-color($my-app-primary);
+}
+
+.color-accent {
+    color: mat-color($my-app-accent);
+}
+
+////////////////////////////////////////////////////
+// DEFAULT STUFF
+////////////////////////////////////////////////////
+
 body {
     margin: 0;
     font-family: sans-serif;
@@ -36,13 +55,49 @@ h1, h2 {
     border-radius: 0;
 }
 
+////////////////////////////////////////////////////
+// MAPBOX_GL STUFF
+////////////////////////////////////////////////////
+
+.mapboxgl-canvas {
+    width: 100% !important;
+}
+
+.mapboxgl-ctrl-group {
+
+    overflow: hidden;
+  
+    &:not(:empty) {
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+    }
+  
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    /* remove broken button focus shadow */
+    button:focus {
+      box-shadow: none;
+    }
+  }
+
 .mapboxgl-ctrl-filter {
     background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4Igp3aWR0aD0iMjQiIGhlaWdodD0iMjQiCnZpZXdCb3g9IjAgMCAyNCAyNCIKc3R5bGU9IiBmaWxsOiMwMDAwMDA7Ij48ZyBpZD0ic3VyZmFjZTEiPjxwYXRoIHN0eWxlPSIgIiBkPSJNIDAgMCBMIDAgMiBMIDkgMTEgTCA5IDI0IEwgMTUgMjAgTCAxNSAxMSBMIDI0IDIgTCAyNCAwIFogTSAyLjgxMjUgMiBMIDIxLjE4NzUgMiBMIDE0LjE4NzUgOSBMIDkuODEyNSA5IFogTSAxMSAxMSBMIDEzIDExIEwgMTMgMTguOTA2MjUgTCAxMSAyMC4xODc1IFogIj48L3BhdGg+PC9nPjwvc3ZnPg==') 50% 50% no-repeat;
+
+    &.active {
+      background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3R5bGU9IiBmaWxsOiNGRjAwMDA7Ij48ZyBpZD0ic3VyZmFjZTEiPjxwYXRoIHN0eWxlPSIgIiBkPSJNIDAgMCBMIDAgMiBMIDkgMTEgTCA5IDI0IEwgMTUgMjAgTCAxNSAxMSBMIDI0IDIgTCAyNCAwIFogTSAyLjgxMjUgMiBMIDIxLjE4NzUgMiBMIDE0LjE4NzUgOSBMIDkuODEyNSA5IFogTSAxMSAxMSBMIDEzIDExIEwgMTMgMTguOTA2MjUgTCAxMSAyMC4xODc1IFogIj48L3BhdGg+PC9nPjwvc3ZnPg==') 50% 50% no-repeat;
+    }
 }
 
 .mapboxgl-ctrl-add-location {
     background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDBWMHoiLz48cGF0aCBkPSJNMTIgMkM4LjE0IDIgNSA1LjE0IDUgOWMwIDUuMjUgNyAxMyA3IDEzczctNy43NSA3LTEzYzAtMy44Ni0zLjE0LTctNy03em00IDhoLTN2M2gtMnYtM0g4VjhoM1Y1aDJ2M2gzdjJ6Ii8+PC9zdmc+') 50% 50% no-repeat;
 }
+
+////////////////////////////////////////////////////
+// DASHBOARD_COMPONENT SCROLLBAR
+////////////////////////////////////////////////////
 
 .badge-list::-webkit-scrollbar-track {
     background-color: rgb(255, 255, 255);
@@ -57,16 +112,4 @@ h1, h2 {
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
     background-color: mat-color($my-app-primary);
-}
-
-.color-primary {
-    color: mat-color($my-app-primary);
-}
-
-.color-accent {
-    color: mat-color($my-app-accent);
-}
-
-.mapboxgl-canvas {
-    width: 100% !important;
 }

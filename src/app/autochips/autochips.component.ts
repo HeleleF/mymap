@@ -19,16 +19,15 @@ export class AutochipsComponent {
   elms: Poke[] = [];
 
   // tslint:disable-next-line: no-input-rename
-  @Input('elements') allElms: Poke[];
+  @Input('elements') allElms!: Poke[];
   @Output() updated = new EventEmitter<string[]>();
 
-  @ViewChild('elmInput', { static: false }) elmInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
+  @ViewChild('elmInput', { static: false }) elmInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('auto', { static: false }) matAutocomplete!: MatAutocomplete;
 
   constructor() {
     this.filteredElms = this.formCtrl.valueChanges.pipe(
-      // tslint:disable-next-line: deprecation
-      startWith(null),
+      startWith(''),
       map((e: Poke | null) => e ? this._filter(e) : this.allElms.slice()));
   }
 

@@ -1,8 +1,17 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { DbService } from '../services/db.service';
-import { MessageService } from '../services/message.service';
+import { FilterService } from '../services/filter.service';
+import { ValidatorService } from '../services/validator.service';
+
+import { getKeys } from '../shared/utils';
+
+import { GymProps, GymBadge } from '../model/gym.model';
+import { QuestProps } from '../model/quest.model';
+import { PopupReturn } from '../model/shared.model';
+
 
 @Component({
   selector: 'app-popup',
@@ -11,42 +20,120 @@ import { MessageService } from '../services/message.service';
 })
 export class PopupComponent {
 
-  i: number = null;
+  oldBadge: number | undefined;
+  readonly last: number;
+  isGymEdit: boolean = false;
+
+  gymUpdate: FormGroup;
 
   constructor(
-    public popup: MatDialogRef<PopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data,
+    public popup: MatDialogRef<PopupComponent, PopupReturn>,
+    @Inject(MAT_DIALOG_DATA) public data: GymProps & { pos: number[] } | QuestProps,
     private db: DbService,
-    private ms: MessageService
+    private fs: FilterService,
+    private fb: FormBuilder
   ) {
-    this.i = this.data.badge;
+
+    if (!this.isQuest(this.data)) {
+      this.oldBadge = this.data.badge;
+    }
+    this.last = getKeys(GymBadge).length - 1;
+
+    this.gymUpdate = this.fb.group({
+      name: ['', [Validators.required]],
+      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      isLegacy: [''],
+      imageUrl: ['', [Validators.required]]
+    }, { updateOn: 'blur' });
   }
 
-  async onNoClick() {
-    this.popup.close();
+  private isQuest(p: GymProps | QuestProps): p is QuestProps {
+    return (p as QuestProps).taskDesc !== undefined;
+  }
+
+  get f() {
+    return this.gymUpdate.controls;
+  }
+
+  upgrade() {
+    if (this.isQuest(this.data)) return;
+    if (this.data.badge < this.last) this.data.badge++;
+  }
+
+  downgrade() {
+    if (this.isQuest(this.data)) return;
+    if (this.data.badge > 0) this.data.badge--;
   }
 
   exclude(nr: number) {
 
-    if (nr) {
-      this.ms.excludeOneType(this.data.type);
-    } else {
-      this.ms.excludeOneReward(this.data.reward);
+    if (this.isQuest(this.data)) {
+      if (nr) {
+        this.fs.excludeOneType(this.data.type);
+      } else {
+        this.fs.excludeOneReward(this.data.reward);
+      }
     }
 
     this.popup.close();
   }
 
-  async setBadge() {
-    await this.db.setGymBadge(this.data.fid, this.i);
-    this.popup.close({
-      badgeUpdate: this.i,
-      ...this.data
-    });
+  setBadge() {
+
+    if (this.isQuest(this.data)) return;
+
+    this.db.setGymBadge(this.data)
+      .then(() => {
+        this.popup.close({ type: 'badgeUpdate', data: this.data });
+      })
+      .catch((err) => {
+        this.popup.close({ type: 'badgeUpdateFailed', data: err.message });
+      });
+
   }
 
-  async setStatus() {
-    await this.db.setQuestStatus(this.data.fid, this.data.status);
-    this.popup.close(this.data);
+  setStatus() {
+    if (!this.isQuest(this.data)) return;
+
+    this.db.setQuestStatus(this.data.firestore_id, this.data.status)
+      .then(() => {
+        this.popup.close({ type: 'questUpdate', data: this.data });
+      })
+      .catch((err) => {
+        console.debug(`Quest update failed`, err);
+      });
+
+  }
+
+  toggleEditGym() {
+
+    if (this.isQuest(this.data)) return;
+    
+    this.gymUpdate.reset({
+      name: this.data.name,
+      pos: this.data.pos,
+      imageUrl: this.data.imageUrl,
+      isLegacy: !!this.data.isLegacy
+    });
+    this.isGymEdit = !this.isGymEdit;
+  }
+
+  async saveGymEdit() {
+
+    if (this.isQuest(this.data)) return;
+
+    this.gymUpdate.disable();
+
+    const payload = {...this.data, ...this.gymUpdate.value};
+
+    try {
+
+      await this.db.updateGym(payload);
+      this.popup.close({ type: 'gymUpdate', data: payload });
+
+    } catch (err) {
+
+      this.popup.close({ type: 'gymUpdateFailed', data: err.message });
+    } 
   }
 }

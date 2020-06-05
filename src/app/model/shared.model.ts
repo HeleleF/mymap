@@ -4,7 +4,7 @@ export interface Poke {
 }
 
 export interface Message {
-    type: 'newGym' | 'filtersChanged' | 'settings';
+    type: 'newGym' | 'settings' | 'selectGym';
     data: any;
 }
 
@@ -46,6 +46,8 @@ export interface FilterSettings {
 
   negateBadge?: boolean;
   badges: number[];
+
+  includeLegacy: boolean;
 }
 
 export interface User {
@@ -55,4 +57,9 @@ export interface User {
     isAdmin?: boolean;
 
     // mehr wenn wir brauchen
+}
+
+export interface PopupReturn {
+    type: 'badgeUpdateFailed' | 'badgeUpdate' | 'questUpdate' | 'gymUpdateFailed' | 'gymUpdate';
+    data: any;
 }

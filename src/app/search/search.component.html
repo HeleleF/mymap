@@ -1,0 +1,10 @@
+<form class="gym-search-form">
+    <mat-form-field class="gym-search-full-width">
+      <input type="text" placeholder="Enter gym name" matInput [formControl]="searchControl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onGymSelected($event)">
+        <mat-option *ngFor="let gym of filteredGyms | async" [value]="gym">
+          {{gym}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>

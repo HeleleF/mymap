@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Filters</h1>
 <div mat-dialog-content>
 
-  <mat-checkbox color="primary" [(ngModel)]="sets.showQuests">Show quest layer</mat-checkbox><br />
+  <mat-checkbox color="primary" [(ngModel)]="sets.showQuests" [disabled]="true">Show quest layer</mat-checkbox><br />
   <mat-checkbox color="primary" [(ngModel)]="sets.showGyms">Show gym layer</mat-checkbox><br />
 
   <mat-tab-group animationDuration="0ms" *ngIf="sets.showQuests">
@@ -44,6 +44,8 @@
     </mat-tab>
 
   </mat-tab-group>
+
+  <mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy">Include legacy gyms?</mat-checkbox><br />
 
 
 </div>

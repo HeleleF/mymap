@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "meine-pwa"
+  },
+  "targets": {
+    "meine-pwa": {
+      "hosting": {
+        "main": [
+          "helelchen"
+        ]
+      }
+    }
   }
 }

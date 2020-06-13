@@ -39,7 +39,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ImgFallbackDirective } from './directives/img-fallback.directive';
 
 import { MapComponent } from './map/map.component';
-import { PopupComponent } from './popup/popup.component';
+import { QuestPopupComponent } from './quest-popup/quest-popup.component';
+import { GymPopupComponent } from './gym-popup/gym-popup.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FilterComponent } from './filter/filter.component';
@@ -51,11 +52,13 @@ import { SearchComponent } from './search/search.component';
 
 import { setAppInjector } from './shared/app-injector';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    PopupComponent,
+    QuestPopupComponent,
+    GymPopupComponent,
     LoginComponent,
     ImgFallbackDirective,
     DashboardComponent,
@@ -65,6 +68,7 @@ import { setAppInjector } from './shared/app-injector';
     NewGymComponent,
     PageNotFoundComponent,
     SearchComponent,
+    
   ],
   imports: [
     BrowserModule,

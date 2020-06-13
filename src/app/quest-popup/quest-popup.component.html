@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{questData.stopName}}</h1>
+<div mat-dialog-content>
+  <p class="task">{{questData.taskDesc}}</p><br />
+  <p class="reward" *ngIf="questData.quantity">{{questData.quantity}} {{questData.reward}}</p><br />
+
+  <p class="reward" *ngIf="questData.encounter == 'multiple'">Possible: </p><br />
+  <img class="quest-img" src="../../assets/quests/{{questData.reward == '#' ? questData.encounter : questData.reward}}.png" /><br />
+
+  <label id="status-radio-group-label">Set quest status</label>
+  <mat-radio-group aria-labelledby="status-radio-group-label" class="status-radio-group" [(ngModel)]="questData.status">
+    <mat-radio-button class="status-radio-button" value="0">Not done</mat-radio-button>
+    <mat-radio-button class="status-radio-button" value="1">In progress</mat-radio-button>
+    <mat-radio-button class="status-radio-button" value="2">Done</mat-radio-button>
+  </mat-radio-group>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="exclude(0)">Exclude this type</button>
+  <button mat-button (click)="exclude(1)" *ngIf="questData.encounter != 'multiple'">Exclude this
+    {{questData.reward == "#" ? "encounter" : "reward"}}</button>
+  <button mat-button (click)="setStatus()">Save</button>
+  <button mat-button [mat-dialog-close]="questData" cdkFocusInitial>Close</button>
+</div>

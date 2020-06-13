@@ -14,11 +14,11 @@ import { PopupReturn } from '../model/shared.model';
 
 
 @Component({
-  selector: 'app-popup',
-  templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.scss']
+  selector: 'app-quest-popup',
+  templateUrl: './quest-popup.component.html',
+  styleUrls: ['./quest-popup.component.scss']
 })
-export class PopupComponent {
+export class QuestPopupComponent {
 
   oldBadge: number | undefined;
   readonly last: number;
@@ -27,7 +27,7 @@ export class PopupComponent {
   gymUpdate: FormGroup;
 
   constructor(
-    public popup: MatDialogRef<PopupComponent, PopupReturn>,
+    public popup: MatDialogRef<QuestPopupComponent, PopupReturn>,
     @Inject(MAT_DIALOG_DATA) public data: GymProps & { pos: number[] } | QuestProps,
     private db: DbService,
     private fs: FilterService,

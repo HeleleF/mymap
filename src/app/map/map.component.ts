@@ -10,7 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { PopupComponent } from '../popup/popup.component';
+import { GymPopupComponent } from '../gym-popup/gym-popup.component';
+import { QuestPopupComponent } from '../quest-popup/quest-popup.component';
 
 import { DbService } from '../services/db.service';
 import { MessageService } from '../services/message.service';
@@ -22,6 +23,7 @@ import { MapStyle, PopupReturn } from '../model/shared.model';
 import { GymProps } from '../model/gym.model';
 import { QuestProps } from '../model/quest.model';
 import { FilterService } from '../services/filter.service';
+
 
 
 @Component({
@@ -137,7 +139,8 @@ export class MapComponent implements OnInit, OnDestroy {
         minzoom: 12,
         maxzoom: 21
       })
-      .on('click', this.onClick.bind(this))
+      .on('click', 'gymsLayer', this.onGymsClick.bind(this))
+      .on('click', 'questsLayer', this.onQuestsClick.bind(this))
       .on('styleimagemissing', this.onStyleImageMissing.bind(this))
 
     this.loadData();
@@ -199,24 +202,16 @@ export class MapComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * Handles click events for the map
-   */
-  private onClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData) {
+  private onGymsClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData & { features?: mapboxgl.MapboxGeoJSONFeature[] }) {
 
-    const features = this.map.queryRenderedFeatures(e.point, {
-      layers: ['gymsLayer', 'questsLayer'],
-      validate: false
-    }) as GeoJSON.Feature<GeoJSON.Point>[];
+    if (!e.features) { return; }
 
-    if (!features.length) { return; }
-
-    const loc = features[0].geometry.coordinates;
+    const loc = (e.features[0].geometry as GeoJSON.Point).coordinates;
 
     this.map.easeTo({ center: loc as [number, number] });
 
-    const props = features[0].properties as GymProps | QuestProps;
-    const ref: MatDialogRef<PopupComponent, PopupReturn> = this.modal.open(PopupComponent, {
+    const props = e.features[0].properties as GymProps;
+    const ref: MatDialogRef<GymPopupComponent, PopupReturn> = this.modal.open(GymPopupComponent, {
       data: { ...props, pos: loc }
     });
 
@@ -282,15 +277,30 @@ export class MapComponent implements OnInit, OnDestroy {
 
             break;
 
-          case 'questUpdate':
-            // TODO(helene): Handle updates for quest layer with feature state.
-            break;
-
           default: break;
         }
       },
       error: (e) => {
         this.toast.error(`Popup closed with error ${e.message}`, 'Popup', { disableTimeOut: true })
+      }
+    });
+  }
+
+  private onQuestsClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData & { features?: mapboxgl.MapboxGeoJSONFeature[] }) {
+
+    if (!e.features) { return; }
+
+    const loc = (e.features[0].geometry as GeoJSON.Point).coordinates;
+
+    this.map.easeTo({ center: loc as [number, number] });
+
+    const ref: MatDialogRef<QuestPopupComponent, PopupReturn> = this.modal.open(QuestPopupComponent, {
+      data: e.features[0].properties as QuestProps
+    });
+
+    ref.afterClosed().subscribe({
+      next: (ret) => {
+        console.log(ret);
       }
     });
   }

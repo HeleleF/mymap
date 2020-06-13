@@ -1,6 +1,5 @@
 {
   "firestore": {
-    "indexes": "firestore.indexes.json",
     "rules": "firestore.rules"
   },
   
@@ -11,7 +10,6 @@
     ]
   },
   "hosting": {
-    "site": "helenchen",
     "public": "dist/MyMap",
     "ignore": [
       "firebase.json",

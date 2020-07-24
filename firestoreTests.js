@@ -1,16 +1,19 @@
 
-const fb = require('@firebase/testing');
+const fs = require('fs').promises;
+
+const fb = require('firebase');
 const { exit } = require('process');
 require("firebase/firestore");
 
-const app = fb.initializeAdminApp({ projectId: "meine-pwa" });
-const db = app.firestore();
-db.settings({
-    host: "localhost:8080",
-    ssl: false
+console.log('firestore init...');
+fb.initializeApp({
+    apiKey: "AIzaSyA1abJCUsKrI58kUPALI3Oz3nLJIgty4ZQ",
+    authDomain: "meine-pwa.firebaseapp.com",
+    projectId: "meine-pwa"
 });
+const db = fb.firestore();
 
-const gymsRef = db.collection("gyms");
+const gymsRef = db.collection("gyms").limit(10);
 
 const uploadGym = (gym) => {
     
@@ -41,11 +44,11 @@ const uploadGyms = async () => {
     exit(0);
 };
 
-const getGymsTest = async () => {
+const getGyms = async () => {
 
     try {
         const r = await gymsRef.get();
-        console.log(r.size);
+        console.log(r.size, r.docs);
     } catch (e) {
         console.log(e);
         exit(-1);
@@ -55,5 +58,5 @@ const getGymsTest = async () => {
     exit(0);
 };
 
-uploadGyms();
+getGyms();
 

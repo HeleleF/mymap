@@ -89,7 +89,7 @@ export class GymService {
 
   create(newGym: GymModel) {
 
-    const sameGyms = this.store.collection<GymModel>('gyms', ref => ref.where('p', '==', newGym.p));
+    const sameGyms = this.store.collection<GymModel>('gymsNEU', ref => ref.where('p', '==', newGym.p));
 
     return sameGyms.get().pipe(
       flatMap((snap) => {
@@ -101,7 +101,6 @@ export class GymService {
 
         // gym id is not used yet, add the gym
         return from(this.gymsRef.add(newGym)).pipe(
-
           map((newGymRef) => {
 
             const props: GymProps = {

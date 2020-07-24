@@ -19,7 +19,7 @@ import { FilterControl } from '../filter/filter.control';
 import { NewGymControl } from '../new-gym/new-gym.control';
 
 import { PopupReturn } from '../model/shared.model';
-import { GymProps, BadgeCollection } from '../model/gym.model';
+import { GymProps, BadgeCollection, GymBadge } from '../model/gym.model';
 import { QuestProps } from '../model/quest.model';
 import { UserService } from '../services/user.service';
 import { ActivatedRoute } from '@angular/router';
@@ -73,8 +73,6 @@ export class MapComponent implements OnInit, OnDestroy {
         if (!ret) {
           return;
         }
-
-        console.log(ret);
 
         switch (ret.type) {
 
@@ -219,13 +217,18 @@ export class MapComponent implements OnInit, OnDestroy {
 
         next: (msg) => {
 
+          console.log(msg);
+
           switch (msg.type) {
 
             case 'newGym':
-              const feature = msg.data as GeoJSON.Feature<GeoJSON.Point, GymProps>;
+              const feature = msg.data.f as GeoJSON.Feature<GeoJSON.Point, GymProps>;
               this.gyms.features.push(feature);
               (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
               this.toast.success(`Added "${feature.properties.name}" as a new gym!`, `Gym`);
+
+              this.userBadges[feature.properties.firestoreId] = +GymBadge[msg.data.b];
+              this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
               break;
 
             default:

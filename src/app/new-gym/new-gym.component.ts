@@ -99,7 +99,6 @@ export class NewGymComponent {
       this.gymData.reset();
       return;
     };
-
     const { lat, lng } = match.groups;
 
     this.db.create({
@@ -112,7 +111,7 @@ export class NewGymComponent {
       switchMap((feature) => {
 
         if (feature) {
-          return from(this.us.setBadge(feature.properties.firestoreId, v.badge)).pipe(mapTo(feature));
+          return from(this.us.setBadge(feature.properties.firestoreId, v.badge)).pipe(mapTo({f: feature, b: v.badge}));
         } else {
           return of(null);
         }

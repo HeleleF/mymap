@@ -1,0 +1,19 @@
+<mat-progress-bar class="loader" mode="indeterminate" *ngIf="loading" color="accent"></mat-progress-bar>
+<mat-card *ngIf="!loading">
+  <mat-card-header>
+    <p class="badge-header">ARENAORDEN</p>
+  </mat-card-header>
+  <mat-card-content>
+    <ul #badgelist class="badge-list">
+      <li class="badge-row" *uiScroll="let row of dsrc">
+        <div class="entry" *ngFor="let e of row" (click)="onClick($event)">
+          <div class="img-union">
+            <img class="under" loading="lazy" src="//images.weserv.nl/?url={{e.u}}&w=126&h=174" width="126" height="174" appFallback="../assets/gyms/missing.webp">
+            <img class="over" src="../../assets/gyms/GymBadgeFrame_{{e.b}}.png">
+          </div>
+          <p class="gym-name">{{e.d}}</p>
+        </div>
+      </li>
+    </ul>
+  </mat-card-content>
+</mat-card>

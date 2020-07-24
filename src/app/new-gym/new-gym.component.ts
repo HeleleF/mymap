@@ -5,11 +5,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { MessageService } from '../services/message.service';
 import { ValidatorService } from '../services/validator.service';
-import { DbService } from '../services/db.service';
 
 import { getKeys } from '../shared/utils';
-import { GymBadge } from '../model/gym.model';
-import { take, finalize } from 'rxjs/operators';
+import { GymBadge, asGeopoint } from '../model/gym.model';
+import { take, finalize, switchMap, mapTo } from 'rxjs/operators';
+import { GymService } from '../services/gym.service';
+import { throwError, from, of } from 'rxjs';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-new-gym',
@@ -23,9 +25,9 @@ export class NewGymComponent {
 
   constructor(
     private popup: MatDialogRef<NewGymComponent>,
-    private vs: ValidatorService,
     private fb: FormBuilder,
-    private db: DbService,
+    private db: GymService,
+    private us: UserService,
     private ms: MessageService
   ) {
     this.badges = getKeys(GymBadge);
@@ -33,7 +35,7 @@ export class NewGymComponent {
       name: ['', [Validators.required]],
       pos: ['', [Validators.required, ValidatorService.validPosition]],
       id: ['', [Validators.required, ValidatorService.validPortalId]],
-      url: ['', [Validators.required], [this.vs.createGymUrlValidator()]],
+      url: ['', [Validators.required], [ValidatorService.validGymUrl]],
       badge: ['', [Validators.required, ValidatorService.validBadge]],
     }, { updateOn: 'blur' });
   }
@@ -81,7 +83,7 @@ export class NewGymComponent {
     const data = dataTransfer.getData('text');
     if (!data) return;
 
-    this.gymData.setValue(this.vs.parseAndValidate(data));
+    this.gymData.setValue(ValidatorService.parseAndValidate(data));
   }
 
   create() {
@@ -100,15 +102,22 @@ export class NewGymComponent {
 
     const { lat, lng } = match.groups;
 
-    this.db.addGym({
-      b: +GymBadge[v.badge],
-      d: v.name,
-      i: v.id,
-      lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
-      lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
-      u: v.url.replace(/^https?\:\/\//, '')
+    this.db.create({
+      n: v.name,
+      l: asGeopoint(lat, lng),
+      p: v.id,
+      i: v.url.replace(/^https?\:\/\//, '')
     }).pipe(
-      take(1), 
+      take(1),
+      switchMap((feature) => {
+
+        if (feature) {
+          return from(this.us.setBadge(feature.properties.firestoreId, v.b)).pipe(mapTo(feature));
+        } else {
+          return of(null);
+        }
+
+      }),
       finalize(() => {
         this.popup.close();
       })

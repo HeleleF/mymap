@@ -2,7 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { DbService } from '../services/db.service';
 import { FilterService } from '../services/filter.service';
 import { ValidatorService } from '../services/validator.service';
 
@@ -10,6 +9,8 @@ import { getKeys } from '../shared/utils';
 
 import { PopupReturn } from '../model/shared.model';
 import { GymProps, GymBadge } from '../model/gym.model';
+import { GymService } from '../services/gym.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-gym-popup',
@@ -26,8 +27,9 @@ export class GymPopupComponent {
 
   constructor(
     public popup: MatDialogRef<GymPopupComponent, PopupReturn>,
-    @Inject(MAT_DIALOG_DATA) public gymData: GymProps & { pos: number[] },
-    private db: DbService,
+    @Inject(MAT_DIALOG_DATA) public gymData: GymProps & { position: number[], badge: number },
+    private db: GymService,
+    private us: UserService,
     private fs: FilterService,
     private fb: FormBuilder
   ) { 
@@ -38,9 +40,9 @@ export class GymPopupComponent {
 
     this.gymUpdate = this.fb.group({
       name: ['', [Validators.required]],
-      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      position: ['', [Validators.required, ValidatorService.validPosition]],
       isLegacy: [''],
-      imageUrl: ['', [Validators.required]]
+      imageUrl: ['', [Validators.required], [ValidatorService.validGymUrl]]
     }, { updateOn: 'blur' });
 
   }
@@ -62,11 +64,12 @@ export class GymPopupComponent {
 
   setBadge() {
 
-    this.db.setGymBadge(this.gymData)
+    this.us.setBadge(this.gymData.firestoreId, this.gymData.badge)
       .then(() => {
-        this.popup.close({ type: 'badgeUpdate', data: this.gymData });
+        this.popup.close({ type: 'badgeUpdate', data: { firestoreId: this.gymData.firestoreId, newBadge: this.gymData.badge } });
       })
       .catch((err) => {
+        console.log(err.code);
         this.popup.close({ type: 'badgeUpdateFailed', data: err.message });
       });
 
@@ -76,7 +79,7 @@ export class GymPopupComponent {
 
     this.gymUpdate.reset({
       name: this.gymData.name,
-      pos: this.gymData.pos,
+      position: this.gymData.position,
       imageUrl: this.gymData.imageUrl,
       isLegacy: !!this.gymData.isLegacy
     });
@@ -89,9 +92,12 @@ export class GymPopupComponent {
 
     const payload = {...this.gymData, ...this.gymUpdate.value};
 
+    payload.position[0] = Math.floor(payload.position[0] * 1e6) / 1e6;
+    payload.position[1] = Math.floor(payload.position[1] * 1e6) / 1e6;
+
     try {
 
-      await this.db.updateGym(payload);
+      await this.db.update(payload);
       this.popup.close({ type: 'gymUpdate', data: payload });
 
     } catch (err) {

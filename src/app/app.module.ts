@@ -25,11 +25,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -38,20 +39,20 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { ImgFallbackDirective } from './directives/img-fallback.directive';
 
-import { MapComponent } from './map/map.component';
-import { QuestPopupComponent } from './quest-popup/quest-popup.component';
-import { GymPopupComponent } from './gym-popup/gym-popup.component';
-import { LoginComponent } from './login/login.component';
+import { AutochipsComponent } from './autochips/autochips.component';
+import { BadgeListComponent } from './badge-list/badge-list.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FilterComponent } from './filter/filter.component';
-import { AutochipsComponent } from './autochips/autochips.component';
-import { SettingsComponent } from './settings/settings.component';
+import { GymPopupComponent } from './gym-popup/gym-popup.component';
+import { LockedComponent } from './locked/locked.component';
+import { LoginComponent } from './login/login.component';
+import { MapComponent } from './map/map.component';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { SearchComponent } from './search/search.component';
+import { QuestPopupComponent } from './quest-popup/quest-popup.component';
+import { SettingsComponent } from './settings/settings.component';
 
 import { setAppInjector } from './shared/app-injector';
-
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { setAppInjector } from './shared/app-injector';
     SettingsComponent,
     NewGymComponent,
     PageNotFoundComponent,
-    SearchComponent,
+    LockedComponent,
+    BadgeListComponent,
     
   ],
   imports: [
@@ -97,6 +99,7 @@ import { setAppInjector } from './shared/app-injector';
     MatDividerModule,
     MatInputModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatRippleModule,
     MatSelectModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -104,7 +107,15 @@ import { setAppInjector } from './shared/app-injector';
     AngularFireAuthModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { 
+      provide: FIRESTORE_SETTINGS, 
+      useValue: environment.production ? undefined : {
+        host: 'localhost:8080',
+        ssl: false
+    }
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

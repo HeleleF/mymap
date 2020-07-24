@@ -34,6 +34,7 @@ export class DbService {
     this.gymsCached = JSON.parse(localStorage.getItem('gymsCached') || '0');
     this.questsCached = JSON.parse(localStorage.getItem('questsCached') || '0');
     this.expire = Number(localStorage.getItem('questsExpire'));
+
   }
 
   /**
@@ -134,10 +135,10 @@ export class DbService {
   /**
    * Updates the badge of an existing gym.
    */
-  setGymBadge({ firestoreId, badge }: GymProps) {
+  setGymBadge({ firestoreId }: GymProps) {
 
     const gym = this.gymsRef.doc<GymInfo>(firestoreId);
-    return gym.update({ b: badge });
+    return gym.update({ b: 1 });
   }
 
   updateGym({firestoreId, name, imageUrl, pos, isLegacy }: GymProps & { pos: number[] }) {

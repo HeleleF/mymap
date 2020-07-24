@@ -1,33 +1,42 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, UrlTree, ActivatedRouteSnapshot } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { take, map, tap } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
 
   constructor(
-    private auth: AuthService,
+    private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
 
-  /**
-   * Restricts all routes except 'login'
-   * to users that are already logged in.
-   */
-  canActivate(): Observable<boolean> {
+  canActivate(route: ActivatedRouteSnapshot): Observable<UrlTree | boolean> {
 
-    return this.auth.user$.pipe(
+    return this.userService.getCurrentUser().pipe(
       take(1),
-      map(user => !!user),
-      tap(isLoggedIn => {
-        if (!isLoggedIn) {
-          this.router.navigate(['/login']);
+      map(user => {
+        if (user) {
+
+          if (route.data.roles) {
+
+            if (route.data.roles.includes(user.role)) {
+              return true;
+            } else {
+              return this.router.parseUrl('/dashboard');
+            }
+
+          } else {
+            return true;
+          }
+
+        } else {
+          return this.router.parseUrl('/login');
         }
-      })
+      }),
     );
   }
 }

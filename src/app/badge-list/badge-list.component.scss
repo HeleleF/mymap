@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
+
+$badgeListHeight: 1000px;
+
+$badgeListWidth: 100%;
+$badgeEntryHeight: 350px;
+
+$imgUnionDim: 300px;
+
+$gymBadgeDim: 256px;
+$gymBadgeDimNegHalf: $gymBadgeDim / -2;
+
+$desktopPhoneBreakpoint: 1000px;
+$smallPhoneBreakpoint: 580px;
+
+@mixin desktop {
+    @media (min-width: #{$desktopPhoneBreakpoint}) {
+        @content;
+    }
+}
+
+@mixin small-phone {
+    @media (max-width: #{$smallPhoneBreakpoint}) {
+        @content;
+    }
+}
+
+.loader {
+    width: 100%;
+}
+
+.badge-header {
+    text-align: center;
+    font-family: "Lato", sans-serif;
+    width: 100%;
+
+    @include desktop() {
+        width: 990px;
+        margin: auto;
+    }
+}
+
+.badge-list {
+
+    width: 100%;
+    height: $badgeListHeight;
+
+    overflow-y: auto;
+    overflow-anchor: none;
+    list-style-type: none;
+
+    border-top: 1px solid rgba(200, 200, 200, 0.4);
+    padding: 0;
+
+    @include desktop() {
+        width: 1002px;
+        /* 990px für die Liste + 12px für die Scroll-Leiste*/
+        margin: auto;
+    }
+
+    .badge-row {
+
+        /* !!!! hier den margin für top und bottom festzulegen verkackt den scroller !!!! */
+        height: $badgeEntryHeight;
+        /* spalten eintrag ist genauso hoch wie die zeile*/
+        width: 100%;
+        /* am besten ein wert der durch 3 teilbar ist*/
+        display: flex;
+
+        @include small-phone() {
+            height: 180px;
+        }
+
+        .entry {
+          
+            width: calc(100% / 3);
+            /* drei spalten pro zeile*/
+            height: $badgeEntryHeight;
+            /* spalten eintrag ist genauso hoch wie die zeile*/
+
+            @include small-phone() {
+                height: 180px;
+            }
+
+            .img-union {
+                height: 200px;
+                /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                width: 200px;
+                /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                margin: auto;
+                position: relative;
+
+                @include desktop() {
+                    height: 300px;
+                    /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                    width: 300px;
+                    /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                }
+
+                @include small-phone() {
+                    height: 100px;
+                    /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                    width: 100px;
+                    /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                }
+
+                .under {
+                    position: absolute;
+                    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+                    width: 96px;
+                    height: 134px;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -67px;
+                    /* die hälfte von .under height*/
+                    margin-left: -48px;
+                    /* die hälfte von .under width*/
+
+                    @include desktop() {
+                        height: 174px;
+                        /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                        width: 126px;
+                        /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+                        margin-top: -87px;
+                        /* die hälfte von .over height, wenn das 256 bleibt*/
+                        margin-left: -63px;
+                        /* die hälfte von .over width, wenn das 256 bleibt*/
+                    }
+
+                    @include small-phone() {
+                        height: 72px;
+                        /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                        width: 52px;
+                        /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+                        margin-top: -36px;
+                        /* die hälfte von .over height, wenn das 256 bleibt*/
+                        margin-left: -26px;
+                        /* die hälfte von .over width, wenn das 256 bleibt*/
+                    }
+                }
+
+                .over {
+                    position: absolute;
+                    width: 196px;
+                    height: 196px;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -98px;
+                    /* die hälfte von .over height, wenn das 256 bleibt*/
+                    margin-left: -98px;
+                    /* die hälfte von .over width, wenn das 256 bleibt*/
+
+                    @include desktop() {
+                        height: 256px;
+                        /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                        width: 256px;
+                        /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+                        margin-top: -128px;
+                        /* die hälfte von .over height, wenn das 256 bleibt*/
+                        margin-left: -128px;
+                        /* die hälfte von .over width, wenn das 256 bleibt*/
+                    }
+
+                    @include small-phone() {
+                        height: 100px;
+                        /* bisschen kleiner als die zeilen höhe, damit die schrift noch hinpasst*/
+                        width: 100px;
+                        /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+
+                        margin-top: -50px;
+                        /* die hälfte von .over height, wenn das 256 bleibt*/
+                        margin-left: -50px;
+                        /* die hälfte von .over width, wenn das 256 bleibt*/
+                    }
+                }
+            }
+
+            .gym-name {
+                text-align: center;
+                margin: auto;
+                width: 196px;
+                /* so wie .over height, wenn das 256 bleibt*/
+                height: 20px;
+                font-family: "Lato", sans-serif;
+
+                @include desktop() {
+                    width: 256px;
+                    /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                }
+
+                @include small-phone() {
+                    width: 100px;
+                    font-size: 12px;
+                    /* das hier mal 3 darf nich kleiner sein als die width von .badge-row*/
+                }
+            }
+        }
+    }
+}

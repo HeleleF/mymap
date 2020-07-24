@@ -4,11 +4,8 @@
 /src/environments
 .firebase
 *-debug.log
-upload.js
-newgyms.json
 /src/assets
-firestore-tests/node_modules
-questSpec.json
+/exported
 
 # compiled output
 /dist

@@ -4,7 +4,9 @@ Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.co
 
 ## Development
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:8001/`. The app will automatically reload if you change any of the source files.
+Start Firestore emulator: `firebase emulators:start --only firestore --import "./exported"` Kaspersky may cause problems!
+
+Run `npm start` for a dev server. Navigate to `http://localhost:8001/`. The app will automatically reload if you change any of the source files.
 
 ## Build
 

@@ -339,6 +339,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.gyms = gymCollection;
         (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
         this.toast.success('Gyms loaded', 'Data');
+        (window as any).__GYMS__ = gymCollection; 
       },
 
       error: (e) => {

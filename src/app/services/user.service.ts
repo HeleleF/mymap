@@ -7,11 +7,14 @@ import { Observable, of, from, zip } from 'rxjs';
 import { map, switchMap, flatMap, tap } from 'rxjs/operators';
 import { Role } from '../model/role.model';
 import { BadgeCollection} from '../model/gym.model';
+import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  private opts: firestore.GetOptions;
 
   private mUser$: Observable<User | null>;
   private userCollection: AngularFirestoreCollection<User>;
@@ -22,6 +25,9 @@ export class UserService {
     private auth: AuthService
   ) {
 
+    const useCache = Boolean(localStorage.getItem('medalCache'));
+    this.opts = useCache ? { source: 'cache' } : {};
+
     this.userCollection = this.store.collection<User>('users');
 
     this.mUser$ = this.auth.user$.pipe(
@@ -31,7 +37,6 @@ export class UserService {
           this.currentUID = maybeUser.uid;
         }
       }),
-
       switchMap(user => {
 
         if (user) {
@@ -70,7 +75,8 @@ export class UserService {
   }
 
   getMedals() {
-    return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get().pipe(
+    return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get(this.opts).pipe(
+      tap(this.setCached),
       map(({ docs }) => {
 
         return docs.reduce((acc, cur) => {
@@ -86,7 +92,8 @@ export class UserService {
   }
 
   getMedalCounts() {
-    return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get().pipe(
+    return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get(this.opts).pipe(
+      tap(this.setCached),
       map(({ docs }) => {
 
         const badgeTypeCounts = [0, 0, 0, 0];
@@ -119,8 +126,14 @@ export class UserService {
     return medalRef.set({ badge: newBadge });
   }
 
-
   getAllUsers() {
-    return this.userCollection.get();
+    return this.userCollection.get(this.opts);
+  }
+
+  private setCached() {
+    if (!localStorage.getItem('medalCache')) {
+      this.opts = { source: 'cache' };
+      localStorage.setItem('medalCache', 'true');
+    }
   }
 }

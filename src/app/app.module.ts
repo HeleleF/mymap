@@ -49,7 +49,6 @@ import { LoginComponent } from './login/login.component';
 import { MapComponent } from './map/map.component';
 import { NewGymComponent } from './new-gym/new-gym.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { QuestPopupComponent } from './quest-popup/quest-popup.component';
 import { SettingsComponent } from './settings/settings.component';
 
 import { setAppInjector } from './shared/app-injector';
@@ -58,7 +57,6 @@ import { setAppInjector } from './shared/app-injector';
   declarations: [
     AppComponent,
     MapComponent,
-    QuestPopupComponent,
     GymPopupComponent,
     LoginComponent,
     ImgFallbackDirective,
@@ -107,6 +105,7 @@ import { setAppInjector } from './shared/app-injector';
     AngularFireAuthModule,
     HttpClientModule,
   ],
+  /*
   providers: [
     { 
       provide: FIRESTORE_SETTINGS, 
@@ -116,6 +115,7 @@ import { setAppInjector } from './shared/app-injector';
     }
     },
   ],
+  */
   bootstrap: [AppComponent]
 })
 export class AppModule {

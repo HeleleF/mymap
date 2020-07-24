@@ -112,7 +112,7 @@ export class NewGymComponent {
       switchMap((feature) => {
 
         if (feature) {
-          return from(this.us.setBadge(feature.properties.firestoreId, v.b)).pipe(mapTo(feature));
+          return from(this.us.setBadge(feature.properties.firestoreId, v.badge)).pipe(mapTo(feature));
         } else {
           return of(null);
         }

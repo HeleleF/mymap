@@ -38,7 +38,8 @@ export class BadgeListComponent implements OnInit, AfterViewInit {
           entry.b = data[1][entry.f] || 0;
 
           return entry;
-        });
+        }).sort((x, y) => y.b - x.b); // TODO(helene): make this into a property to be able to change it (asc/desc)
+
         return createRows(entries);
       }),
       shareReplay() // prevents the datasource from always request everything on scroll

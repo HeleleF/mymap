@@ -13,22 +13,31 @@ fb.initializeApp({
 });
 const db = fb.firestore();
 
-const gymsRef = db.collection("gyms").limit(10);
+const gymsRef = db.collection("gymsNEU");
+const allBadges = [];
 
 const uploadGym = (gym) => {
     
     const [ lng, lat ] = gym.geometry.coordinates;
-    const { firestoreId, name, imageUrl, badge, portalId } = gym.properties;
+    const { firestoreId, name, imageUrl, portalId, badge } = gym.properties;
+
+    allBadges.push({
+        firestoreId, badge
+    });
 
     const payload = {
         n: name,
         i: imageUrl,
-        b: badge,
         p: portalId,
         l: new fb.firestore.GeoPoint(parseFloat(lat), parseFloat(lng))
     };
 
     return gymsRef.doc(firestoreId).set(payload);
+};
+
+const uploadBadge = (b) => {
+    const medalRef = db.doc(`users/v0Y77Th7C5Mr6QoXdbX5gdMyDow2/medals/${b.firestoreId}`);
+    return medalRef.set({ badge: b.badge });
 };
 
 const uploadGyms = async () => {
@@ -41,22 +50,18 @@ const uploadGyms = async () => {
     await Promise.all(proms);
         
     console.log('done');
+
+    const proms2 = allBadges.map(uploadBadge);
+    console.log('waiting2', proms2.length);
+
+    await Promise.all(proms2);
+        
+    console.log('done2');
+
     exit(0);
 };
 
-const getGyms = async () => {
-
-    try {
-        const r = await gymsRef.get();
-        console.log(r.size, r.docs);
-    } catch (e) {
-        console.log(e);
-        exit(-1);
-    }
-
-    console.log('done');
-    exit(0);
-};
-
-getGyms();
-
+uploadGyms().catch((e) => {
+    console.log(e.message);
+    exit(-1);
+});

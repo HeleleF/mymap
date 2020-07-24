@@ -44,4 +44,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  jumpToType(ev: MouseEvent) {
+    console.log(ev.target);
+  }
+
 }

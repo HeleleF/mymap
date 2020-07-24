@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
 import { GymModel, GymProps, BadgeEntry, asGeopoint } from '../model/gym.model';
-import { map, flatMap } from 'rxjs/operators';
+import { map, flatMap, tap } from 'rxjs/operators';
 
 import { of, from } from 'rxjs';
+import { firestore } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,18 @@ import { of, from } from 'rxjs';
 export class GymService {
 
   private gymsRef: AngularFirestoreCollection<GymModel>;
+  private opts: firestore.GetOptions; 
 
   constructor(private store: AngularFirestore) {
-      this.gymsRef = this.store.collection<GymModel>('gyms', ref => ref.orderBy('n', 'asc'));
+      this.gymsRef = this.store.collection<GymModel>('gymsNEU', ref => ref.orderBy('n', 'asc'));
+
+      const useCache = Boolean(localStorage.getItem('gymCache'));
+      this.opts = useCache ? { source: 'cache' } : {};
   }
 
   getEntries() {
-    return this.gymsRef.get({ source: 'cache' }).pipe(
+    return this.gymsRef.get(this.opts).pipe(
+      tap(this.setCached),
       map(({ docs }) => {
 
         return (docs as QueryDocumentSnapshot<GymModel>[]).map(doc => {
@@ -31,7 +37,8 @@ export class GymService {
 
   getGyms() {
 
-    return this.gymsRef.get().pipe(
+    return this.gymsRef.get(this.opts).pipe(
+      tap(this.setCached),
       map(({ docs }) => {
 
         const features = (docs as QueryDocumentSnapshot<GymModel>[]).map(doc => {
@@ -66,9 +73,10 @@ export class GymService {
     );
   }
 
-  update({firestoreId, name, imageUrl, pos, isLegacy }: GymProps & { pos: string[] }) {
-    const [ lng, lat ] = pos;
+  update({firestoreId, name, imageUrl, position, isLegacy }: GymProps & { position: string[] }) {
+    const [ lng, lat ] = position;
 
+    // TODO(helene): Only update the value(s) that changed, dont write the other ones again
     const newValues: Partial<GymModel> = { n: name, i: imageUrl, l: asGeopoint(lat, lng) };
 
     // if its not legacy, we dont need to add an extra property, since the default is false already
@@ -119,5 +127,12 @@ export class GymService {
         );
       })
     );
+  }
+
+  private setCached() {
+    if (!localStorage.getItem('gymCache')) {
+      this.opts = { source: 'cache' };
+      localStorage.setItem('gymCache', 'true');
+    }
   }
 }

@@ -105,7 +105,6 @@ import { setAppInjector } from './shared/app-injector';
     AngularFireAuthModule,
     HttpClientModule,
   ],
-  /*
   providers: [
     { 
       provide: FIRESTORE_SETTINGS, 
@@ -115,7 +114,7 @@ import { setAppInjector } from './shared/app-injector';
     }
     },
   ],
-  */
+
   bootstrap: [AppComponent]
 })
 export class AppModule {

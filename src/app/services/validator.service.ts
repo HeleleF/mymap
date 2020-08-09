@@ -17,6 +17,14 @@ export class ValidatorService {
         return /^[0-9a-f]{32}(\.(1[126]|2))?$/.test(control.value) ? null : { wrongFormat: { value: control.value } };
     }
 
+    // from https://stackoverflow.com/a/31408260
+    static validLatitude(control: AbstractControl): ValidationErrors | null {
+        return /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/.test(control.value) ? null : { malformedPos: { value: control.value } };
+    }
+    static validLongitude(control: AbstractControl): ValidationErrors | null {
+        return /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/.test(control.value) ? null : { malformedPos: { value: control.value } };
+    }
+
     static validPosition(control: AbstractControl): ValidationErrors | null {
         return /^\d{2}\.\d+\,\d{2}\.\d+$/.test(control.value) ? null : { malformedPos: { value: control.value } };
     }

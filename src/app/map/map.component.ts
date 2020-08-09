@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
 import { ToastrService } from 'ngx-toastr';
 
-import { Subject, Observer } from 'rxjs';
+import { Subject, Observer, zip } from 'rxjs';
 import { take, takeUntil, tap, switchMapTo, filter } from 'rxjs/operators';
 
 import { GymPopupComponent } from '../gym-popup/gym-popup.component';
@@ -46,7 +46,7 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
    * Stores all quest features for the quest source
    */
-  private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
+  //private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
 
   /**
    * "Kill switch" for all active subscriptions
@@ -63,7 +63,7 @@ export class MapComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.gyms = { type: 'FeatureCollection', features: [] };
-    this.quests = { type: 'FeatureCollection', features: [] };
+    //this.quests = { type: 'FeatureCollection', features: [] };
 
     this.userBadges = {};
 
@@ -86,7 +86,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
           case 'gymUpdate':
 
-            const u = ret.data as GymProps & { pos: number[] };
+            const u = ret.data as GymProps & { lat: string | number, lng: string | number };
             const ix = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === u.firestoreId);
 
             if (ix === -1) {
@@ -95,14 +95,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
             } else {
 
-              this.gyms.features[ix].properties.imageUrl = u.imageUrl;
-              this.gyms.features[ix].properties.name = u.name;
-
-              if (u.isLegacy) {
-                this.gyms.features[ix].properties.isLegacy = true;
-              }
-
-              this.gyms.features[ix].geometry.coordinates = u.pos;
+              // only update stuff that changed
+              if (u.name) this.gyms.features[ix].properties.name = u.name;
+              if (u.imageUrl) this.gyms.features[ix].properties.imageUrl = u.imageUrl;
+              if (u.isLegacy) this.gyms.features[ix].properties.isLegacy = true;
+              if (u.lat && u.lng) this.gyms.features[ix].geometry.coordinates = [ +u.lng, +u.lat ];
 
               (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
             }
@@ -131,7 +128,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     // watch for service worker updates
     if (this.swUpdate.isEnabled) {
-      console.debug('update handler...');
       this.swUpdate.available.subscribe(() => {
         this.toast.info('Click to reload!', 'App Update', {
           disableTimeOut: true,
@@ -172,7 +168,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map
       .addSource('gymSource', { type: 'geojson', data: this.gyms })
-      .addSource('questSource', { type: 'geojson', data: this.quests })
+      //.addSource('questSource', { type: 'geojson', data: this.quests })
       .addLayer({
         id: 'gymsLayer',
         type: 'symbol',
@@ -181,12 +177,11 @@ export class MapComponent implements OnInit, OnDestroy {
           'icon-image': this.gymIcon,
           'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.2, 19, 0.5],
           'icon-allow-overlap': true,
-          'text-field': ['case', ['has', 'isLegacy'], '*', ''],
-          'text-offset': ['interpolate', ['linear'], ['zoom'], 12, ['literal', [0.7, -0.7]], 19, ['literal', [1.5, -1.5]]],
         },
         minzoom: 10,
         maxzoom: 21
       })
+      /*
       .addLayer({
         id: 'questsLayer',
         type: 'symbol',
@@ -205,6 +200,7 @@ export class MapComponent implements OnInit, OnDestroy {
         minzoom: 12,
         maxzoom: 21
       })
+      */
       .on('click', 'gymsLayer', this.onGymsClick.bind(this))
       //.on('click', 'questsLayer', this.onQuestsClick.bind(this))
 
@@ -227,7 +223,7 @@ export class MapComponent implements OnInit, OnDestroy {
               (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
               this.toast.success(`Added "${feature.properties.name}" as a new gym!`, `Gym`);
 
-              this.userBadges[feature.properties.firestoreId] = +GymBadge[msg.data.b];
+              this.userBadges[feature.properties.firestoreId] = msg.data.b;
               this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
               break;
 
@@ -351,7 +347,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
       },
       error: (e) => {
-        this.toast.error(e.message, `Data`, { disableTimeOut: true });
+        this.toast.error(e.message, e.code, { disableTimeOut: true });
       }
     });
   }

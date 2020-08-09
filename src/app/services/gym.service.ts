@@ -73,18 +73,21 @@ export class GymService {
     );
   }
 
-  update({firestoreId, name, imageUrl, position, isLegacy }: GymProps & { position: string[] }) {
-    const [ lng, lat ] = position;
+  update({firestoreId, name, imageUrl, lat, lng, isLegacy }: GymProps & { lat: string | number, lng: string | number }) {
 
-    // TODO(helene): Only update the value(s) that changed, dont write the other ones again
-    const newValues: Partial<GymModel> = { n: name, i: imageUrl, l: asGeopoint(lat, lng) };
+    const newValues: Partial<GymModel> = {};
+
+    if (name) newValues.n = name;
+    if (imageUrl) newValues.i = imageUrl.replace(/^https?\:\/\//, '');
+
+    // if one exists, the other has to exist too
+    if (lat && lng) newValues.l = asGeopoint(lat, lng);
 
     // if its not legacy, we dont need to add an extra property, since the default is false already
     // the other way around is not needed, since gyms marked as legacy are 'gone' forever
     if (isLegacy) newValues.r = true;
 
-    const gym = this.gymsRef.doc<GymModel>(firestoreId);
-    return gym.update(newValues);
+    return this.gymsRef.doc<GymModel>(firestoreId).update(newValues);
   }
 
   create(newGym: GymModel) {

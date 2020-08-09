@@ -113,10 +113,10 @@ export interface MedalCount {
     [badgeType: number]: number
 }
 
-export function asGeopoint(latitude: string, longitude: string) {
+export function asGeopoint(latitude: string | number, longitude: string | number) {
 
-    const lat = Math.floor(parseFloat(latitude) * 1e6) / 1e6;
-    const lng = Math.floor(parseFloat(longitude) * 1e6) / 1e6;
+    const lat = Math.floor(+latitude * 1e6) / 1e6;
+    const lng = Math.floor(+longitude * 1e6) / 1e6;
 
     return new firebase.firestore.GeoPoint(lat, lng);
 }

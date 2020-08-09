@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FilterService } from '../services/filter.service';
 import { ValidatorService } from '../services/validator.service';
 
-import { getKeys } from '../shared/utils';
+import { getKeys, clamp } from '../shared/utils';
 
 import { PopupReturn } from '../model/shared.model';
 import { GymProps, GymBadge } from '../model/gym.model';
@@ -40,7 +40,8 @@ export class GymPopupComponent {
 
     this.gymUpdate = this.fb.group({
       name: ['', [Validators.required]],
-      position: ['', [Validators.required, ValidatorService.validPosition]],
+      lat: ['', [Validators.required, ValidatorService.validLatitude]],
+      lng: ['', [Validators.required, ValidatorService.validLongitude]],
       isLegacy: [''],
       imageUrl: ['', [Validators.required], [ValidatorService.validGymUrl]]
     }, { updateOn: 'blur' });
@@ -79,7 +80,8 @@ export class GymPopupComponent {
 
     this.gymUpdate.reset({
       name: this.gymData.name,
-      position: this.gymData.position,
+      lat: clamp(this.gymData.position[1]),
+      lng: clamp(this.gymData.position[0]),
       imageUrl: this.gymData.imageUrl,
       isLegacy: !!this.gymData.isLegacy
     });
@@ -88,12 +90,32 @@ export class GymPopupComponent {
 
   async saveGymEdit() {
 
+    const payload = Object.keys(this.gymUpdate.controls).reduce((acc, cur) => {
+
+      const k = this.gymUpdate.controls[cur];
+      
+      if (k.dirty) {
+          acc[cur] = k.value;
+      } 
+      return acc;
+    }, {} as any);
+
+    if (!Object.keys(payload).length) return;
+
     this.gymUpdate.disable();
 
-    const payload = {...this.gymData, ...this.gymUpdate.value};
+    // since position is stored as Geopoint, even if only latitude is changed, we also need longitude (and vice versa)
+    if (payload.lat && !payload.lng) {
 
-    payload.position[0] = Math.floor(payload.position[0] * 1e6) / 1e6;
-    payload.position[1] = Math.floor(payload.position[1] * 1e6) / 1e6;
+      payload.lng = this.gymUpdate.value.lng;
+
+    } else if (payload.lng && !payload.lat) {
+
+      payload.lat = this.gymUpdate.value.lat;
+    }
+
+    // we need the id to identify (hehe) the corresponding document
+    payload.firestoreId = this.gymData.firestoreId;
 
     try {
 

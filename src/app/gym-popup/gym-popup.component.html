@@ -1,8 +1,8 @@
 <ng-container *ngIf="isGymEdit then gymEditBlock else gymBlock"></ng-container>
 
 <ng-template #gymBlock>
-  <h1 mat-dialog-title class="gym-name-header">{{gymData.name}}<span *ngIf="gymData.isLegacy">*</span>
-    <button mat-icon-button (click)="toggleEditGym()" [disabled]="gymData.isLegacy">
+  <h1 mat-dialog-title class="gym-name-header">{{gymData.name}}{{ gymData.isLegacy ? ' (legacy)' : ''}}
+    <button mat-icon-button (click)="toggleEditGym()" *ngIf="!gymData.isLegacy">
       <mat-icon>create</mat-icon>
     </button>
   </h1>
@@ -37,8 +37,13 @@
       </mat-form-field><br/>
     
       <mat-form-field>
-        <input matInput placeholder="Update the position" formControlName="position" required>
-        <mat-error *ngIf="f.position.errors">Not a valid position</mat-error>
+        <input matInput placeholder="Update the latitude" formControlName="lat" required>
+        <mat-error *ngIf="f.lat.errors">Not a valid latitude</mat-error>
+      </mat-form-field><br/>
+
+      <mat-form-field>
+        <input matInput placeholder="Update the longitude" formControlName="lng" required>
+        <mat-error *ngIf="f.lng.errors">Not a valid longitude</mat-error>
       </mat-form-field><br/>
     
       <mat-form-field>

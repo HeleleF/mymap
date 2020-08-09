@@ -1,5 +1,10 @@
 // tslint:disable:no-bitwise
 
+export function clamp(val: string | number ): number {
+
+    return Math.floor(+val * 1e6) / 1e6;
+}
+
 const b32 = '0123456789bcdefghjkmnpqrstuvwxyz';
 
 export class GeoHash {

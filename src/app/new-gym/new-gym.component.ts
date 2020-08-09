@@ -22,6 +22,7 @@ export class NewGymComponent {
 
   gymData: FormGroup;
   readonly badges: string[];
+  intelliPaste = true;
 
   constructor(
     private popup: MatDialogRef<NewGymComponent>,
@@ -33,7 +34,7 @@ export class NewGymComponent {
     this.badges = getKeys(GymBadge);
     this.gymData = this.fb.group({
       name: ['', [Validators.required]],
-      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      pos: ['', [Validators.required, ValidatorService.validPosition]], //TODO: refactor this to use lat and long validators too
       id: ['', [Validators.required, ValidatorService.validPortalId]],
       url: ['', [Validators.required], [ValidatorService.validGymUrl]],
       badge: ['', [Validators.required, ValidatorService.validBadge]],
@@ -74,6 +75,8 @@ export class NewGymComponent {
 
   onPaste(ev: ClipboardEvent) {
 
+    if (!this.intelliPaste) return;
+
     // prevent actually pasting the content directly
     ev.preventDefault();
 
@@ -89,6 +92,7 @@ export class NewGymComponent {
   create() {
 
     const v = this.gymData.value;
+    const b = +GymBadge[v.badge];
     this.gymData.disable();
 
     const match = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
@@ -111,7 +115,7 @@ export class NewGymComponent {
       switchMap((feature) => {
 
         if (feature) {
-          return from(this.us.setBadge(feature.properties.firestoreId, v.badge)).pipe(mapTo({f: feature, b: v.badge}));
+          return from(this.us.setBadge(feature.properties.firestoreId, b)).pipe(mapTo({f: feature, b: b}));
         } else {
           return of(null);
         }

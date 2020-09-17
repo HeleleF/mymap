@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   isLoading = true;
 
   constructor(
-    private auth: AuthService,
+    private as: AuthService,
     private afAuth: AngularFireAuth,
     private router: Router,
     private zone: NgZone
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
-    void this.afAuth.auth.getRedirectResult().then(result => {
+    void this.afAuth.getRedirectResult().then((result) => {
       if (result.user) {
 
         // prevent angular warning 'Navigation outside NgZone...'
@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
 
       } else {
         this.isLoading = false;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
         this.message = history.state.msg || 'Bitte erstmal reinloggen';
       }
     });
@@ -46,6 +47,6 @@ export class LoginComponent implements OnInit {
       prompt: 'select_account',
     });
 
-    return this.auth.loginWithProvider(provider);
+    return this.as.loginWithProvider(provider);
   }
 }

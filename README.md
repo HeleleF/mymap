@@ -1,10 +1,10 @@
 # MyMap
 
-Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 9](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
+Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 10](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
 
 ## Deploy
 
-`firebase deploy --only hosting:main -m "Lets go"`
+`firebase deploy --only hosting:main -m "New release"`
 
 ## Development
 

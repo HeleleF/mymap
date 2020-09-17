@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 
+import { take, finalize, switchMap, mapTo } from 'rxjs/operators';
+import { from, of } from 'rxjs';
 import { MessageService } from '../services/message.service';
 import { ValidatorService } from '../services/validator.service';
-import { DbService } from '../services/db.service';
 
 import { getKeys } from '../shared/utils';
-import { GymBadge } from '../model/gym.model';
-import { take, finalize } from 'rxjs/operators';
+import { GymBadge, asGeopoint, NewGymData } from '../model/gym.model';
+import { GymService } from '../services/gym.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-new-gym',
@@ -20,57 +23,60 @@ export class NewGymComponent {
 
   gymData: FormGroup;
   readonly badges: string[];
+  intelliPaste = true;
 
   constructor(
     private popup: MatDialogRef<NewGymComponent>,
-    private vs: ValidatorService,
     private fb: FormBuilder,
-    private db: DbService,
+    private db: GymService,
+    private us: UserService,
     private ms: MessageService
   ) {
     this.badges = getKeys(GymBadge);
     this.gymData = this.fb.group({
       name: ['', [Validators.required]],
-      pos: ['', [Validators.required, ValidatorService.validPosition]],
+      pos: ['', [Validators.required, ValidatorService.validPosition]], //  TODO: refactor this to use lat and long validators too
       id: ['', [Validators.required, ValidatorService.validPortalId]],
-      url: ['', [Validators.required], [this.vs.createGymUrlValidator()]],
+      url: ['', [Validators.required], [ValidatorService.validGymUrl]],
       badge: ['', [Validators.required, ValidatorService.validBadge]],
     }, { updateOn: 'blur' });
   }
 
-  getNameError() {
+  getNameError(): string {
     return this.gymData.hasError('required', 'name') ? 'Gym name is required' : '';
   }
 
-  getIdError() {
+  getIdError(): string {
     return this.gymData.hasError('required', 'id') ? 'Gym ID is required' :
       this.gymData.hasError('wrongFormat', 'id') ? 'Wrong ID format' : '';
   }
 
-  getPosError() {
+  getPosError(): string {
     return this.gymData.hasError('required', 'pos') ? 'Gym position is required' :
       this.gymData.hasError('malformedPos', 'pos') ? 'Wrong format' : '';
   }
 
-  getUrlError() {
+  getUrlError(): string {
     return this.gymData.hasError('required', 'url') ? 'Gym url is required' :
       this.gymData.hasError('noUrl', 'url') ? 'Not a valid url' :
         this.gymData.hasError('noImage', 'url') ? 'Not a valid image' : '';
   }
 
-  getBadgeError() {
+  getBadgeError(): string {
     return this.gymData.hasError('wrongBadge', 'badge') ? 'Not a valid badge' : '';
   }
 
-  get f() {
+  get f(): { [key: string]: AbstractControl } {
     return this.gymData.controls;
   }
 
-  close() {
+  close(): void {
     this.gymData.reset();
   }
 
-  onPaste(ev: ClipboardEvent) {
+  onPaste(ev: ClipboardEvent): void {
+
+    if (!this.intelliPaste) return;
 
     // prevent actually pasting the content directly
     ev.preventDefault();
@@ -81,34 +87,41 @@ export class NewGymComponent {
     const data = dataTransfer.getData('text');
     if (!data) return;
 
-    this.gymData.setValue(this.vs.parseAndValidate(data));
+    this.gymData.setValue(ValidatorService.parseAndValidate(data));
   }
 
-  create() {
+  create(): void {
 
-    const v = this.gymData.value;
+    const v = this.gymData.value as NewGymData;
+    const b = +GymBadge[v.badge];
     this.gymData.disable();
 
-    const match = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+    const match = /^(?<lat>\d+\.\d+)\,(?<lng>\d+\.\d+)$/.exec(v.pos);
 
     if (!match || !match.groups) {
       // this should never happen since the value of "v.pos" is checked
       // during validation
       this.gymData.reset();
       return;
-    };
-
+   }
     const { lat, lng } = match.groups;
 
-    this.db.addGym({
-      b: +GymBadge[v.badge],
-      d: v.name,
-      i: v.id,
-      lat: Math.floor(parseFloat(lat) * 1e6) / 1e6,
-      lon: Math.floor(parseFloat(lng) * 1e6) / 1e6,
-      u: v.url.replace(/^https?\:\/\//, '')
+    this.db.create({
+      n: v.name,
+      l: asGeopoint(lat, lng),
+      p: v.id,
+      i: v.url.replace(/^https?\:\/\//, '')
     }).pipe(
-      take(1), 
+      take(1),
+      switchMap((feature) => {
+
+        if (feature) {
+          return from(this.us.setBadge(feature.properties.firestoreId, b)).pipe(mapTo({gym: feature, badge: b}));
+        } else {
+          return of(null);
+        }
+
+      }),
       finalize(() => {
         this.popup.close();
       })
@@ -119,11 +132,12 @@ export class NewGymComponent {
           this.ms.broadcast({ type: 'newGym', data: newGym });
         } else {
           this.ms.fail({ type: 'Gym', err: `The gym "${v.name}" already exists!` });
-        }    
+
+        }
       },
-      error: (e) => {
+      error: (e: Error) => {
         this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because: ${e.message}` });
       }
-    });  
+    })
   }
 }

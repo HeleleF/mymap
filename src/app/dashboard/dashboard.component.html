@@ -1,34 +1,21 @@
 <mat-progress-bar class="loader" mode="indeterminate" *ngIf="loading" color="accent"></mat-progress-bar>
 <mat-card class="example-card" *ngIf="!loading">
-  <mat-card-header>
-    <!--
-    <ng-container *ngIf="auth.user$ | async as user>
-      <img mat-card-avatar class="example-header-image" src="{{ user.photoURL }}">
-      <mat-card-title>{{ user.displayName }}</mat-card-title>
-      <mat-card-subtitle>{{ user.isAdmin ? 'Admin' : 'User' }}</mat-card-subtitle>
-    </ng-container>
-    -->
-    <div class="badgeCountRow" *ngFor="let cnt of badges; index as bdg" matRipple [matRippleColor]="accent" [matRippleRadius]="50">
-      <p class="badgeCount">{{ cnt }}</p>
-      <img class="badgeCountImage" src="../../assets/gyms/GymBadgeFrame_{{bdg + 1}}.png" [attr.data-badge]="bdg + 1" (click)="jumpToType($event)">
-    </div><strong>Insgesamt {{count}} Badges</strong>
-  </mat-card-header>
-  <mat-card-content>
-    <p class="badge-header">ARENAORDEN</p>
-    <ul #badgelist class="badge-list">
-      <span class="circle-btn"></span>
-      <li class="badge-row" *uiScroll="let row of dsrc">
-        <div class="entry" *ngFor="let e of row">
-          <div class="img-union">
-            <img class="under" loading="lazy" src="//images.weserv.nl/?url={{e.u}}&w=126&h=174" width="126" height="174" appFallback>
-            <img class="over" src="../../assets/gyms/GymBadgeFrame_{{e.b}}.png">
+    <mat-card-header>
+      <ng-container *ngIf="userData as user">
+        <img mat-card-avatar class="example-header-image" src="{{user.image}}">
+        <mat-card-title>{{ user.name }}</mat-card-title>
+        <mat-card-subtitle>{{ user.role }}</mat-card-subtitle>
+      </ng-container>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="badgeCountRow" *ngFor="let cnt of badgeCounts; index as bdg" matRipple [matRippleColor]="accent" [matRippleRadius]="50">
+            <p class="badgeCount">{{ cnt }}</p>
+            <img class="badgeCountImage" src="../../assets/gyms/GymBadgeFrame_{{bdg + 1}}.png" [attr.data-badge]="bdg + 1" (click)="jumpToType($event)">
           </div>
-          <p class="gym-name">{{e.d}}</p>
-        </div>
-      </li>
-    </ul>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>SHARE</button>
-  </mat-card-actions>
-</mat-card>
+          <br>
+          <strong>Insgesamt {{count}} Badges</strong>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>SHARE</button>
+    </mat-card-actions>
+  </mat-card>

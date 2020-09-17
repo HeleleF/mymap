@@ -2,28 +2,32 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SwUpdate } from '@angular/service-worker';
 
+// import * as mapboxgl from 'mapbox-gl';
+import {
+  Map as MapboxMap,
+  Expression,
+  NavigationControl, AttributionControl,
+  EventData, MapMouseEvent,
+  GeoJSONSource, MapboxGeoJSONFeature
+} from 'mapbox-gl';
+
+import { ToastrService } from 'ngx-toastr';
+import { Subject, Observer } from 'rxjs';
+import { take, takeUntil, tap, switchMapTo, filter } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
 
-import * as mapboxgl from 'mapbox-gl';
-import { ToastrService } from 'ngx-toastr';
-
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-
 import { GymPopupComponent } from '../gym-popup/gym-popup.component';
-import { QuestPopupComponent } from '../quest-popup/quest-popup.component';
 
-import { DbService } from '../services/db.service';
+import { GymService } from '../services/gym.service';
 import { MessageService } from '../services/message.service';
 
 import { FilterControl } from '../filter/filter.control';
 import { NewGymControl } from '../new-gym/new-gym.control';
 
-import { MapStyle, PopupReturn } from '../model/shared.model';
-import { GymProps } from '../model/gym.model';
-import { QuestProps } from '../model/quest.model';
-import { FilterService } from '../services/filter.service';
-
+import { PopupReturn, CustomError } from '../model/shared.model';
+import { GymProps, BadgeCollection, BadgeUpdate, CreatedGymData } from '../model/gym.model';
+import { UserService } from '../services/user.service';
 
 
 @Component({
@@ -33,7 +37,11 @@ import { FilterService } from '../services/filter.service';
 })
 export class MapComponent implements OnInit, OnDestroy {
 
-  private map!: mapboxgl.Map;
+  private map!: MapboxMap;
+
+  private userBadges: BadgeCollection = {};
+
+  private obv: Observer<PopupReturn | undefined>;
 
   /**
    * Stores all gym features for the gym source
@@ -42,7 +50,7 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
    * Stores all quest features for the quest source
    */
-  private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
+  // private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
 
   /**
    * "Kill switch" for all active subscriptions
@@ -51,50 +59,117 @@ export class MapComponent implements OnInit, OnDestroy {
 
   constructor(
     private swUpdate: SwUpdate,
-    private db: DbService,
+    private db: GymService,
+    private us: UserService,
     private ms: MessageService,
-    private fs: FilterService,
     private modal: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private route: ActivatedRoute
   ) {
     this.gyms = { type: 'FeatureCollection', features: [] };
-    this.quests = { type: 'FeatureCollection', features: [] };
+    // this.quests = { type: 'FeatureCollection', features: [] };
+
+    this.userBadges = {};
+
+    this.obv = {
+      next: (ret) => {
+
+        if (!ret) {
+          return;
+        }
+
+        switch (ret.type) {
+
+          case 'gymUpdateFailed':
+            this.toast.error(`Couldn't update gym because: ${JSON.stringify(ret.data)}!`, 'Gym', { disableTimeOut: true });
+            break;
+
+          case 'badgeUpdateFailed':
+            this.toast.error(`Couldn't update gym badge because: ${ret.data as string}!`, 'Gym', { disableTimeOut: true });
+            break;
+
+          case 'gymUpdate':
+
+            const u = ret.data as GymProps & { lat: string | number, lng: string | number };
+            const ix = this.gyms.features.findIndex(({ properties: { firestoreId: fid } }) => fid === u.firestoreId);
+
+            if (ix === -1) {
+
+              this.toast.error(`Couldn't update gym "${u.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
+
+            } else {
+
+              // only update stuff that changed
+              if (u.name) this.gyms.features[ix].properties.name = u.name;
+              if (u.imageUrl) this.gyms.features[ix].properties.imageUrl = u.imageUrl;
+              if (u.isLegacy) this.gyms.features[ix].properties.isLegacy = true;
+              if (u.lat && u.lng) this.gyms.features[ix].geometry.coordinates = [ +u.lng, +u.lat ];
+
+              (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
+            }
+
+            break;
+
+          case 'badgeUpdate':
+
+            const { firestoreId, newBadge } = ret.data as BadgeUpdate;
+
+            this.userBadges[firestoreId] = newBadge;
+            this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
+            break;
+
+          default: break;
+        }
+      },
+      error: (e: Error) => {
+        this.toast.error(`Popup closed with error ${e.message}`, 'Popup', { disableTimeOut: true })
+      },
+      complete: () => {}
+    }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     // watch for service worker updates
     if (this.swUpdate.isEnabled) {
-      console.debug('update handler...');
       this.swUpdate.available.subscribe(() => {
         this.toast.info('Click to reload!', 'App Update', {
-          disableTimeOut: true
+          disableTimeOut: true,
         })
           .onTap
           .pipe(take(1))
-          .subscribe(() => window.location.reload());
+          .subscribe(() => void this.swUpdate.activateUpdate().then(() => document.location.reload()));
       });
     }
 
     // create map
-    this.map = new mapboxgl.Map({
+    this.map = new MapboxMap({
       container: 'map',
       accessToken: environment.MAPBOX_API_TOKEN,
-      style: this.getStyle(),
+      style: 'mapbox://styles/mappinglehne/ck4n0h27q0qqe1crzvpg8vpsm',
       zoom: 13,
       center: [13.204929, 52.637736],
       maxZoom: 16,
       minZoom: 11,
       attributionControl: false,
     })
-      .addControl(new mapboxgl.NavigationControl(), 'top-right')
+      .addControl(new NavigationControl(), 'top-right')
       .addControl(new FilterControl(), 'top-right')
       .addControl(new NewGymControl(), 'top-right')
-      .addControl(new mapboxgl.AttributionControl({
+      .addControl(new AttributionControl({
         compact: true,
+        // eslint-disable-next-line max-len
         customAttribution: 'Icons by <a href="http://roundicons.com">Roundicons free</a>, <a href="http://theartificial.nl">The Artificial</a> and <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> &amp; <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a>'
       }))
       .on('load', this.onLoad.bind(this));
+  }
+
+  ngOnDestroy(): void {
+
+    // prevent subscriptions leaks by activating the "kill switch"
+    // see https://stackoverflow.com/a/41177163
+    this.unsubscribeAll$.next();
+    this.unsubscribeAll$.complete();
   }
 
   /**
@@ -106,21 +181,20 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map
       .addSource('gymSource', { type: 'geojson', data: this.gyms })
-      .addSource('questSource', { type: 'geojson', data: this.quests })
+      // .addSource('questSource', { type: 'geojson', data: this.quests })
       .addLayer({
         id: 'gymsLayer',
         type: 'symbol',
         source: 'gymSource',
         layout: {
-          'icon-image': 'badge{badge}',
+          'icon-image': this.gymIcon,
           'icon-size': ['interpolate', ['linear'], ['zoom'], 12, 0.2, 19, 0.5],
           'icon-allow-overlap': true,
-          'text-field': ['case', ['has', 'isLegacy'], '*', ''],
-          'text-offset': ['interpolate', ['linear'], ['zoom'], 12, ['literal', [0.7, -0.7]], 19, ['literal', [1.5, -1.5]]],
         },
         minzoom: 10,
         maxzoom: 21
       })
+      /*
       .addLayer({
         id: 'questsLayer',
         type: 'symbol',
@@ -139,9 +213,9 @@ export class MapComponent implements OnInit, OnDestroy {
         minzoom: 12,
         maxzoom: 21
       })
+      */
       .on('click', 'gymsLayer', this.onGymsClick.bind(this))
-      .on('click', 'questsLayer', this.onQuestsClick.bind(this))
-      .on('styleimagemissing', this.onStyleImageMissing.bind(this))
+      // .on('click', 'questsLayer', this.onQuestsClick.bind(this))
 
     this.loadData();
 
@@ -152,37 +226,36 @@ export class MapComponent implements OnInit, OnDestroy {
 
         next: (msg) => {
 
+          // console.log(msg);
+
           switch (msg.type) {
 
             case 'newGym':
-              const feature = msg.data as GeoJSON.Feature<GeoJSON.Point, GymProps>;
+
+              const data = msg.data as CreatedGymData;
+
+              const feature = data.gym;
               this.gyms.features.push(feature);
-              (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
-              this.toast.success(`Added "${feature.properties.name}" as a new gym!`, `Gym`);
-              console.debug('newgym');
-              break;
+              (this.map.getSource('gymSource') as GeoJSONSource).setData(this.gyms);
+              this.toast.success(`Added "${feature.properties.name}" as a new gym!`, 'Gym');
 
-            case 'selectGym':
-
-              const gym = msg.data as GeoJSON.Feature<GeoJSON.Point, GymProps>;
-
-              this.map.easeTo({ center: gym.geometry.coordinates as [number, number] });
-              console.debug('selectgym');
+              this.userBadges[feature.properties.firestoreId] = data.badge;
+              this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
               break;
 
             default:
-              this.toast.warning(`Couldn't handle type <${msg.type}>!`, `Message`);
+              this.toast.warning(`Couldn't handle type <${msg.type}>!`, 'Message');
               break;
           }
         },
-        error: (e) => {
-          console.debug('[ON MESSAGE]', e);
+        error: (e: CustomError) => { // TODO: create CustomError type
           this.toast.error(e.err, `${e.type} error`, { disableTimeOut: true });
         }
 
       });
 
     // listen to filter changes
+    /*
     this.fs.onChanged()
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
@@ -200,92 +273,29 @@ export class MapComponent implements OnInit, OnDestroy {
           this.toast.error(`Couldn't apply filters because ${e.message}!`, 'Filter Error', { disableTimeOut: true });
         }
       });
+      */
   }
 
-  private onGymsClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData & { features?: mapboxgl.MapboxGeoJSONFeature[] }) {
+  private onGymsClick(e: MapMouseEvent & EventData & { features?: MapboxGeoJSONFeature[] }) {
 
     if (!e.features) { return; }
 
-    const loc = (e.features[0].geometry as GeoJSON.Point).coordinates;
+    const position = (e.features[0].geometry as GeoJSON.Point).coordinates;
 
-    this.map.easeTo({ center: loc as [number, number] });
+    this.map.easeTo({ center: position as [number, number] });
 
     const props = e.features[0].properties as GymProps;
+    const badge = this.userBadges[props.firestoreId] || 0;
+
     const ref: MatDialogRef<GymPopupComponent, PopupReturn> = this.modal.open(GymPopupComponent, {
-      data: { ...props, pos: loc }
+      data: { ...props, position, badge },
+      panelClass: 'custom-panel'
     });
 
-    ref.afterClosed().subscribe({
-      next: (ret) => {
-
-        if (!ret) {
-          return;
-        }
-
-        console.log(ret);
-
-        switch (ret.type) {
-
-          case 'gymUpdateFailed':
-            this.toast.error(`Couldn't update gym because: ${ret.data}!`, 'Gym', { disableTimeOut: true });
-            break;
-
-          case 'badgeUpdateFailed':
-            this.toast.error(`Couldn't update gym badge because: ${ret.data}!`, 'Gym', { disableTimeOut: true });
-            break;
-
-          case 'gymUpdate':
-
-            const u = ret.data as GymProps & { pos: number[] };
-            const ix = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === u.firestoreId);
-
-            if (ix === -1) {
-
-              this.toast.error(`Couldn't update gym "${u.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
-
-            } else {
-
-              this.gyms.features[ix].properties.imageUrl = u.imageUrl;
-              this.gyms.features[ix].properties.name = u.name;
-
-              if (u.isLegacy) {
-                this.gyms.features[ix].properties.isLegacy = true;
-              }
-
-              this.gyms.features[ix].geometry.coordinates = u.pos;
-
-              (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
-            }
-
-            break;
-
-          case 'badgeUpdate':
-
-            const g = ret.data as GymProps;
-
-            const idx = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === g.firestoreId);
-
-            if (idx === -1) {
-
-              this.toast.error(`Couldn't update badge for gym "${g.name}" because it doesn't exist in this layer!`, 'Gym', { disableTimeOut: true });
-
-            } else {
-
-              this.gyms.features[idx].properties.badge = g.badge;
-              (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
-            }
-
-            break;
-
-          default: break;
-        }
-      },
-      error: (e) => {
-        this.toast.error(`Popup closed with error ${e.message}`, 'Popup', { disableTimeOut: true })
-      }
-    });
+    ref.afterClosed().subscribe(this.obv);
   }
 
+  /*
   private onQuestsClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData & { features?: mapboxgl.MapboxGeoJSONFeature[] }) {
 
     if (!e.features) { return; }
@@ -304,82 +314,68 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  /**
-   * Handles missing icons for this map style
-   */
-  private onStyleImageMissing(e: any) {
-
-    const id = e.id;
-    console.debug(id);
-    return new Promise(resolve => {
-
-      this.map.loadImage(`../assets/quests/${id}.png`, (err: Error, img: ImageData) => {
-
-        if (err) {
-          console.debug(err.message);
-        } else {
-          if (!this.map.hasImage(id)) {
-            this.map.addImage(id, img);
-          }
-        }
-        resolve();
-      });
-    });
-  }
+  */
 
   /**
    * Populates the gym and quest source with data from firestore
    */
   private loadData() {
 
-    this.db.getGyms().pipe(takeUntil(this.unsubscribeAll$)).subscribe({
+    this.db.getGyms().pipe(
+      tap((gymCollection) => {
 
-      next: (gymCollection) => {
         this.gyms = gymCollection;
-        (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
+        (this.map.getSource('gymSource') as GeoJSONSource).setData(this.gyms);
         this.toast.success('Gyms loaded', 'Data');
+
+      }),
+      switchMapTo(this.us.getMedals()),
+      tap((badgeCollection) => {
+
+        this.userBadges = badgeCollection;
+        this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
+        this.toast.success('Badges loaded', 'Data');
+
+      }),
+      switchMapTo(this.route.fragment),
+      filter((fragOrEmpty: string | undefined): fragOrEmpty is string => !!fragOrEmpty)
+    ).subscribe({
+      next: (frag) => {
+
+        const feat = this.gyms.features.find(({ properties: { firestoreId } }) => firestoreId === frag);
+        if (!feat) return;
+
+        const props = feat.properties;
+
+        const position = feat.geometry.coordinates;
+        this.map.easeTo({ center: position as [number, number] });
+
+        const badge = this.userBadges[frag] || 0;
+
+        const ref: MatDialogRef<GymPopupComponent, PopupReturn> = this.modal.open(GymPopupComponent, {
+          data: { ...props, position, badge },
+          panelClass: 'custom-panel'
+        });
+
+        ref.afterClosed().subscribe(this.obv);
+
       },
-
-      error: (e) => {
-        this.toast.error(e.message, `Gym error`, { disableTimeOut: true });
-      }
-    });
-
-    this.db.getQuests().pipe(takeUntil(this.unsubscribeAll$)).subscribe({
-
-      next: (questCollection) => {
-        this.quests = questCollection;
-        (this.map.getSource('questSource') as mapboxgl.GeoJSONSource).setData(this.quests);
-        this.toast.success('Quests loaded', 'Data');
-      },
-
-      error: (e) => {
-        this.toast.error(e.message, `Quest error`, { disableTimeOut: true });
+      error: (e: Error & { code: string }) => {
+        this.toast.error(e.message, e.code, { disableTimeOut: true });
       }
     });
   }
 
-  /**
-   * Returns the mapbox style URI based on the 
-   * style value in localStorage. 
-   * 
-   * Default style is 'Auto', which switches between
-   * 'Dark' and 'Outdoors' based on the current time.
-   */
-  private getStyle() {
-    // const s = (localStorage.getItem('mapStyle') || 'Auto') as keyof typeof MapStyle | 'Auto';
-
-    // return `mapbox://styles/mapbox/${s !== 'Auto' ? MapStyle[s] : (h => (h < 6 || h > 21) ? 'dark-v10' : 'outdoors-v11')((new Date()).getHours())}`;
-
-    return 'mapbox://styles/mappinglehne/ck4n0h27q0qqe1crzvpg8vpsm';
-  }
-
-  ngOnDestroy() {
-
-    // prevent subscriptions leaks by activating the "kill switch"
-    // see https://stackoverflow.com/a/41177163
-    this.unsubscribeAll$.next();
-    this.unsubscribeAll$.complete();
+  private get gymIcon(): Expression {
+    return ['concat', // concatenate the following two strings
+              'badge', // string literal
+              ['coalesce', // return the first of the following expressions that evaluates to non-null
+                  ['get', // retrieve given field from given object
+                      ['get', 'firestoreId'], // retrieve given field from the feature.properties object
+                      ['literal', this.userBadges] // object literal
+                  ],
+                  '0' // string literal, "fallback" value
+              ],
+    ]
   }
 }

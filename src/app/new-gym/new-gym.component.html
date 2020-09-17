@@ -1,6 +1,7 @@
 <h1 mat-dialog-title>Add new gym</h1>
 
 <div mat-dialog-content>
+  <mat-checkbox [(ngModel)]="intelliPaste">Use intelliPaste?</mat-checkbox>
   <form class="form-container" autocomplete="off" [formGroup]="gymData" (paste)="onPaste($event)">
 
     <mat-form-field>

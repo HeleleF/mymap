@@ -1,10 +1,12 @@
+import { Role } from './role.model';
+
 export interface Poke {
     dex: string;
     name: string;
 }
 
 export interface Message {
-    type: 'newGym' | 'settings' | 'selectGym';
+    type: 'newGym' | 'settings';
     data: any;
 }
 
@@ -52,14 +54,25 @@ export interface FilterSettings {
 
 export interface User {
     uid: string;
-    photoURL?: string;
-    displayName?: string;
-    isAdmin?: boolean;
+    image: string | null;
+    name: string | null;
+    role: Role;
 
     // mehr wenn wir brauchen
+}
+
+export interface Medal {
+    badge: number;
 }
 
 export interface PopupReturn {
     type: 'badgeUpdateFailed' | 'badgeUpdate' | 'questUpdate' | 'gymUpdateFailed' | 'gymUpdate';
     data: any;
+}
+
+export interface CustomError {
+    err: string,
+    type: string,
+    message: string,
+    code: string,
 }

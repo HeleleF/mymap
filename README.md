@@ -1,10 +1,16 @@
 # MyMap
 
-Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 9](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
+Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 10](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
+
+## Deploy
+
+`firebase deploy --only hosting:main -m "New release"`
 
 ## Development
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:8001/`. The app will automatically reload if you change any of the source files.
+Start Firestore emulator: `firebase emulators:start --only firestore --import "./exported"` Antivirus may cause problems!?
+
+Run `npm start` for a dev server. Navigate to `http://localhost:8001/`. The app will automatically reload if you change any of the source files.
 
 ## Build
 

@@ -18,7 +18,7 @@ export class SettingsComponent implements OnDestroy {
     this.currentStyle = localStorage.getItem('mapStyle') || 'Auto';
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     localStorage.setItem('mapStyle', this.currentStyle);
   }
 }

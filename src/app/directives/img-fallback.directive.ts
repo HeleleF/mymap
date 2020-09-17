@@ -5,15 +5,15 @@ import { Directive, Input, ElementRef, HostListener } from '@angular/core';
 })
 export class ImgFallbackDirective {
 
-  @Input() fallback!: string;
+  @Input() fallback = '../assets/gyms/placeholder.webp';
 
   constructor(private ref: ElementRef<HTMLImageElement>) { }
 
   @HostListener('error')
-  loadFallback() {
+  loadFallback(): void {
 
     const elm = this.ref.nativeElement;
-    elm.src = this.fallback || `../assets/gyms/placeholder.webp`;
+    elm.src = this.fallback;
   }
 
 }

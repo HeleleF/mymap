@@ -25,7 +25,7 @@ export class NewGymControl implements IControl {
 
     onAdd(map: Map): HTMLDivElement {
 
-        this.mapRef = map; 
+        this.mapRef = map;
         this.container.classList.add('mapboxgl-ctrl', 'mapboxgl-ctrl-group');
 
         const btn = document.createElement('button');
@@ -44,7 +44,7 @@ export class NewGymControl implements IControl {
         return this.container;
     }
 
-    onRemove(map: Map) {
+    onRemove(): void {
         this.container.remove();
         this.mapRef = undefined;
     }

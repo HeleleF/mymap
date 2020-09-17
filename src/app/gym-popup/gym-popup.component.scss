@@ -17,6 +17,8 @@ $phoneBreakpoint: 600px;
     height: 320px;
     width: 320px;
 
+    margin: auto;
+
     @include phone() {
       
         height: 260px;
@@ -85,6 +87,11 @@ $phoneBreakpoint: 600px;
             margin-top: -67px;
             margin-left: -48px;
         }
+    }
+
+    img.gym-highlight {
+        height: 256px;
+        width: 256px;
     }
 
     img.gym-over {

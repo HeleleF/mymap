@@ -1,3 +1,4 @@
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
   
@@ -6,20 +7,45 @@ service cloud.firestore {
 			allow read, write: if false;
   	}
     
-    // users can only read their own user record
+    // Users with 'Admin' role can do everything
     match /users/{userId} {
-    	allow read: if isOwner(userId) || isOneOfRoles(['admin']);
-      allow write: if isOneOfRoles(['admin']);
+    
+      // User can only create its own record with 'User' role
+      allow create: if (isOwner(userId) && request.resource.data.role == 'User') || isOneOfRoles(['Admin']);
+
+      // User can only read its own record
+    	allow read: if isOwner(userId) || isOneOfRoles(['Admin']);
+
+      // User can only update its own record while not changing the role
+      allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isOneOfRoles(['Admin']);
+
+      // User can only delete its own record
+      allow delete: if isOwner(userId) || isOneOfRoles(['Admin']);
+
+
+      match /medals/{gymId} {
+        // User can create new gym badges
+        allow create: if isOwner(userId) || isOneOfRoles(['Admin']);
+
+        // Every User can read all users badges
+        allow read: if isAuthenticated() && userExists();
+
+        // User can only update its own badges
+        allow update: if isOwner(userId) || isOneOfRoles(['Admin']);
+
+        // User can only delete its own record
+        allow delete: if isOwner(userId) || isOneOfRoles(['Admin']);
+      }
     }
   
   	match /gyms/{gym} {  
-    	allow read: if isOneOfRoles(['reader', 'admin']);
-      allow write: if isOneOfRoles(['admin']);
+    	allow read: if isOneOfRoles(['Subscriber', 'Admin']);
+      allow write: if isOneOfRoles(['Admin']);
   	}
     
     match /quests/{quest} {     
-    	allow read: if isOneOfRoles(['reader', 'admin']);
-      allow write: if isOneOfRoles(['admin']);
+    	allow read: if isOneOfRoles(['Subscriber', 'Admin']);
+      allow write: if isOneOfRoles(['Admin']);
   	}
     
     // check if role of an authenticated user is one of "rolesArray"

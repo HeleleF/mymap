@@ -33,7 +33,12 @@
               "node_modules/mapbox-gl/dist/mapbox-gl.css"
             ],
             "scripts": [],
-            "es5BrowserSupport": true
+            "allowedCommonJsDependencies": [
+              "firebase",
+              "@firebase/app",
+              "@firebase/auth",
+              "@firebase/firestore"
+           ]
           },
           "configurations": {
             "production": {

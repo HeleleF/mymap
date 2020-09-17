@@ -15,7 +15,7 @@ export class LoginAuthGuard implements CanActivate {
   ) {}
 
   /**
-   * Restricts the 'login' route
+   * Restricts a route
    * to users that are not logged in.
    */
   canActivate(): Observable<boolean> {
@@ -24,8 +24,9 @@ export class LoginAuthGuard implements CanActivate {
       take(1),
       map(user => !user),
       tap(isLoggedOut => {
+        console.log('%cGUARD', 'color:#B0FF0A; font-size: large', isLoggedOut);
         if (!isLoggedOut) {
-          this.router.navigate(['/dashboard']);
+          void this.router.navigate(['/dashboard']);
         }
       })
     );

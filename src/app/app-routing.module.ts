@@ -8,14 +8,17 @@ import { SettingsComponent } from './settings/settings.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { AuthGuard } from './guards/auth.guard';
-import { LoginAuthGuard } from './guards/login-auth.guard';
+
+import { Role } from './model/role.model';
+import { BadgeListComponent } from './badge-list/badge-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, canActivate: [LoginAuthGuard] },
+  { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
-  { path: 'map', component: MapComponent, canActivate: [AuthGuard] },
+  { path: 'badges', component: BadgeListComponent, canActivate: [AuthGuard], data: { roles: [ Role.ADMIN, Role.SUBSCRIBER ] } },
+  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard], data: { roles: [ Role.ADMIN, Role.SUBSCRIBER ] } },
+  { path: 'map', component: MapComponent, canActivate: [AuthGuard], data: { roles: [ Role.ADMIN, Role.SUBSCRIBER ] } },
   { path: '**', component: PageNotFoundComponent }
 ];
 

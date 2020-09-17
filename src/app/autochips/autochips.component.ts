@@ -14,24 +14,23 @@ import { Poke } from '../model/shared.model';
 })
 export class AutochipsComponent {
 
-  formCtrl = new FormControl();
-  filteredElms: Observable<Poke[]>;
-  elms: Poke[] = [];
-
-  // tslint:disable-next-line: no-input-rename
-  @Input('elements') allElms!: Poke[];
+  @Input() allElms!: Poke[];
   @Output() updated = new EventEmitter<string[]>();
 
   @ViewChild('elmInput', { static: false }) elmInput!: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete!: MatAutocomplete;
 
+  formCtrl = new FormControl();
+  filteredElms: Observable<Poke[]>;
+  elms: Poke[] = [];
+
   constructor() {
     this.filteredElms = this.formCtrl.valueChanges.pipe(
       startWith(''),
-      map((e: Poke | null) => e ? this._filter(e) : this.allElms.slice()));
+      map((e: Poke | null) => e ? this.filter(e) : this.allElms.slice()));
   }
 
-  remove(e: Poke) {
+  remove(e: Poke): void {
     const index = this.elms.indexOf(e);
 
     if (index >= 0) {
@@ -40,7 +39,7 @@ export class AutochipsComponent {
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent) {
+  selected(event: MatAutocompleteSelectedEvent): void {
 
     this.elms.push(event.option.value);
     this.updated.emit(this.elms.map(p => p.name));
@@ -49,7 +48,7 @@ export class AutochipsComponent {
     this.formCtrl.setValue(null);
   }
 
-  private _filter(value: string | Poke): Poke[] {
+  private filter(value: string | Poke): Poke[] {
 
     const filterValue = 'string' === typeof value ? value.toLowerCase() : value.name.toLowerCase();
 

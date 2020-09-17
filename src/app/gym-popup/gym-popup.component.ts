@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Component, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { FilterService } from '../services/filter.service';
@@ -7,8 +8,8 @@ import { ValidatorService } from '../services/validator.service';
 
 import { getKeys, clamp } from '../shared/utils';
 
-import { PopupReturn } from '../model/shared.model';
-import { GymProps, GymBadge } from '../model/gym.model';
+import { CustomError, PopupReturn } from '../model/shared.model';
+import { GymProps, GymBadge, UpdateGymData } from '../model/gym.model';
 import { GymService } from '../services/gym.service';
 import { UserService } from '../services/user.service';
 
@@ -21,7 +22,7 @@ export class GymPopupComponent {
 
   oldBadge: number;
   readonly last: number;
-  isGymEdit: boolean = false;
+  isGymEdit = false;
 
   gymUpdate: FormGroup;
 
@@ -32,7 +33,7 @@ export class GymPopupComponent {
     private us: UserService,
     private fs: FilterService,
     private fb: FormBuilder
-  ) { 
+  ) {
 
     this.oldBadge = this.gymData.badge;
 
@@ -51,32 +52,32 @@ export class GymPopupComponent {
   /**
    * For convenience in the html template
    */
-  get f() {
+  get f(): { [key: string]: AbstractControl } {
     return this.gymUpdate.controls;
   }
 
-  upgrade() {
+  upgrade(): void {
     if (this.gymData.badge < this.last) this.gymData.badge++;
   }
 
-  downgrade() {
+  downgrade(): void {
     if (this.gymData.badge > 0) this.gymData.badge--;
   }
 
-  setBadge() {
+  setBadge(): void {
 
     this.us.setBadge(this.gymData.firestoreId, this.gymData.badge)
       .then(() => {
         this.popup.close({ type: 'badgeUpdate', data: { firestoreId: this.gymData.firestoreId, newBadge: this.gymData.badge } });
       })
-      .catch((err) => {
+      .catch((err: CustomError) => {
         console.log(err.code);
         this.popup.close({ type: 'badgeUpdateFailed', data: err.message });
       });
 
   }
 
-  toggleEditGym() {
+  toggleEditGym(): void {
 
     this.gymUpdate.reset({
       name: this.gymData.name,
@@ -88,17 +89,17 @@ export class GymPopupComponent {
     this.isGymEdit = !this.isGymEdit;
   }
 
-  async saveGymEdit() {
+  async saveGymEdit(): Promise<void> {
 
     const payload = Object.keys(this.gymUpdate.controls).reduce((acc, cur) => {
 
       const k = this.gymUpdate.controls[cur];
-      
+
       if (k.dirty) {
-          acc[cur] = k.value;
-      } 
+          acc[cur] = k.value as string;
+      }
       return acc;
-    }, {} as any);
+    }, {} as UpdateGymData);
 
     if (!Object.keys(payload).length) return;
 
@@ -107,11 +108,11 @@ export class GymPopupComponent {
     // since position is stored as Geopoint, even if only latitude is changed, we also need longitude (and vice versa)
     if (payload.lat && !payload.lng) {
 
-      payload.lng = this.gymUpdate.value.lng;
+      payload.lng = (this.gymUpdate.value as UpdateGymData).lng;
 
     } else if (payload.lng && !payload.lat) {
 
-      payload.lat = this.gymUpdate.value.lat;
+      payload.lat = (this.gymUpdate.value as UpdateGymData).lat;
     }
 
     // we need the id to identify (hehe) the corresponding document
@@ -124,8 +125,8 @@ export class GymPopupComponent {
 
     } catch (err) {
 
-      this.popup.close({ type: 'gymUpdateFailed', data: err.message });
-    } 
+      this.popup.close({ type: 'gymUpdateFailed', data: (err as CustomError).message });
+    }
   }
 
 }

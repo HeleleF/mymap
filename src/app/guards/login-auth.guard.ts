@@ -24,9 +24,9 @@ export class LoginAuthGuard implements CanActivate {
       take(1),
       map(user => !user),
       tap(isLoggedOut => {
-        console.debug('%cGUARD', 'color:#B0FF0A; font-size: large', isLoggedOut);
+        console.log('%cGUARD', 'color:#B0FF0A; font-size: large', isLoggedOut);
         if (!isLoggedOut) {
-          this.router.navigate(['/dashboard']);
+          void this.router.navigate(['/dashboard']);
         }
       })
     );

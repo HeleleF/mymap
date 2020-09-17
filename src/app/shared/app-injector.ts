@@ -9,10 +9,9 @@ export let AppInjector: Injector;
 
 /**
  * Stores an instance of Injector.
- * 
- * Useful if a class needs a dependency 
- * but cant rely on dependency injection.
+ *
+ * Useful if a class needs a dependency * but cant rely on dependency injection.
  */
-export function setAppInjector(injector: Injector) {
+export const setAppInjector = (injector: Injector): void => {
     AppInjector = injector;
 }

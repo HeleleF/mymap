@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  message: string = 'Bitte warten...';
+  message = 'Bitte warten...';
   isLoading = true;
 
   constructor(
@@ -22,24 +22,24 @@ export class LoginComponent implements OnInit {
     private zone: NgZone
   ) {}
 
-  ngOnInit() {
-  
-    this.afAuth.auth.getRedirectResult().then(result => {
+  ngOnInit(): void {
+
+    void this.afAuth.auth.getRedirectResult().then(result => {
       if (result.user) {
 
         // prevent angular warning 'Navigation outside NgZone...'
         this.zone.run(() => {
-          this.router.navigate(['/dashboard']);
+          void this.router.navigate(['/dashboard']);
         });
 
       } else {
         this.isLoading = false;
         this.message = history.state.msg || 'Bitte erstmal reinloggen';
-      };
+      }
     });
   }
 
-  googleLogin() {
+  googleLogin(): Promise<void> {
 
     const provider = new auth.GoogleAuthProvider();
     provider.setCustomParameters({

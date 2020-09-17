@@ -113,10 +113,41 @@ export interface MedalCount {
     [badgeType: number]: number
 }
 
-export function asGeopoint(latitude: string | number, longitude: string | number) {
+export const asGeopoint = (latitude: string | number, longitude: string | number): firebase.firestore.GeoPoint => {
 
     const lat = Math.floor(+latitude * 1e6) / 1e6;
     const lng = Math.floor(+longitude * 1e6) / 1e6;
 
     return new firebase.firestore.GeoPoint(lat, lng);
+}
+
+export interface NewGymData {
+    name: string;
+    pos: string;
+    id: string;
+    url: string;
+    badge: keyof typeof GymBadge;
+}
+
+export interface UpdateGymData {
+    [key: string]: string;
+
+    name: string;
+
+    imageUrl: string;
+    portalId: string;
+    lat: string;
+    lng: string;
+
+    firestoreId: string;
+}
+
+export interface BadgeUpdate {
+    firestoreId: string;
+    newBadge: number;
+}
+
+export interface CreatedGymData {
+    gym: GeoJSON.Feature<GeoJSON.Point, GymProps>;
+    badge: number;
 }

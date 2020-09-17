@@ -3,8 +3,9 @@ import { Component, OnInit, AfterViewInit, ElementRef, ViewChildren, QueryList }
 import { Datasource } from 'ngx-ui-scroll';
 
 import { Observable, of, fromEvent, zip } from 'rxjs';
-import { map, take, shareReplay, switchMapTo, switchMap, filter} from 'rxjs/operators';
+import { map, take, shareReplay, switchMap, filter} from 'rxjs/operators';
 
+import { ToastrService } from 'ngx-toastr';
 import { BadgeEntry } from '../model/gym.model';
 import { UserService } from '../services/user.service';
 import { GymService } from '../services/gym.service';
@@ -17,17 +18,18 @@ import { createRows } from '../shared/utils';
 })
 export class BadgeListComponent implements OnInit, AfterViewInit {
 
+  @ViewChildren('badgelist') badgeList!: QueryList<ElementRef<HTMLUListElement>>;
+
   dsrc: Datasource;
   badgeEntries$: Observable<BadgeEntry[][]>;
 
   loading = true;
   clicks$!: Observable<string>;
 
-  @ViewChildren('badgelist') badgeList!: QueryList<ElementRef<HTMLUListElement>>;
-
   constructor(
-    private db: GymService, 
-    private us: UserService
+    private db: GymService,
+    private us: UserService,
+    private toast: ToastrService,
   ) {
 
     this.badgeEntries$ = zip(this.db.getEntries(), this.us.getMedals()).pipe(
@@ -66,16 +68,21 @@ export class BadgeListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     this.badgeEntries$.subscribe({
       next: () => {
+        this.loading = false;
+      },
+      error: (e: Error & { code: string}) => {
+        console.log(e);
+        this.toast.error(e.message, e.code, { disableTimeOut: true });
         this.loading = false;
       }
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     /*
     this.badgeList.changes.pipe(take(1)).subscribe({
       next: (queryList: QueryList<ElementRef<HTMLUListElement>>) => {
@@ -119,11 +126,11 @@ export class BadgeListComponent implements OnInit, AfterViewInit {
   );
 
     this.clicks$.subscribe(n => {
-      console.debug(`clicked on row ${n}`);
+      console.log(`clicked on row ${n}`);
     })
   }
 
-  onClick(ev: MouseEvent) {
+  onClick(ev: MouseEvent): void {
     console.log(ev.target);
   }
 

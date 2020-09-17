@@ -2,13 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { auth } from 'firebase/app';
-
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
 
 /**
  * A service to handle user authentication via
@@ -31,7 +27,7 @@ export class AuthService {
    * Performs the "sign in" process and updates
    * the user
    */
-  loginWithProvider(provider: auth.AuthProvider) {
+  loginWithProvider(provider: auth.AuthProvider): Promise<void> {
     return this.afAuth.auth.signInWithRedirect(provider);
   }
 
@@ -39,14 +35,15 @@ export class AuthService {
    * Performs the "sign out" process and navigates
    * to the root of the app if successful
    */
-  logOut() {
+  logOut(): void {
 
     this.afAuth.auth.signOut()
       .then(() => {
-        this.router.navigate(['/login'], { state: { msg: 'So long, schlong!' } });
+        void this.router.navigate(['/login'], { state: { msg: 'So long, schlong!' } });
       })
       .catch((err) => {
-        console.debug(`Sign-Out failed`, err);
+        // eslint-disable-next-line no-console
+        console.debug('Sign-Out failed', err);
       });
 
   }

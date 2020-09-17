@@ -14,36 +14,38 @@ export class ValidatorService {
     constructor() {}
 
     static validPortalId(control: AbstractControl): ValidationErrors | null {
-        return /^[0-9a-f]{32}(\.(1[126]|2))?$/.test(control.value) ? null : { wrongFormat: { value: control.value } };
+        return /^[0-9a-f]{32}(\.(1[126]|2))?$/.test(control.value) ? null : { wrongFormat: { value: control.value as string } };
     }
 
     // from https://stackoverflow.com/a/31408260
     static validLatitude(control: AbstractControl): ValidationErrors | null {
-        return /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/.test(control.value) ? null : { malformedPos: { value: control.value } };
+        return /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/.test(control.value)
+            ? null : { malformedPos: { value: control.value as string } };
     }
     static validLongitude(control: AbstractControl): ValidationErrors | null {
-        return /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/.test(control.value) ? null : { malformedPos: { value: control.value } };
+        return /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/.test(control.value)
+            ? null : { malformedPos: { value: control.value as string } };
     }
 
     static validPosition(control: AbstractControl): ValidationErrors | null {
-        return /^\d{2}\.\d+\,\d{2}\.\d+$/.test(control.value) ? null : { malformedPos: { value: control.value } };
+        return /^\d{2}\.\d+\,\d{2}\.\d+$/.test(control.value) ? null : { malformedPos: { value: control.value as string } };
     }
 
     static validBadge(control: AbstractControl): ValidationErrors | null {
         const validBadges = getKeys(GymBadge);
-        return validBadges.includes(control.value) ? null : { wrongBadge: { value: control.value } };
+        return validBadges.includes(control.value) ? null : { wrongBadge: { value: control.value as string } };
     }
 
     static validGymUrl(control: AbstractControl): Observable<ValidationErrors | null> {
 
-        const uri = control.value.replace(/^https?\:\/\//, '');
+        const uri: string = (control.value as string).replace(/^https?\:\/\//, '');
 
         return AppInjector.get(HttpClient).get(`https://${uri}`, { responseType: 'blob' }).pipe(
             map((blob) => {
-                return blob.type.includes('image') && blob.size > 0 ? null : { noImage: { value: control.value } };
+                return blob.type.includes('image') && blob.size > 0 ? null : { noImage: { value: control.value as string } };
             }),
             catchError(() => {
-                return of({ noUrl: { value: control.value } });
+                return of({ noUrl: { value: control.value as string } });
             })
         );
     }
@@ -54,6 +56,7 @@ export class ValidatorService {
      */
     static parseAndValidate(text: string): {[key: string]: any} {
 
+        // eslint-disable-next-line max-len
         const matcher = /badge: (?<badge>\d)\s{1,2}description: \"(?<name>.*)\"\s{1,2}gym_id: \"(?<id>.*)\"\s{1,2}location: \"(?<pos>.*)\"\s{1,2}url: \"(?<url>.*)\"/m;
 
         const match = matcher.exec(text); // || { groups: { name: null, url: null, pos: null, id: null, badge: null } };

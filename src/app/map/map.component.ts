@@ -2,13 +2,20 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SwUpdate } from '@angular/service-worker';
 
-import { environment } from '../../environments/environment';
+// import * as mapboxgl from 'mapbox-gl';
+import {
+  Map as MapboxMap,
+  Expression,
+  NavigationControl, AttributionControl,
+  EventData, MapMouseEvent,
+  GeoJSONSource, MapboxGeoJSONFeature
+} from 'mapbox-gl';
 
-import * as mapboxgl from 'mapbox-gl';
 import { ToastrService } from 'ngx-toastr';
-
-import { Subject, Observer, zip } from 'rxjs';
+import { Subject, Observer } from 'rxjs';
 import { take, takeUntil, tap, switchMapTo, filter } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 import { GymPopupComponent } from '../gym-popup/gym-popup.component';
 
@@ -18,12 +25,9 @@ import { MessageService } from '../services/message.service';
 import { FilterControl } from '../filter/filter.control';
 import { NewGymControl } from '../new-gym/new-gym.control';
 
-import { PopupReturn } from '../model/shared.model';
-import { GymProps, BadgeCollection, GymBadge } from '../model/gym.model';
-import { QuestProps } from '../model/quest.model';
+import { PopupReturn, CustomError } from '../model/shared.model';
+import { GymProps, BadgeCollection, BadgeUpdate, CreatedGymData } from '../model/gym.model';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute } from '@angular/router';
-
 
 
 @Component({
@@ -33,7 +37,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MapComponent implements OnInit, OnDestroy {
 
-  private map!: mapboxgl.Map;
+  private map!: MapboxMap;
 
   private userBadges: BadgeCollection = {};
 
@@ -46,7 +50,7 @@ export class MapComponent implements OnInit, OnDestroy {
   /**
    * Stores all quest features for the quest source
    */
-  //private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
+  // private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
 
   /**
    * "Kill switch" for all active subscriptions
@@ -63,7 +67,7 @@ export class MapComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute
   ) {
     this.gyms = { type: 'FeatureCollection', features: [] };
-    //this.quests = { type: 'FeatureCollection', features: [] };
+    // this.quests = { type: 'FeatureCollection', features: [] };
 
     this.userBadges = {};
 
@@ -77,17 +81,17 @@ export class MapComponent implements OnInit, OnDestroy {
         switch (ret.type) {
 
           case 'gymUpdateFailed':
-            this.toast.error(`Couldn't update gym because: ${ret.data}!`, 'Gym', { disableTimeOut: true });
+            this.toast.error(`Couldn't update gym because: ${JSON.stringify(ret.data)}!`, 'Gym', { disableTimeOut: true });
             break;
 
           case 'badgeUpdateFailed':
-            this.toast.error(`Couldn't update gym badge because: ${ret.data}!`, 'Gym', { disableTimeOut: true });
+            this.toast.error(`Couldn't update gym badge because: ${ret.data as string}!`, 'Gym', { disableTimeOut: true });
             break;
 
           case 'gymUpdate':
 
             const u = ret.data as GymProps & { lat: string | number, lng: string | number };
-            const ix = this.gyms.features.findIndex(({ properties: { firestoreId } }) => firestoreId === u.firestoreId);
+            const ix = this.gyms.features.findIndex(({ properties: { firestoreId: fid } }) => fid === u.firestoreId);
 
             if (ix === -1) {
 
@@ -108,7 +112,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
           case 'badgeUpdate':
 
-            const { firestoreId, newBadge } = ret.data;
+            const { firestoreId, newBadge } = ret.data as BadgeUpdate;
 
             this.userBadges[firestoreId] = newBadge;
             this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
@@ -117,14 +121,14 @@ export class MapComponent implements OnInit, OnDestroy {
           default: break;
         }
       },
-      error: (e) => {
+      error: (e: Error) => {
         this.toast.error(`Popup closed with error ${e.message}`, 'Popup', { disableTimeOut: true })
       },
       complete: () => {}
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     // watch for service worker updates
     if (this.swUpdate.isEnabled) {
@@ -134,12 +138,12 @@ export class MapComponent implements OnInit, OnDestroy {
         })
           .onTap
           .pipe(take(1))
-          .subscribe(() => this.swUpdate.activateUpdate().then(() => document.location.reload()));
+          .subscribe(() => void this.swUpdate.activateUpdate().then(() => document.location.reload()));
       });
     }
 
     // create map
-    this.map = new mapboxgl.Map({
+    this.map = new MapboxMap({
       container: 'map',
       accessToken: environment.MAPBOX_API_TOKEN,
       style: 'mapbox://styles/mappinglehne/ck4n0h27q0qqe1crzvpg8vpsm',
@@ -149,14 +153,23 @@ export class MapComponent implements OnInit, OnDestroy {
       minZoom: 11,
       attributionControl: false,
     })
-      .addControl(new mapboxgl.NavigationControl(), 'top-right')
+      .addControl(new NavigationControl(), 'top-right')
       .addControl(new FilterControl(), 'top-right')
       .addControl(new NewGymControl(), 'top-right')
-      .addControl(new mapboxgl.AttributionControl({
+      .addControl(new AttributionControl({
         compact: true,
+        // eslint-disable-next-line max-len
         customAttribution: 'Icons by <a href="http://roundicons.com">Roundicons free</a>, <a href="http://theartificial.nl">The Artificial</a> and <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> &amp; <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a>'
       }))
       .on('load', this.onLoad.bind(this));
+  }
+
+  ngOnDestroy(): void {
+
+    // prevent subscriptions leaks by activating the "kill switch"
+    // see https://stackoverflow.com/a/41177163
+    this.unsubscribeAll$.next();
+    this.unsubscribeAll$.complete();
   }
 
   /**
@@ -168,7 +181,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map
       .addSource('gymSource', { type: 'geojson', data: this.gyms })
-      //.addSource('questSource', { type: 'geojson', data: this.quests })
+      // .addSource('questSource', { type: 'geojson', data: this.quests })
       .addLayer({
         id: 'gymsLayer',
         type: 'symbol',
@@ -202,7 +215,7 @@ export class MapComponent implements OnInit, OnDestroy {
       })
       */
       .on('click', 'gymsLayer', this.onGymsClick.bind(this))
-      //.on('click', 'questsLayer', this.onQuestsClick.bind(this))
+      // .on('click', 'questsLayer', this.onQuestsClick.bind(this))
 
     this.loadData();
 
@@ -213,27 +226,29 @@ export class MapComponent implements OnInit, OnDestroy {
 
         next: (msg) => {
 
-          console.log(msg);
+          // console.log(msg);
 
           switch (msg.type) {
 
             case 'newGym':
-              const feature = msg.data.f as GeoJSON.Feature<GeoJSON.Point, GymProps>;
-              this.gyms.features.push(feature);
-              (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
-              this.toast.success(`Added "${feature.properties.name}" as a new gym!`, `Gym`);
 
-              this.userBadges[feature.properties.firestoreId] = msg.data.b;
+              const data = msg.data as CreatedGymData;
+
+              const feature = data.gym;
+              this.gyms.features.push(feature);
+              (this.map.getSource('gymSource') as GeoJSONSource).setData(this.gyms);
+              this.toast.success(`Added "${feature.properties.name}" as a new gym!`, 'Gym');
+
+              this.userBadges[feature.properties.firestoreId] = data.badge;
               this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
               break;
 
             default:
-              this.toast.warning(`Couldn't handle type <${msg.type}>!`, `Message`);
+              this.toast.warning(`Couldn't handle type <${msg.type}>!`, 'Message');
               break;
           }
         },
-        error: (e) => {
-          console.debug('[ON MESSAGE]', e);
+        error: (e: CustomError) => { // TODO: create CustomError type
           this.toast.error(e.err, `${e.type} error`, { disableTimeOut: true });
         }
 
@@ -261,7 +276,7 @@ export class MapComponent implements OnInit, OnDestroy {
       */
   }
 
-  private onGymsClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData & { features?: mapboxgl.MapboxGeoJSONFeature[] }) {
+  private onGymsClick(e: MapMouseEvent & EventData & { features?: MapboxGeoJSONFeature[] }) {
 
     if (!e.features) { return; }
 
@@ -310,9 +325,8 @@ export class MapComponent implements OnInit, OnDestroy {
       tap((gymCollection) => {
 
         this.gyms = gymCollection;
-        (this.map.getSource('gymSource') as mapboxgl.GeoJSONSource).setData(this.gyms);
+        (this.map.getSource('gymSource') as GeoJSONSource).setData(this.gyms);
         this.toast.success('Gyms loaded', 'Data');
-        (window as any).__GYMS__ = gymCollection.features; // only for debug
 
       }),
       switchMapTo(this.us.getMedals()),
@@ -342,17 +356,17 @@ export class MapComponent implements OnInit, OnDestroy {
           data: { ...props, position, badge },
           panelClass: 'custom-panel'
         });
-    
+
         ref.afterClosed().subscribe(this.obv);
 
       },
-      error: (e) => {
+      error: (e: Error & { code: string }) => {
         this.toast.error(e.message, e.code, { disableTimeOut: true });
       }
     });
   }
 
-  private get gymIcon(): mapboxgl.Expression {
+  private get gymIcon(): Expression {
     return ['concat', // concatenate the following two strings
               'badge', // string literal
               ['coalesce', // return the first of the following expressions that evaluates to non-null
@@ -363,13 +377,5 @@ export class MapComponent implements OnInit, OnDestroy {
                   '0' // string literal, "fallback" value
               ],
     ]
-  }
-
-  ngOnDestroy() {
-
-    // prevent subscriptions leaks by activating the "kill switch"
-    // see https://stackoverflow.com/a/41177163
-    this.unsubscribeAll$.next();
-    this.unsubscribeAll$.complete();
   }
 }

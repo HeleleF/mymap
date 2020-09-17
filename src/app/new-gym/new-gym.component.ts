@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 
+import { take, finalize, switchMap, mapTo } from 'rxjs/operators';
+import { from, of } from 'rxjs';
 import { MessageService } from '../services/message.service';
 import { ValidatorService } from '../services/validator.service';
 
 import { getKeys } from '../shared/utils';
-import { GymBadge, asGeopoint } from '../model/gym.model';
-import { take, finalize, switchMap, mapTo } from 'rxjs/operators';
+import { GymBadge, asGeopoint, NewGymData } from '../model/gym.model';
 import { GymService } from '../services/gym.service';
-import { throwError, from, of } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -34,46 +35,46 @@ export class NewGymComponent {
     this.badges = getKeys(GymBadge);
     this.gymData = this.fb.group({
       name: ['', [Validators.required]],
-      pos: ['', [Validators.required, ValidatorService.validPosition]], //TODO: refactor this to use lat and long validators too
+      pos: ['', [Validators.required, ValidatorService.validPosition]], //  TODO: refactor this to use lat and long validators too
       id: ['', [Validators.required, ValidatorService.validPortalId]],
       url: ['', [Validators.required], [ValidatorService.validGymUrl]],
       badge: ['', [Validators.required, ValidatorService.validBadge]],
     }, { updateOn: 'blur' });
   }
 
-  getNameError() {
+  getNameError(): string {
     return this.gymData.hasError('required', 'name') ? 'Gym name is required' : '';
   }
 
-  getIdError() {
+  getIdError(): string {
     return this.gymData.hasError('required', 'id') ? 'Gym ID is required' :
       this.gymData.hasError('wrongFormat', 'id') ? 'Wrong ID format' : '';
   }
 
-  getPosError() {
+  getPosError(): string {
     return this.gymData.hasError('required', 'pos') ? 'Gym position is required' :
       this.gymData.hasError('malformedPos', 'pos') ? 'Wrong format' : '';
   }
 
-  getUrlError() {
+  getUrlError(): string {
     return this.gymData.hasError('required', 'url') ? 'Gym url is required' :
       this.gymData.hasError('noUrl', 'url') ? 'Not a valid url' :
         this.gymData.hasError('noImage', 'url') ? 'Not a valid image' : '';
   }
 
-  getBadgeError() {
+  getBadgeError(): string {
     return this.gymData.hasError('wrongBadge', 'badge') ? 'Not a valid badge' : '';
   }
 
-  get f() {
+  get f(): { [key: string]: AbstractControl } {
     return this.gymData.controls;
   }
 
-  close() {
+  close(): void {
     this.gymData.reset();
   }
 
-  onPaste(ev: ClipboardEvent) {
+  onPaste(ev: ClipboardEvent): void {
 
     if (!this.intelliPaste) return;
 
@@ -89,20 +90,20 @@ export class NewGymComponent {
     this.gymData.setValue(ValidatorService.parseAndValidate(data));
   }
 
-  create() {
+  create(): void {
 
-    const v = this.gymData.value;
+    const v = this.gymData.value as NewGymData;
     const b = +GymBadge[v.badge];
     this.gymData.disable();
 
-    const match = /^(?<lat>\d{2}\.\d+)\,(?<lng>\d{2}\.\d+)$/.exec(v.pos);
+    const match = /^(?<lat>\d+\.\d+)\,(?<lng>\d+\.\d+)$/.exec(v.pos);
 
     if (!match || !match.groups) {
       // this should never happen since the value of "v.pos" is checked
       // during validation
       this.gymData.reset();
       return;
-    };
+   }
     const { lat, lng } = match.groups;
 
     this.db.create({
@@ -115,7 +116,7 @@ export class NewGymComponent {
       switchMap((feature) => {
 
         if (feature) {
-          return from(this.us.setBadge(feature.properties.firestoreId, b)).pipe(mapTo({f: feature, b: b}));
+          return from(this.us.setBadge(feature.properties.firestoreId, b)).pipe(mapTo({gym: feature, badge: b}));
         } else {
           return of(null);
         }
@@ -131,11 +132,12 @@ export class NewGymComponent {
           this.ms.broadcast({ type: 'newGym', data: newGym });
         } else {
           this.ms.fail({ type: 'Gym', err: `The gym "${v.name}" already exists!` });
-        }    
+
+        }
       },
-      error: (e) => {
+      error: (e: Error) => {
         this.ms.fail({ type: 'Gym', err: `Couldn't add "${v.name}" because: ${e.message}` });
       }
-    });  
+    })
   }
 }

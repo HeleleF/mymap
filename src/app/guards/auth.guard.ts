@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
 import { UserService } from '../services/user.service';
+import { Role } from '../model/role.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -23,7 +24,7 @@ export class AuthGuard implements CanActivate {
 
           if (route.data.roles) {
 
-            if (route.data.roles.includes(user.role)) {
+            if ((route.data.roles as Role[]).includes(user.role)) {
               return true;
             } else {
               return this.router.parseUrl('/dashboard');

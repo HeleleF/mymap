@@ -69,3 +69,10 @@ export interface PopupReturn {
     type: 'badgeUpdateFailed' | 'badgeUpdate' | 'questUpdate' | 'gymUpdateFailed' | 'gymUpdate';
     data: any;
 }
+
+export interface CustomError {
+    err: string,
+    type: string,
+    message: string,
+    code: string,
+}

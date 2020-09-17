@@ -2,10 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -36,6 +33,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ToastrModule } from 'ngx-toastr';
 import { UiScrollModule } from 'ngx-ui-scroll';
 import { HttpClientModule } from '@angular/common/http';
+import { environment } from '../environments/environment';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 import { ImgFallbackDirective } from './directives/img-fallback.directive';
 
@@ -68,8 +68,7 @@ import { setAppInjector } from './shared/app-injector';
     PageNotFoundComponent,
     LockedComponent,
     BadgeListComponent,
-    
-  ],
+],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -106,9 +105,9 @@ import { setAppInjector } from './shared/app-injector';
     HttpClientModule,
   ],
   providers: [
-    { 
-      provide: FIRESTORE_SETTINGS, 
-      useValue: environment.production ? undefined : {
+    {
+     provide: FIRESTORE_SETTINGS,
+     useValue: environment.production ? undefined : {
         host: 'localhost:8080',
         ssl: false
     }

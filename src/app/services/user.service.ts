@@ -1,24 +1,28 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { AuthService } from './auth.service';
 
-import { User, Medal } from '../model/shared.model';
 import { Observable, of, from, zip } from 'rxjs';
 import { map, switchMap, flatMap, tap } from 'rxjs/operators';
+
+import { firestore } from 'firebase';
+
+import { User, Medal } from '../model/shared.model';
 import { Role } from '../model/role.model';
 import { BadgeCollection} from '../model/gym.model';
-import { firestore } from 'firebase';
+
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
+  currentUID = '';
+
   private opts: firestore.GetOptions;
 
   private mUser$: Observable<User | null>;
   private userCollection: AngularFirestoreCollection<User>;
-  currentUID: string | undefined;
 
   constructor(
     private store: AngularFirestore,
@@ -64,24 +68,23 @@ export class UserService {
           );
 
         }
-        return of(null);     
-      })
+        return of(null);   })
     );
 
    }
 
-  getCurrentUser() {
+  getCurrentUser(): Observable<User | null> {
     return this.mUser$;
   }
 
-  getMedals() {
+  getMedals(): Observable<BadgeCollection> {
     return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get(this.opts).pipe(
-      tap(this.setCached),
+      tap(this.setCached.bind(this)),
       map(({ docs }) => {
 
         return docs.reduce((acc, cur) => {
 
-          acc[cur.id] = cur.data().badge;
+          acc[cur.id] = (cur.data() as Medal).badge;
           return acc;
 
         }, {} as BadgeCollection);
@@ -91,7 +94,7 @@ export class UserService {
 
   }
 
-  getMedalCounts() {
+  getMedalCounts(): Observable<number[]> {
     return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get(this.opts).pipe(
       tap(this.setCached),
       map(({ docs }) => {
@@ -112,7 +115,7 @@ export class UserService {
 
   }
 
-  getUserInfo() {
+  getUserInfo(): Observable<{ badges: number[], user: User | null }> {
 
     return zip(this.getMedalCounts(), this.getCurrentUser()).pipe(
       map(([mc, u]) => {
@@ -121,12 +124,12 @@ export class UserService {
     );
   }
 
-  setBadge(firestoreId: string, newBadge: number) {
+  setBadge(firestoreId: string, newBadge: number): Promise<void> {
     const medalRef = this.store.doc(`users/${this.currentUID}/medals/${firestoreId}`);
     return medalRef.set({ badge: newBadge });
   }
 
-  getAllUsers() {
+  getAllUsers(): Observable<firestore.QuerySnapshot<firestore.DocumentData>> {
     return this.userCollection.get(this.opts);
   }
 

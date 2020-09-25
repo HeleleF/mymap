@@ -3,7 +3,11 @@ import { Router } from '@angular/router';
 
 import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
+
+import { take } from 'rxjs/operators';
+
 import { AuthService } from '../services/auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -24,6 +28,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // when we come back to /login from the oauth redirection flow
     void this.afAuth.getRedirectResult().then((result) => {
       if (result.user) {
 
@@ -35,8 +40,19 @@ export class LoginComponent implements OnInit {
       } else {
         this.isLoading = false;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-        this.message = history.state.msg || 'Bitte erstmal reinloggen';
+        this.message = history.state.msg || 'Please login first';
       }
+    });
+
+    // when we come to /login manually
+    this.as.user$
+      .pipe(take(1))
+      .subscribe(user => {
+        if (user) {
+          this.zone.run(() => {
+            void this.router.navigate(['/dashboard']);
+          });
+        }
     });
   }
 

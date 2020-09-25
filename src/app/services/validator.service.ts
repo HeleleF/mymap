@@ -28,7 +28,8 @@ export class ValidatorService {
     }
 
     static validPosition(control: AbstractControl): ValidationErrors | null {
-        return /^\d{2}\.\d+\,\d{2}\.\d+$/.test(control.value) ? null : { malformedPos: { value: control.value as string } };
+        // TODO(helene): deprecate this in favor of lat and long validator
+        return /^\d+\.\d+\,\d+\.\d+$/.test(control.value) ? null : { malformedPos: { value: control.value as string } };
     }
 
     static validBadge(control: AbstractControl): ValidationErrors | null {

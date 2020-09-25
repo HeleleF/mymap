@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prodtest": "ng build --prod --source-map && http-server-spa dist/MyMap/ index.html 8001"
+    "prodtest": "ng build --prod --source-map && http-server-spa dist/MyMap/ index.html 8001",
+    "deploy": "ng build --prod && firebase deploy --only hosting:main -m \"New release :)\""
   },
   "repository": "github:HeleleF/mymap",
   "private": true,

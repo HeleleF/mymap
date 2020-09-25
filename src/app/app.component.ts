@@ -19,8 +19,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private toast: ToastrService,
-    public auth: AuthService,
-    public userService: UserService
+    public aus: AuthService,
+    public us: UserService
   ) {
     this.isOnline = navigator.onLine;
    }
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   }
 
   get user$(): Observable<User | null> {
-    return this.userService.getCurrentUser();
+    return this.us.getCurrentUser();
   }
 
   private updateStatus() {

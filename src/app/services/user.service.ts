@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 import { Observable, of, from, zip } from 'rxjs';
-import { map, switchMap, flatMap, tap } from 'rxjs/operators';
+import { map, switchMap, mergeMap, tap } from 'rxjs/operators';
 
 import { firestore } from 'firebase';
 
@@ -48,7 +48,7 @@ export class UserService {
           const userRef = this.store.doc<User>(`users/${user.uid}`);
 
           return userRef.get().pipe(
-            flatMap(snap => {
+            mergeMap(snap => {
 
               if (snap.exists) {
                 return of(snap.data() as User);
@@ -104,6 +104,7 @@ export class UserService {
         return docs.reduce((acc, cur) => {
 
           const badgeValue = cur.data().badge - 1;
+          // eslint-disable-next-line @typescript-eslint/no-unused-expressions
           acc[badgeValue] ? acc[badgeValue]++ : acc[badgeValue] = 1;
 
           return acc;

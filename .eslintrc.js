@@ -13,7 +13,8 @@ module.exports = {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",
-        "sourceType": "module"
+        "sourceType": "module",
+        "extraFileExtensions": ['.html'],
     },
     "plugins": [
         "@typescript-eslint",
@@ -124,7 +125,7 @@ module.exports = {
                 "lib": "always"
             }
         ],
-        "@typescript-eslint/unbound-method": "warn",
+        "@typescript-eslint/unbound-method": "off",
         "@typescript-eslint/unified-signatures": "error",
         "arrow-parens": [
             "off",

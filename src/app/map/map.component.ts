@@ -248,7 +248,7 @@ export class MapComponent implements OnInit, OnDestroy {
               break;
           }
         },
-        error: (e: CustomError) => { // TODO: create CustomError type
+        error: (e: CustomError) => {
           this.toast.error(e.err, `${e.type} error`, { disableTimeOut: true });
         }
 

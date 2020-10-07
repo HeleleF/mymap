@@ -68,13 +68,20 @@ export class UserService {
           );
 
         }
-        return of(null);   })
+        return of(null);
+      })
     );
 
-   }
+  }
 
   getCurrentUser(): Observable<User | null> {
     return this.mUser$;
+  }
+
+  hasRole(role: Role): Observable<boolean> {
+    return this.mUser$.pipe(
+      map(maybeUser => maybeUser ? maybeUser.role === role : false) // TODO(helene): replace with ?. operator
+    )
   }
 
   getMedals(): Observable<BadgeCollection> {

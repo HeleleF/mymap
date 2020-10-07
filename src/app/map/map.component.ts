@@ -28,6 +28,7 @@ import { NewGymControl } from '../new-gym/new-gym.control';
 import { PopupReturn, CustomError } from '../model/shared.model';
 import { GymProps, BadgeCollection, BadgeUpdate, CreatedGymData } from '../model/gym.model';
 import { UserService } from '../services/user.service';
+import { Role } from '../model/role.model';
 
 
 @Component({
@@ -38,9 +39,7 @@ import { UserService } from '../services/user.service';
 export class MapComponent implements OnInit, OnDestroy {
 
   private map!: MapboxMap;
-
   private userBadges: BadgeCollection = {};
-
   private obv: Observer<PopupReturn | undefined>;
 
   /**
@@ -155,13 +154,16 @@ export class MapComponent implements OnInit, OnDestroy {
     })
       .addControl(new NavigationControl(), 'top-right')
       .addControl(new FilterControl(), 'top-right')
-      .addControl(new NewGymControl(), 'top-right')
       .addControl(new AttributionControl({
         compact: true,
         // eslint-disable-next-line max-len
         customAttribution: 'Icons by <a href="http://roundicons.com">Roundicons free</a>, <a href="http://theartificial.nl">The Artificial</a> and <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> &amp; <a href="https://www.flaticon.com/authors/twitter" title="Twitter">Twitter</a>'
       }))
       .on('load', this.onLoad.bind(this));
+
+    this.us.hasRole(Role.ADMIN).subscribe(isAdmin => {
+      if (isAdmin) this.map.addControl(new NewGymControl(), 'top-right');
+    });
   }
 
   ngOnDestroy(): void {

@@ -78,6 +78,12 @@ export class UserService {
     return this.mUser$;
   }
 
+  hasRole(role: Role): Observable<boolean> {
+    return this.mUser$.pipe(
+      map(maybeUser => maybeUser ? maybeUser.role === role : false) // TODO(helene): replace with ?. operator
+    )
+  }
+
   getMedals(): Observable<BadgeCollection> {
     return this.store.collection<Medal>(`/users/${this.currentUID}/medals`).get(this.opts).pipe(
       tap(this.setCached.bind(this)),

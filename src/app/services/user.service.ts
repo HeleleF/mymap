@@ -68,10 +68,11 @@ export class UserService {
           );
 
         }
-        return of(null);   })
+        return of(null);
+      })
     );
 
-   }
+  }
 
   getCurrentUser(): Observable<User | null> {
     return this.mUser$;

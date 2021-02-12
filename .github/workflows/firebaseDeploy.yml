@@ -20,6 +20,9 @@ jobs:
         with:
           name: dist
           path: dist
+        env:
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          MAPBOX_API_TOKEN: ${{ secrets.MAPBOX_API_TOKEN }}
   deploy:
     name: Deploy
     needs: build

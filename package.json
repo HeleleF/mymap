@@ -4,12 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "start firebase emulators:start --only firestore --import \"../exported\" && ng serve --port 8001 --open",
-    "build": "ng build --prod",
+    "build": "npm run config && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "prodtest": "ng build --prod --source-map && http-server-spa dist/MyMap/ index.html 8001",
-    "deploy": "ng build --prod && firebase deploy --only hosting:main -m \"New release :)\""
+    "deploy": "ng build --prod && firebase deploy --only hosting:main -m \"New release :)\"",
+    "config": "ts-node -O '{\"module\": \"commonjs\"}' ./scripts/config.index.ts"
   },
   "repository": "github:HeleleF/mymap",
   "private": true,

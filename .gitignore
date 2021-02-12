@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # own stuff
-/src/environments
+secrets.ts
 .firebase
 *-debug.log
 /src/assets

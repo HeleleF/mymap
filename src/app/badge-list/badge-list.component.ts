@@ -1,22 +1,24 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChildren, QueryList } from '@angular/core';
 
 import { Datasource } from 'ngx-ui-scroll';
 
-import { Observable, of, fromEvent, zip } from 'rxjs';
-import { map, take, shareReplay, switchMap, filter} from 'rxjs/operators';
+import { Observable, of, zip } from 'rxjs';
+import { map, shareReplay} from 'rxjs/operators';
 
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 import { BadgeEntry } from '../model/gym.model';
 import { UserService } from '../services/user.service';
 import { GymService } from '../services/gym.service';
 import { createRows } from '../shared/utils';
+import { CustomError } from '../model/shared.model';
 
 @Component({
   selector: 'app-badge-list',
   templateUrl: './badge-list.component.html',
   styleUrls: ['./badge-list.component.scss']
 })
-export class BadgeListComponent implements OnInit, AfterViewInit {
+export class BadgeListComponent implements OnInit {
 
   @ViewChildren('badgelist') badgeList!: QueryList<ElementRef<HTMLUListElement>>;
 
@@ -24,12 +26,12 @@ export class BadgeListComponent implements OnInit, AfterViewInit {
   badgeEntries$: Observable<BadgeEntry[][]>;
 
   loading = true;
-  clicks$!: Observable<string>;
 
   constructor(
     private db: GymService,
     private us: UserService,
     private toast: ToastrService,
+    private router: Router
   ) {
 
     this.badgeEntries$ = zip(this.db.getEntries(), this.us.getMedals()).pipe(
@@ -74,7 +76,7 @@ export class BadgeListComponent implements OnInit, AfterViewInit {
       next: () => {
         this.loading = false;
       },
-      error: (e: Error & { code: string}) => {
+      error: (e: CustomError) => {
         console.log(e);
         this.toast.error(e.message, e.code, { disableTimeOut: true });
         this.loading = false;
@@ -82,56 +84,7 @@ export class BadgeListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    /*
-    this.badgeList.changes.pipe(take(1)).subscribe({
-      next: (queryList: QueryList<ElementRef<HTMLUListElement>>) => {
-
-        fromEvent(queryList.first.nativeElement, 'click').pipe(
-          map(ev => {
-
-            const elm = ev.target as HTMLElement | null;
-            if (!elm) return null;
-
-            const row = elm.closest('div[data-sid]');
-            if (!row) return null;
-
-            return row.getAttribute('data-sid');
-          })
-        ).subscribe(n => {
-          console.debug(`clicked on row ${n}`);
-        });
-
-        // TODO: übergeordneten li finden, features rausholen und popup?
-        // ich würd sagen brauchen wir nicht?
-        // weil was sollte das popup denn anzeigen? gibt ja nichts...
-      }
-    });
-    */
-
-   this.clicks$ = this.badgeList.changes.pipe(
-    take(1),
-    switchMap((queryList: QueryList<ElementRef<HTMLUListElement>>) => fromEvent(queryList.first.nativeElement, 'click')),
-    map(ev => {
-
-      const elm = ev.target as HTMLElement | null;
-      if (!elm) return null;
-
-      const row = elm.closest('div[data-sid]');
-      if (!row) return null;
-
-      return row.getAttribute('data-sid');
-    }),
-    filter((a): a is string => !!a)
-  );
-
-    this.clicks$.subscribe(n => {
-      console.log(`clicked on row ${n}`);
-    })
+  onClick(gymId: string): void {
+    void this.router.navigate(['map'], { fragment: gymId });
   }
-
-  onClick(ev: MouseEvent): void {
-    console.log(ev.target);
-  }
-
 }

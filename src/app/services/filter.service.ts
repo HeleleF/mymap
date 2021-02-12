@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-import { FilterSettings, FilterObject } from '../model/shared.model';
-import { GymFilter } from '../model/gym.model';
-import { QuestFilter, QuestType, QuestReward } from '../model/quest.model';
+import { FilterSettings } from '../model/shared.model';
 
 /**
  * A Service to handle the map filters.
- * 
+ *
  * This uses a BehaviourSubject to pass a starting value to
- * subscribers when initally subscribing. (which is needed when the map 
+ * subscribers when initally subscribing. (which is needed when the map
  * needs to apply filters from previous visits)
  */
 @Injectable({
@@ -19,133 +17,20 @@ import { QuestFilter, QuestType, QuestReward } from '../model/quest.model';
 export class FilterService {
 
   filters: FilterSettings;
-  private filters$: BehaviorSubject<FilterObject>;
+  private filters$: BehaviorSubject<FilterSettings>;
 
-  constructor() { 
+  constructor() {
 
     const f = localStorage.getItem('filters');
 
-    this.filters = f ? JSON.parse(f) : this.getDefaults();
-    this.filters$ = new BehaviorSubject(this.update());
-  }
-
-  /**
-   * Returns the default settings.
-   */
-  private getDefaults(): FilterSettings {
-    return {
-      showGyms: true,
-      showQuests: false,
-      encounters: [],
-      rewards: [],
-      types: [],
-      badges: [],
-      negateBadge: false,
-      negateEncounter: false,
-      hasEncounter: false,
-      hasReward: false,
-      negateReward: false,
-      negateType: false,
-      includeLegacy: true,
-    };
-  }
-
-  /**
-   * Creates the Filter for the gym layer as
-   * needed by the mapboxgl api.
-   */
-  private createGymFilter(data: GymFilter): any[] | undefined {
-
-    const filter = [];
-    const badges = [];
-
-    if (data.badges.length) {
-
-      badges.push('match', ['get', 'badge'], data.badges);
-      data.negateBadge ? badges.push(false, true) : badges.push(true, false);
-
-      filter.push(badges);
-
-    }
-
-    if (!data.includeLegacy) {
-      filter.push(['!', ['has', 'isLegacy']]);
-    }
-
-    return filter.length > 1 ? ['all', ...filter] : (filter.length === 1 ? filter.flat() : undefined);
-  }
-
-  /**
-   * Creates the Filter for the quest layer as
-   * needed by the mapboxgl api.
-   */
-  private createQuestFilter(data: QuestFilter): any[] | undefined {
-
-    const filter = [];
-    const types = [];
-    const rewards = [];
-    const encounters = [];
-
-    if (data.types.length) {
-      types.push('match', ['get', 'type'], data.types);
-      data.negateType ? types.push(false, true) : types.push(true, false);
-
-      filter.push(types);
-    }
-
-    if (data.rewards.length) {
-      rewards.push('match', ['get', 'reward'], data.rewards);
-      data.negateReward ? rewards.push(false, true) : rewards.push(true, false);
-
-      filter.push(rewards);
-    }
-
-    if (!rewards.length && data.hasReward) {
-      rewards.push('has', 'quantity');
-
-      filter.push(rewards);
-    }
-
-    if (data.encounters.length) {
-      encounters.push('match', ['get', 'encounter'], data.encounters);
-      data.negateEncounter ? encounters.push(false, true) : encounters.push(true, false);
-
-      filter.push(encounters);
-    }
-
-    if (!encounters.length && data.hasEncounter) {
-      encounters.push('has', 'encounter');
-
-      filter.push(encounters);
-    }
-
-    return filter.length > 1 ? ['all', ...filter] : (filter.length === 1 ? filter.flat() : undefined);
-  }
-
-  excludeOneType(type: QuestType) {
-
-  }
-
-  excludeOneReward(reward: string) {
-
-  }
-
-  /**
-   * Updates the filter object and returns it.
-   */
-  private update(): FilterObject {
-    return {
-      showGyms: this.filters.showGyms,
-      showQuests: this.filters.showQuests,
-      gyms: this.createGymFilter(this.filters),
-      quests: this.createQuestFilter(this.filters),
-    };
+    this.filters = f ? JSON.parse(f) as FilterSettings : this.defaults;
+    this.filters$ = new BehaviorSubject(this.filters);
   }
 
   /**
    * Provides a way to subscribe to filter changes.
    */
-  onChanged() {
+  onChanged(): Observable<FilterSettings> {
     return this.filters$.asObservable();
   }
 
@@ -154,13 +39,22 @@ export class FilterService {
    * triggers a 'onChanged' event for all
    * subscribers of this FilterService.
    */
-  persistFilters(newFilters?: FilterSettings) {
+  persistFilters(newFilters?: FilterSettings): void {
 
-    console.debug('Filter Service recieved ', newFilters);
-
-    this.filters = newFilters || this.getDefaults();
+    this.filters = newFilters || this.defaults;
     localStorage.setItem('filters', JSON.stringify(this.filters));
 
-    this.filters$.next(this.update());
+    this.filters$.next(this.filters);
+  }
+
+    /**
+     * Returns the default settings.
+     */
+  private get defaults(): FilterSettings {
+    return {
+      showGyms: true,
+      badges: [],
+      includeLegacy: true,
+    };
   }
 }

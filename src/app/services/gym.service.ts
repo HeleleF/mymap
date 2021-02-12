@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
-import { map, flatMap, tap } from 'rxjs/operators';
+import { map, tap, mergeMap } from 'rxjs/operators';
 
 import { of, from, Observable } from 'rxjs';
 import { firestore } from 'firebase';
+import { environment } from 'src/environments/environment';
 import {
   GymModel, GymProps, BadgeEntry, asGeopoint,
 } from '../model/gym.model';
@@ -17,7 +18,11 @@ export class GymService {
   private opts: firestore.GetOptions;
 
   constructor(private store: AngularFirestore) {
-    this.gymsRef = this.store.collection<GymModel>('gymsNEU', (ref) => ref.orderBy('n', 'asc'));
+
+    // in firestore emulator the collection has a different name
+    const gymCollectionName = environment.production ? 'gymsNEU' : 'gyms';
+
+    this.gymsRef = this.store.collection<GymModel>(gymCollectionName, (ref) => ref.orderBy('n', 'asc'));
 
     const useCache = Boolean(localStorage.getItem('gymCache'));
     this.opts = useCache ? { source: 'cache' } : {};
@@ -87,7 +92,7 @@ export class GymService {
     const sameGyms = this.store.collection<GymModel>('gymsNEU', (ref) => ref.where('p', '==', newGym.p));
 
     return sameGyms.get().pipe(
-      flatMap((snap) => {
+      mergeMap((snap) => {
         // at least one other gym with this id already exists, return error
         if (snap.size) {
           return of(null);

@@ -1,52 +1,14 @@
 <h1 mat-dialog-title>Filters</h1>
 <div mat-dialog-content>
 
-  <mat-checkbox color="primary" [(ngModel)]="sets.showQuests" [disabled]="true">Show quest layer</mat-checkbox><br />
   <mat-checkbox color="primary" [(ngModel)]="sets.showGyms">Show gym layer</mat-checkbox><br />
 
-  <mat-tab-group animationDuration="0ms" *ngIf="sets.showQuests">
-
-    <mat-tab label="Filter by encounter">
-      <mat-checkbox color="primary" [(ngModel)]="sets.negateEncounter">Negate Encounter?</mat-checkbox><br />
-      <mat-checkbox color="primary" [(ngModel)]="sets.hasEncounter">Has Encounter?</mat-checkbox><br />
-      <app-autochips [elements]="encs" (updated)="changeEncounter($event)"></app-autochips>
-    </mat-tab>
-
-    <mat-tab label="Filter by type">
-      <mat-checkbox color="primary" [(ngModel)]="sets.negateType">Negate Type?</mat-checkbox><br />
-      <ng-container *ngFor="let t of types">
-        <mat-checkbox color="primary" [value]="t" [checked]="sets.types.includes(t)" (change)="changeType(t)">{{t}}</mat-checkbox><br />
-      </ng-container>
-    </mat-tab>
-
-    <mat-tab label="Filter by reward">
-      <mat-checkbox color="primary" [(ngModel)]="sets.negateReward">Negate Reward?</mat-checkbox><br />
-      <mat-checkbox color="primary" [(ngModel)]="sets.hasReward">Has Reward?</mat-checkbox><br />
-      <div *ngIf="sets.hasReward">
-        <ng-container *ngFor="let r of rewards">
-          <mat-checkbox color="primary" [value]="r" [checked]="sets.rewards.includes(r)" (change)="changeReward(r)">{{r}}</mat-checkbox><br />
-        </ng-container>
-      </div>
-    </mat-tab>
-
-  </mat-tab-group><br />
-
-  <mat-tab-group animationDuration="0ms" *ngIf="sets.showGyms">
-
-    <mat-tab label="Filter by badge">
-      <ng-container *ngFor="let b of badges; index as idx">
-        <mat-checkbox color="primary" [value]="idx" [checked]="sets.badges.includes(idx)" (change)="changeBadge(idx)">{{b}}</mat-checkbox><br />
-      </ng-container>
-    </mat-tab>
-
-    <mat-tab label="Filter by name">
-      <input matInput placeholder="Enter name...">
-    </mat-tab>
-
-  </mat-tab-group>
-
-  <mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy">Include legacy gyms?</mat-checkbox><br />
-
+  <div class="gym-filter-box" *ngIf="sets.showGyms">
+    <ng-container *ngFor="let b of badges; index as idx">
+      <mat-checkbox color="primary" [value]="idx" [checked]="sets.badges.includes(idx)" (change)="changeBadge(idx)">{{b}}</mat-checkbox><br />
+    </ng-container>
+    <mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy">Include legacy gyms?</mat-checkbox>
+  </div>
 
 </div>
 <div mat-dialog-actions>

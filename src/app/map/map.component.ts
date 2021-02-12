@@ -13,7 +13,7 @@ import {
 
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Observer } from 'rxjs';
-import { take, takeUntil, tap, switchMapTo, filter } from 'rxjs/operators';
+import { take, takeUntil, tap, switchMapTo, filter, first } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
 
@@ -25,10 +25,11 @@ import { MessageService } from '../services/message.service';
 import { FilterControl } from '../filter/filter.control';
 import { NewGymControl } from '../new-gym/new-gym.control';
 
-import { PopupReturn, CustomError } from '../model/shared.model';
+import { PopupReturn, CustomError, FilterError } from '../model/shared.model';
 import { GymProps, BadgeCollection, BadgeUpdate, CreatedGymData } from '../model/gym.model';
 import { UserService } from '../services/user.service';
 import { Role } from '../model/role.model';
+import { FilterService } from '../services/filter.service';
 
 
 @Component({
@@ -46,10 +47,6 @@ export class MapComponent implements OnInit, OnDestroy {
    * Stores all gym features for the gym source
    */
   private gyms: GeoJSON.FeatureCollection<GeoJSON.Point, GymProps>;
-  /**
-   * Stores all quest features for the quest source
-   */
-  // private quests: GeoJSON.FeatureCollection<GeoJSON.Point, QuestProps>;
 
   /**
    * "Kill switch" for all active subscriptions
@@ -61,13 +58,12 @@ export class MapComponent implements OnInit, OnDestroy {
     private db: GymService,
     private us: UserService,
     private ms: MessageService,
+    private fs: FilterService,
     private modal: MatDialog,
     private toast: ToastrService,
     private route: ActivatedRoute
   ) {
     this.gyms = { type: 'FeatureCollection', features: [] };
-    // this.quests = { type: 'FeatureCollection', features: [] };
-
     this.userBadges = {};
 
     this.obv = {
@@ -161,7 +157,7 @@ export class MapComponent implements OnInit, OnDestroy {
       }))
       .on('load', this.onLoad.bind(this));
 
-    this.us.hasRole(Role.ADMIN).subscribe(isAdmin => {
+    this.us.hasRole(Role.ADMIN).pipe(first()).subscribe(isAdmin => {
       if (isAdmin) this.map.addControl(new NewGymControl(), 'top-right');
     });
   }
@@ -183,7 +179,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map
       .addSource('gymSource', { type: 'geojson', data: this.gyms })
-      // .addSource('questSource', { type: 'geojson', data: this.quests })
       .addLayer({
         id: 'gymsLayer',
         type: 'symbol',
@@ -196,28 +191,7 @@ export class MapComponent implements OnInit, OnDestroy {
         minzoom: 10,
         maxzoom: 21
       })
-      /*
-      .addLayer({
-        id: 'questsLayer',
-        type: 'symbol',
-        source: 'questSource',
-        layout: {
-          // TODO(helene): Handle quests with multiple rewards with question mark icon?
-          'icon-image': ['case', ['==', '#', ['get', 'reward']], ['get', 'encounter'], ['get', 'reward']],
-          'icon-size': 1,
-          'icon-allow-overlap': true,
-          'icon-ignore-placement': true,
-          'text-field': ['case', ['has', 'quantity'], ['get', 'quantity'], ''],
-          'text-offset': [1.5, -1.5],
-          'text-allow-overlap': true,
-          'text-ignore-placement': true
-        },
-        minzoom: 12,
-        maxzoom: 21
-      })
-      */
       .on('click', 'gymsLayer', this.onGymsClick.bind(this))
-      // .on('click', 'questsLayer', this.onQuestsClick.bind(this))
 
     this.loadData();
 
@@ -257,36 +231,28 @@ export class MapComponent implements OnInit, OnDestroy {
       });
 
     // listen to filter changes
-    /*
     this.fs.onChanged()
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
         next: (filters) => {
 
-          console.log(`Quest filter is ${JSON.stringify(filters.quests)}`);
-
           this.map
-            .setLayoutProperty('questsLayer', 'visibility', filters.showQuests ? 'visible' : 'none')
             .setLayoutProperty('gymsLayer', 'visibility', filters.showGyms ? 'visible' : 'none')
-            .setFilter('questsLayer', filters.quests)
-            .setFilter('gymsLayer', filters.gyms);
+            .setFilter('gymsLayer', filters.gyms); // TODO(helene): add validate=false option
         },
-        error: (e) => {
+        error: (e: FilterError) => {
           this.toast.error(`Couldn't apply filters because ${e.message}!`, 'Filter Error', { disableTimeOut: true });
         }
       });
-      */
   }
 
-  private onGymsClick(e: MapMouseEvent & EventData & { features?: MapboxGeoJSONFeature[] }) {
+  private openModal(feature: GeoJSON.Feature) {
 
-    if (!e.features) { return; }
-
-    const position = (e.features[0].geometry as GeoJSON.Point).coordinates;
+    const position = (feature.geometry as GeoJSON.Point).coordinates;
 
     this.map.easeTo({ center: position as [number, number] });
 
-    const props = e.features[0].properties as GymProps;
+    const props = feature.properties as GymProps;
     const badge = this.userBadges[props.firestoreId] || 0;
 
     const ref: MatDialogRef<GymPopupComponent, PopupReturn> = this.modal.open(GymPopupComponent, {
@@ -297,26 +263,12 @@ export class MapComponent implements OnInit, OnDestroy {
     ref.afterClosed().subscribe(this.obv);
   }
 
-  /*
-  private onQuestsClick(e: mapboxgl.MapMouseEvent & mapboxgl.EventData & { features?: mapboxgl.MapboxGeoJSONFeature[] }) {
+  private onGymsClick(e: MapMouseEvent & EventData & { features?: MapboxGeoJSONFeature[] }) {
 
     if (!e.features) { return; }
 
-    const loc = (e.features[0].geometry as GeoJSON.Point).coordinates;
-
-    this.map.easeTo({ center: loc as [number, number] });
-
-    const ref: MatDialogRef<QuestPopupComponent, PopupReturn> = this.modal.open(QuestPopupComponent, {
-      data: e.features[0].properties as QuestProps
-    });
-
-    ref.afterClosed().subscribe({
-      next: (ret) => {
-        console.log(ret);
-      }
-    });
+    this.openModal(e.features[0]);
   }
-  */
 
   /**
    * Populates the gym and quest source with data from firestore
@@ -340,29 +292,17 @@ export class MapComponent implements OnInit, OnDestroy {
 
       }),
       switchMapTo(this.route.fragment),
-      filter((fragOrEmpty: string | undefined): fragOrEmpty is string => !!fragOrEmpty)
+      filter((fragOrEmpty: string | undefined): fragOrEmpty is string => !!fragOrEmpty),
+      first()
     ).subscribe({
       next: (frag) => {
 
         const feat = this.gyms.features.find(({ properties: { firestoreId } }) => firestoreId === frag);
         if (!feat) return;
 
-        const props = feat.properties;
-
-        const position = feat.geometry.coordinates;
-        this.map.easeTo({ center: position as [number, number] });
-
-        const badge = this.userBadges[frag] || 0;
-
-        const ref: MatDialogRef<GymPopupComponent, PopupReturn> = this.modal.open(GymPopupComponent, {
-          data: { ...props, position, badge },
-          panelClass: 'custom-panel'
-        });
-
-        ref.afterClosed().subscribe(this.obv);
-
+        this.openModal(feat);
       },
-      error: (e: Error & { code: string }) => {
+      error: (e: CustomError) => {
         this.toast.error(e.message, e.code, { disableTimeOut: true });
       }
     });

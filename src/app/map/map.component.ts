@@ -194,6 +194,9 @@ export class MapComponent implements OnInit, OnDestroy {
       .on('click', 'gymsLayer', this.onGymsClick.bind(this))
 
     this.loadData();
+  }
+
+  private setupListener() {
 
     // listen for messages
     this.ms.onMessage()
@@ -234,11 +237,22 @@ export class MapComponent implements OnInit, OnDestroy {
     this.fs.onChanged()
       .pipe(takeUntil(this.unsubscribeAll$))
       .subscribe({
-        next: (filters) => {
+        next: ({ includeLegacy, badges, showGyms }) => {
+
+          const data = [];
+
+          if (!includeLegacy) {
+            data.push(['!', ['has', 'isLegacy']]);
+          }
+
+          if (badges.length) {
+            data.push(['match', ['coalesce', ['get', ['get', 'firestoreId'], ['literal', this.userBadges]], '0'], badges, true, false]);
+          }
+          const expression = data.length > 1 ? ['all', ...data] : (data.length === 1 ? data.flat() : undefined);
 
           this.map
-            .setLayoutProperty('gymsLayer', 'visibility', filters.showGyms ? 'visible' : 'none')
-            .setFilter('gymsLayer', filters.gyms); // TODO(helene): add validate=false option
+            .setLayoutProperty('gymsLayer', 'visibility', showGyms ? 'visible' : 'none')
+            .setFilter('gymsLayer', expression); // TODO(helene): add validate=false option
         },
         error: (e: FilterError) => {
           this.toast.error(`Couldn't apply filters because ${e.message}!`, 'Filter Error', { disableTimeOut: true });
@@ -289,6 +303,8 @@ export class MapComponent implements OnInit, OnDestroy {
         this.userBadges = badgeCollection;
         this.map.setLayoutProperty('gymsLayer', 'icon-image', this.gymIcon);
         this.toast.success('Badges loaded', 'Data');
+
+        this.setupListener();
 
       }),
       switchMapTo(this.route.fragment),

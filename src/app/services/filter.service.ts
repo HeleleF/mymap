@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { FilterSettings, FilterObject } from '../model/shared.model';
-import { GymFilter } from '../model/gym.model';
+import { FilterSettings } from '../model/shared.model';
 
 /**
  * A Service to handle the map filters.
@@ -18,20 +17,20 @@ import { GymFilter } from '../model/gym.model';
 export class FilterService {
 
   filters: FilterSettings;
-  private filters$: BehaviorSubject<FilterObject>;
+  private filters$: BehaviorSubject<FilterSettings>;
 
   constructor() {
 
     const f = localStorage.getItem('filters');
 
     this.filters = f ? JSON.parse(f) as FilterSettings : this.defaults;
-    this.filters$ = new BehaviorSubject(this.update());
+    this.filters$ = new BehaviorSubject(this.filters);
   }
 
   /**
    * Provides a way to subscribe to filter changes.
    */
-  onChanged(): Observable<FilterObject> {
+  onChanged(): Observable<FilterSettings> {
     return this.filters$.asObservable();
   }
 
@@ -45,17 +44,7 @@ export class FilterService {
     this.filters = newFilters || this.defaults;
     localStorage.setItem('filters', JSON.stringify(this.filters));
 
-    this.filters$.next(this.update());
-  }
-
-  /**
-   * Updates the filter object and returns it.
-   */
-  private update(): FilterObject {
-    return {
-      showGyms: this.filters.showGyms,
-      gyms: this.createGymFilter(this.filters),
-    };
+    this.filters$.next(this.filters);
   }
 
     /**
@@ -65,27 +54,7 @@ export class FilterService {
     return {
       showGyms: true,
       badges: [],
-      negateBadge: false,
       includeLegacy: true,
     };
-  }
-
-  /**
-   * Creates the Filter for the gym layer as
-   * needed by the mapboxgl api.
-   */
-  private createGymFilter(data: GymFilter): any[] | undefined {
-
-    const filter = [];
-
-    if (data.badges.length) {
-      filter.push([ 'match', ['get', 'badge'], data.badges ]);
-    }
-
-    if (!data.includeLegacy) {
-      filter.push(['!', ['has', 'isLegacy']]);
-    }
-
-    return filter.length > 1 ? ['all', ...filter] : (filter.length === 1 ? filter.flat() : undefined);
   }
 }

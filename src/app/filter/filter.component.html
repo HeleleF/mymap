@@ -3,17 +3,12 @@
 
   <mat-checkbox color="primary" [(ngModel)]="sets.showGyms">Show gym layer</mat-checkbox><br />
 
-  <mat-tab-group animationDuration="0ms" *ngIf="sets.showGyms">
-
-    <mat-tab label="Filter by badge">
-      <ng-container *ngFor="let b of badges; index as idx">
-        <mat-checkbox color="primary" [value]="idx" [checked]="sets.badges.includes(idx)" (change)="changeBadge(idx)">{{b}}</mat-checkbox><br />
-      </ng-container>
-    </mat-tab>
-  </mat-tab-group>
-
-  <mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy">Include legacy gyms?</mat-checkbox><br />
-
+  <div class="gym-filter-box" *ngIf="sets.showGyms">
+    <ng-container *ngFor="let b of badges; index as idx">
+      <mat-checkbox color="primary" [value]="idx" [checked]="sets.badges.includes(idx)" (change)="changeBadge(idx)">{{b}}</mat-checkbox><br />
+    </ng-container>
+    <mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy">Include legacy gyms?</mat-checkbox>
+  </div>
 
 </div>
 <div mat-dialog-actions>

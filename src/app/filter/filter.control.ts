@@ -1,12 +1,12 @@
 import { MatDialog } from '@angular/material/dialog';
-import { AppInjector } from '../shared/app-injector';
 
-import { IControl, Map } from 'mapbox-gl';
+import { IControl, Map as MapboxMap } from 'mapbox-gl';
 
 import { Subscription } from 'rxjs';
+import { AppInjector } from '../shared/app-injector';
 
-import { FilterComponent } from './filter.component';
 import { FilterService } from '../services/filter.service';
+import { FilterComponent } from './filter.component';
 
 /**
  * Class that is used to open the FilterComponent
@@ -14,11 +14,11 @@ import { FilterService } from '../services/filter.service';
  */
 export class FilterControl implements IControl {
 
-    mapRef: Map | undefined;
+    mapRef: MapboxMap | undefined;
     container: HTMLDivElement;
     private modal: MatDialog;
     private fs: FilterService;
-    private sub!: Subscription;
+    private sub!: Subscription; // TODO(helene): use ? op instead after updating ts
 
     constructor() {
 
@@ -30,7 +30,7 @@ export class FilterControl implements IControl {
         this.fs = AppInjector.get(FilterService);
     }
 
-    onAdd(map: Map): HTMLDivElement {
+    onAdd(map: MapboxMap): HTMLDivElement {
 
         this.mapRef = map;
 
@@ -54,7 +54,7 @@ export class FilterControl implements IControl {
         this.sub = this.fs.onChanged().subscribe({
             next: (filters) => {
 
-                if (filters.gyms || filters.quests || !filters.showGyms || !filters.showQuests) {
+                if (filters.badges.length || !filters.showGyms) {
                     btn.classList.add('active');
                 } else {
                     btn.classList.remove('active');
@@ -65,7 +65,8 @@ export class FilterControl implements IControl {
         return this.container;
     }
 
-    onRemove(map: Map) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onRemove(_map: MapboxMap): void {
         this.container.remove();
         this.mapRef = undefined;
 

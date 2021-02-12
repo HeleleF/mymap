@@ -16,11 +16,6 @@ export interface ErrorMessage {
     data?: any;
 }
 
-export interface FilterObject {
-    showGyms: boolean;
-    gyms?: any[];
-}
-
 export enum MapStyle {
     Light = 'light-v10',
     Dark = 'dark-v10',

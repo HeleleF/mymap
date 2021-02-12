@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } from '@angular/fire/firestore';
-import { map, flatMap, tap } from 'rxjs/operators';
+import { map, tap, mergeMap } from 'rxjs/operators';
 
 import { of, from, Observable } from 'rxjs';
 import { firestore } from 'firebase';
@@ -87,7 +87,7 @@ export class GymService {
     const sameGyms = this.store.collection<GymModel>('gymsNEU', (ref) => ref.where('p', '==', newGym.p));
 
     return sameGyms.get().pipe(
-      flatMap((snap) => {
+      mergeMap((snap) => {
         // at least one other gym with this id already exists, return error
         if (snap.size) {
           return of(null);

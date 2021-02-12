@@ -18,8 +18,6 @@ export interface ErrorMessage {
 
 export interface FilterObject {
     showGyms: boolean;
-    showQuests: boolean;
-    quests?: any[];
     gyms?: any[];
 }
 
@@ -32,19 +30,7 @@ export enum MapStyle {
 
 export interface FilterSettings {
 
-  showQuests: boolean;
   showGyms: boolean;
-
-  hasEncounter?: boolean;
-  negateEncounter?: boolean;
-  encounters: any;
-
-  rewards: any;
-  hasReward?: boolean;
-  negateReward?: boolean;
-
-  negateType?: boolean;
-  types: any;
 
   negateBadge?: boolean;
   badges: number[];
@@ -71,6 +57,13 @@ export interface PopupReturn {
 }
 
 export interface CustomError {
+    err: string,
+    type: string,
+    message: string,
+    code: string,
+}
+
+export interface FilterError {
     err: string,
     type: string,
     message: string,

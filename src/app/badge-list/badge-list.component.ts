@@ -11,6 +11,7 @@ import { BadgeEntry } from '../model/gym.model';
 import { UserService } from '../services/user.service';
 import { GymService } from '../services/gym.service';
 import { createRows } from '../shared/utils';
+import { CustomError } from '../model/shared.model';
 
 @Component({
   selector: 'app-badge-list',
@@ -75,7 +76,7 @@ export class BadgeListComponent implements OnInit {
       next: () => {
         this.loading = false;
       },
-      error: (e: Error & { code: string}) => {
+      error: (e: CustomError) => {
         console.log(e);
         this.toast.error(e.message, e.code, { disableTimeOut: true });
         this.loading = false;

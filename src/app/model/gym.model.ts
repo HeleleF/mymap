@@ -1,4 +1,4 @@
-import * as firebase from 'firebase/app';
+import fb from 'firebase/app';
 
 export enum GymBadge {
     NOT_SEEN = 0,
@@ -17,11 +17,6 @@ export interface GymInfo {
     u: string;
     b: number;
     l?: boolean;
-}
-
-export interface GeoPoint {
-    latitude: number;
-    longitude: number;
 }
 
 /**
@@ -44,7 +39,7 @@ export interface GymModel {
     /**
      * The position of the gym as a firestore.GeoPoint
      */
-    l: firebase.firestore.GeoPoint;
+    l: fb.firestore.GeoPoint;
     /**
      * Whether this is a legacy gym
      */
@@ -113,12 +108,16 @@ export interface MedalCount {
     [badgeType: number]: number
 }
 
-export const asGeopoint = (latitude: string | number, longitude: string | number): firebase.firestore.GeoPoint => {
+/**
+ * Creates a new GeoPoint for storing locations in firestore.
+ * Values are rounded to 6 decimals (same as ingress, more than enough)
+ */
+export const asGeopoint = (latitude: string | number, longitude: string | number): fb.firestore.GeoPoint => {
 
     const lat = Math.floor(+latitude * 1e6) / 1e6;
     const lng = Math.floor(+longitude * 1e6) / 1e6;
 
-    return new firebase.firestore.GeoPoint(lat, lng);
+    return new fb.firestore.GeoPoint(lat, lng);
 }
 
 export interface NewGymData {

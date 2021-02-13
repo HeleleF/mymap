@@ -4,7 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable, of, from, zip } from 'rxjs';
 import { map, switchMap, mergeMap, tap } from 'rxjs/operators';
 
-import { firestore } from 'firebase';
+import fb from 'firebase';
 
 import { User, Medal } from '../model/shared.model';
 import { Role } from '../model/role.model';
@@ -19,7 +19,7 @@ export class UserService {
 
   currentUID = '';
 
-  private opts: firestore.GetOptions;
+  private opts: fb.firestore.GetOptions;
 
   private mUser$: Observable<User | null>;
   private userCollection: AngularFirestoreCollection<User>;
@@ -91,7 +91,7 @@ export class UserService {
 
         return docs.reduce((acc, cur) => {
 
-          acc[cur.id] = (cur.data() as Medal).badge;
+          acc[cur.id] = cur.data().badge;
           return acc;
 
         }, {} as BadgeCollection);
@@ -137,7 +137,7 @@ export class UserService {
     return medalRef.set({ badge: newBadge });
   }
 
-  getAllUsers(): Observable<firestore.QuerySnapshot<firestore.DocumentData>> {
+  getAllUsers(): Observable<fb.firestore.QuerySnapshot<fb.firestore.DocumentData>> {
     return this.userCollection.get(this.opts);
   }
 

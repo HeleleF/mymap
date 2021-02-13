@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase';
+import fb from 'firebase';
 
 import { Observable } from 'rxjs';
 
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  user$: Observable<firebase.User | null>;
+  user$: Observable<fb.User | null>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -27,7 +27,7 @@ export class AuthService {
    * Performs the "sign in" process and updates
    * the user
    */
-  loginWithProvider(provider: auth.AuthProvider): Promise<void> {
+  loginWithProvider(provider: fb.auth.GoogleAuthProvider): Promise<void> {
     return this.afAuth.signInWithRedirect(provider);
   }
 
@@ -43,7 +43,7 @@ export class AuthService {
       })
       .catch((err: Error) => {
         // eslint-disable-next-line no-console
-        console.debug('Sign-Out failed', err);
+        console.debug('Sign-Out failed', err); // TODO(helene): what now? redirect anyway?
       });
 
   }

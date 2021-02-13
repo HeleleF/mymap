@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, QueryDocumentSnapshot } f
 import { map, tap, mergeMap } from 'rxjs/operators';
 
 import { of, from, Observable } from 'rxjs';
-import { firestore } from 'firebase';
+import fb from 'firebase';
 import { environment } from 'src/environments/environment';
 import {
   GymModel, GymProps, BadgeEntry, asGeopoint,
@@ -15,14 +15,16 @@ import {
 export class GymService {
   private gymsRef: AngularFirestoreCollection<GymModel>;
 
-  private opts: firestore.GetOptions;
+  private opts: fb.firestore.GetOptions;
+
+  private gymCollectionName: string;
 
   constructor(private store: AngularFirestore) {
 
     // in firestore emulator the collection has a different name
-    const gymCollectionName = environment.production ? 'gymsNEU' : 'gyms';
+    this.gymCollectionName = environment.production ? 'gymsNEU' : 'gyms';
 
-    this.gymsRef = this.store.collection<GymModel>(gymCollectionName, (ref) => ref.orderBy('n', 'asc'));
+    this.gymsRef = this.store.collection<GymModel>(this.gymCollectionName, (ref) => ref.orderBy('n', 'asc'));
 
     const useCache = Boolean(localStorage.getItem('gymCache'));
     this.opts = useCache ? { source: 'cache' } : {};
@@ -89,7 +91,7 @@ export class GymService {
   }
 
   create(newGym: GymModel): Observable<GeoJSON.Feature<GeoJSON.Point, GymProps> | null> {
-    const sameGyms = this.store.collection<GymModel>('gymsNEU', (ref) => ref.where('p', '==', newGym.p));
+    const sameGyms = this.store.collection<GymModel>(this.gymCollectionName, (ref) => ref.where('p', '==', newGym.p));
 
     return sameGyms.get().pipe(
       mergeMap((snap) => {

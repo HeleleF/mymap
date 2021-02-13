@@ -1,10 +1,16 @@
 # MyMap
 
-Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 10](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
+Visualizing gym progress in PokemonGo with [Firebase](https://firebase.google.com/), [Angular 11](https://angular.io/) and [MapboxGL](https://docs.mapbox.com/mapbox-gl-js/api/).
 
 ## Deploy
 
-`firebase deploy --only hosting:main -m "New release"`
+Deploying from local cmd line: `firebase deploy --only hosting:main -m "New release"`
+
+**NEW** Updating master now triggers a github actions workflow that builds the projection for production and then deploys it
+The release message is the commit message of the PR (see `.github/workflows`).
+
+Important:
+Pushing to master is not allowed. Instead, make a new branch and create a PR.
 
 ## Development
 

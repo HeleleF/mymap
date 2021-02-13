@@ -1,27 +1,26 @@
 .badgeCountRow {
-    position: relative;
+	position: relative;
 
-    width: 100px;
-    height: 100px;
+	width: 100px;
+	height: 100px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-    .badgeCountImage {
-        width: 100px;
-        height: 100px;
-        position: absolute;
+	.badgeCountImage {
+		width: 100px;
+		height: 100px;
+		position: absolute;
 
-        top: 50%;
-        left: 50%;
+		top: 50%;
+		left: 50%;
 
-        margin-top: -50px;
-        margin-left: -50px;
-    }
+		margin-top: -50px;
+		margin-left: -50px;
+	}
 
-    .badgeCount {
-        font-weight: bold;
-
-    }
+	.badgeCount {
+		font-weight: bold;
+	}
 }

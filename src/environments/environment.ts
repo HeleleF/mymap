@@ -5,9 +5,9 @@
 import { secrets } from './secrets';
 
 export const environment = {
-  production: false,
-  ...secrets
-
+	production: false,
+	MAPBOX_STYLE_URI: 'mapbox://styles/mappinglehne/ck4n0h27q0qqe1crzvpg8vpsm',
+	...secrets
 };
 
 /*

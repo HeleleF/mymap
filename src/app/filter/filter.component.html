@@ -1,17 +1,25 @@
 <h1 mat-dialog-title>Filters</h1>
 <div mat-dialog-content>
+	<mat-checkbox color="primary" [(ngModel)]="sets.showGyms"
+		>Show gym layer</mat-checkbox
+	><br />
 
-  <mat-checkbox color="primary" [(ngModel)]="sets.showGyms">Show gym layer</mat-checkbox><br />
-
-  <div class="gym-filter-box" *ngIf="sets.showGyms">
-    <ng-container *ngFor="let b of badges; index as idx">
-      <mat-checkbox color="primary" [value]="idx" [checked]="sets.badges.includes(idx)" (change)="changeBadge(idx)">{{b}}</mat-checkbox><br />
-    </ng-container>
-    <mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy">Include legacy gyms?</mat-checkbox>
-  </div>
-
+	<div class="gym-filter-box" *ngIf="sets.showGyms">
+		<ng-container *ngFor="let b of badges; index as idx">
+			<mat-checkbox
+				color="primary"
+				[value]="idx"
+				[checked]="sets.badges.includes(idx)"
+				(change)="changeBadge(idx)"
+				>{{b}}</mat-checkbox
+			><br />
+		</ng-container>
+		<mat-checkbox color="primary" [(ngModel)]="sets.includeLegacy"
+			>Include legacy gyms?</mat-checkbox
+		>
+	</div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="reset()">Reset</button>
-  <button mat-button cdkFocusInitial (click)="saveAndExit()">Save</button>
+	<button mat-button (click)="reset()">Reset</button>
+	<button mat-button cdkFocusInitial (click)="saveAndExit()">Save</button>
 </div>

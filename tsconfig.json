@@ -1,27 +1,23 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "esnext",
-    "removeComments": true,
-    "strict": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "esnext",
-      "dom"
-    ]
-  },
-  "angularCompilerOptions": {
-    "disableTypeScriptVersionCheck": true,
- },
+	"compileOnSave": false,
+	"compilerOptions": {
+		"baseUrl": "./",
+		"outDir": "./dist/out-tsc",
+		"sourceMap": true,
+		"declaration": false,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "esnext",
+		"removeComments": true,
+		"strict": true,
+		"typeRoots": ["node_modules/@types"],
+		"lib": ["esnext", "dom"]
+	},
+	"angularCompilerOptions": {
+		"disableTypeScriptVersionCheck": true
+	}
 }

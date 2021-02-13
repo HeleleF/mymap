@@ -1,43 +1,48 @@
 name: Build and Deploy
 on:
-  push:
-    branches:
-      - master
+    push:
+        branches:
+            - master
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
-      - name: Install Dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-        env:
-          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          MAPBOX_API_TOKEN: ${{ secrets.MAPBOX_API_TOKEN }}
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: dist
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: dist
-          path: dist
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting:main --message \"${{ github.event.head_commit.message }}\"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    build:
+        name: Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Install Dependencies
+              run: npm install
+            - name: Build
+              run: npm run build
+              env:
+                  FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+                  MAPBOX_API_TOKEN: ${{ secrets.MAPBOX_API_TOKEN }}
+            - name: Display structure of uploaded files
+              run: ls -R
+            - name: Archive Production Artifact
+              uses: actions/upload-artifact@v2
+              with:
+                  name: dist
+                  path: dist
+                  retention-days: 2
+    deploy:
+        name: Deploy
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@master
+            - name: Download Artifact
+              uses: actions/download-artifact@v2
+              with:
+                  name: dist
+                  path: dist
+            - name: Display structure of downloaded files
+              run: ls -R
+            - name: Deploy to Firebase
+              uses: w9jds/firebase-action@master
+              with:
+                  args: deploy --only hosting:main --message \"${{ github.event.head_commit.message }}\"
+              env:
+                  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

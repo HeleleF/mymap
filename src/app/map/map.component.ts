@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { SwUpdate } from '@angular/service-worker';
 
-// import * as mapboxgl from 'mapbox-gl';
 import {
   Map as MapboxMap,
   Expression,
@@ -13,7 +11,7 @@ import {
 
 import { ToastrService } from 'ngx-toastr';
 import { Subject, Observer } from 'rxjs';
-import { take, takeUntil, tap, switchMapTo, filter, first } from 'rxjs/operators';
+import { takeUntil, tap, switchMapTo, filter, first } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment';
 
@@ -54,7 +52,6 @@ export class MapComponent implements OnInit, OnDestroy {
   private unsubscribeAll$ = new Subject();
 
   constructor(
-    private swUpdate: SwUpdate,
     private db: GymService,
     private us: UserService,
     private ms: MessageService,
@@ -124,20 +121,6 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    // watch for service worker updates
-    // TODO(helene): move this to the main app component, so that sw updates happen no matter what page we are on!
-    // do this in another branch
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.available.subscribe(() => {
-        this.toast.info('Click to reload!', 'App Update', {
-          disableTimeOut: true,
-        })
-          .onTap
-          .pipe(take(1))
-          .subscribe(() => void this.swUpdate.activateUpdate().then(() => document.location.reload()));
-      });
-    }
 
     // create map
     this.map = new MapboxMap({

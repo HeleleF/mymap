@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { SwUpdate } from '@angular/service-worker';
 
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+
+import { ToastrService } from 'ngx-toastr';
+
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
+
 import { User } from './model/shared.model';
 
 @Component({
@@ -20,12 +25,26 @@ export class AppComponent implements OnInit {
   constructor(
     private toast: ToastrService,
     public aus: AuthService,
-    public us: UserService
+    public us: UserService,
+    private swUpdate: SwUpdate
   ) {
     this.isOnline = navigator.onLine;
    }
 
   ngOnInit(): void {
+
+    // watch for service worker updates
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.available.subscribe(() => {
+        this.toast.info('Click to reload!', 'App Update', {
+          disableTimeOut: true,
+        })
+          .onTap
+          .pipe(take(1))
+          .subscribe(() => void this.swUpdate.activateUpdate().then(() => document.location.reload()));
+      });
+    }
+
     window.addEventListener('online', this.updateStatus.bind(this));
     window.addEventListener('offline', this.updateStatus.bind(this));
   }

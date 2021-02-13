@@ -13,5 +13,5 @@ export let AppInjector: Injector;
  * Useful if a class needs a dependency * but cant rely on dependency injection.
  */
 export const setAppInjector = (injector: Injector): void => {
-    AppInjector = injector;
-}
+	AppInjector = injector;
+};

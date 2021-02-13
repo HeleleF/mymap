@@ -12,39 +12,35 @@ import { Observable } from 'rxjs';
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+	user$: Observable<fb.User | null>;
 
-  user$: Observable<fb.User | null>;
+	constructor(private afAuth: AngularFireAuth, private router: Router) {
+		this.user$ = this.afAuth.authState;
+	}
 
-  constructor(
-    private afAuth: AngularFireAuth,
-    private router: Router
-  ) {
+	/**
+	 * Performs the "sign in" process and updates
+	 * the user
+	 */
+	loginWithProvider(provider: fb.auth.GoogleAuthProvider): Promise<void> {
+		return this.afAuth.signInWithRedirect(provider);
+	}
 
-    this.user$ = this.afAuth.authState;
-  }
-
-  /**
-   * Performs the "sign in" process and updates
-   * the user
-   */
-  loginWithProvider(provider: fb.auth.GoogleAuthProvider): Promise<void> {
-    return this.afAuth.signInWithRedirect(provider);
-  }
-
-  /**
-   * Performs the "sign out" process and navigates
-   * to the root of the app if successful
-   */
-  logOut(): void {
-
-    this.afAuth.signOut()
-      .then(() => {
-        void this.router.navigate(['/login'], { state: { msg: 'So long, schlong!' } });
-      })
-      .catch((err: Error) => {
-        // eslint-disable-next-line no-console
-        console.debug('Sign-Out failed', err); // TODO(helene): what now? redirect anyway?
-      });
-
-  }
+	/**
+	 * Performs the "sign out" process and navigates
+	 * to the root of the app if successful
+	 */
+	logOut(): void {
+		this.afAuth
+			.signOut()
+			.then(() => {
+				void this.router.navigate(['/login'], {
+					state: { msg: 'So long, schlong!' }
+				});
+			})
+			.catch((err: Error) => {
+				// eslint-disable-next-line no-console
+				console.debug('Sign-Out failed', err); // TODO(helene): what now? redirect anyway?
+			});
+	}
 }

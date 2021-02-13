@@ -27,7 +27,10 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
+import {
+	AngularFirestoreModule,
+	SETTINGS as FIRESTORE_SETTINGS
+} from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -54,72 +57,75 @@ import { SettingsComponent } from './settings/settings.component';
 import { setAppInjector } from './shared/app-injector';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MapComponent,
-    GymPopupComponent,
-    LoginComponent,
-    ImgFallbackDirective,
-    DashboardComponent,
-    FilterComponent,
-    AutochipsComponent,
-    SettingsComponent,
-    NewGymComponent,
-    PageNotFoundComponent,
-    LockedComponent,
-    BadgeListComponent,
-],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
-    }),
-    UiScrollModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-    MatToolbarModule,
-    MatMenuModule,
-    MatIconModule,
-    MatCardModule,
-    MatButtonModule,
-    MatTabsModule,
-    MatChipsModule,
-    MatDialogModule,
-    MatListModule,
-    MatFormFieldModule,
-    MatRadioModule,
-    MatCheckboxModule,
-    MatAutocompleteModule,
-    MatDividerModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRippleModule,
-    MatSelectModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule,
-    HttpClientModule,
-  ],
-  providers: [
-    {
-     provide: FIRESTORE_SETTINGS,
-     useValue: environment.production ? undefined : {
-        host: 'localhost:8080',
-        ssl: false
-    }
-    },
-  ],
+	declarations: [
+		AppComponent,
+		MapComponent,
+		GymPopupComponent,
+		LoginComponent,
+		ImgFallbackDirective,
+		DashboardComponent,
+		FilterComponent,
+		AutochipsComponent,
+		SettingsComponent,
+		NewGymComponent,
+		PageNotFoundComponent,
+		LockedComponent,
+		BadgeListComponent
+	],
+	imports: [
+		BrowserModule,
+		BrowserAnimationsModule,
+		ToastrModule.forRoot({
+			positionClass: 'toast-bottom-right'
+		}),
+		UiScrollModule,
+		FormsModule,
+		ReactiveFormsModule,
+		AppRoutingModule,
+		ServiceWorkerModule.register('ngsw-worker.js', {
+			enabled: environment.production
+		}),
+		MatToolbarModule,
+		MatMenuModule,
+		MatIconModule,
+		MatCardModule,
+		MatButtonModule,
+		MatTabsModule,
+		MatChipsModule,
+		MatDialogModule,
+		MatListModule,
+		MatFormFieldModule,
+		MatRadioModule,
+		MatCheckboxModule,
+		MatAutocompleteModule,
+		MatDividerModule,
+		MatInputModule,
+		MatProgressBarModule,
+		MatProgressSpinnerModule,
+		MatRippleModule,
+		MatSelectModule,
+		AngularFireModule.initializeApp(environment.firebaseConfig),
+		AngularFirestoreModule.enablePersistence(),
+		AngularFireAuthModule,
+		HttpClientModule
+	],
+	providers: [
+		{
+			provide: FIRESTORE_SETTINGS,
+			useValue: environment.production
+				? undefined
+				: {
+						host: 'localhost:8080',
+						ssl: false
+				  }
+		}
+	],
 
-  bootstrap: [AppComponent]
+	bootstrap: [AppComponent]
 })
 export class AppModule {
-
-  // store the Injector for later use in other components
-  constructor(inj: Injector) {
-    setAppInjector(inj);
-  }
+	// store the Injector for later use in other components
+	constructor(inj: Injector) {
+		setAppInjector(inj);
+	}
 }

@@ -1,66 +1,70 @@
 import { Role } from './role.model';
 
 export interface Poke {
-    dex: string;
-    name: string;
+	dex: string;
+	name: string;
 }
 
 export interface Message {
-    type: 'newGym' | 'settings';
-    data: any;
+	type: 'newGym' | 'settings';
+	data: any;
 }
 
 export interface ErrorMessage {
-    type: 'Gym';
-    err: string;
-    data?: any;
+	type: 'Gym';
+	err: string;
+	data?: any;
 }
 
 export enum MapStyle {
-    Light = 'light-v10',
-    Dark = 'dark-v10',
-    Outdoors = 'outdoors-v11',
-    Streets = 'streets-v11',
+	Light = 'light-v10',
+	Dark = 'dark-v10',
+	Outdoors = 'outdoors-v11',
+	Streets = 'streets-v11'
 }
 
 export interface FilterSettings {
+	showGyms: boolean;
 
-  showGyms: boolean;
+	negateBadge?: boolean;
+	badges: number[];
 
-  negateBadge?: boolean;
-  badges: number[];
-
-  includeLegacy: boolean;
+	includeLegacy: boolean;
 }
 
 export interface User {
-    uid: string;
-    image: string | null;
-    name: string | null;
-    role: Role;
+	uid: string;
+	image: string | null;
+	name: string | null;
+	role: Role;
 
-    // mehr wenn wir brauchen
+	// mehr wenn wir brauchen
 }
 
 export interface Medal {
-    badge: number;
+	badge: number;
 }
 
 export interface PopupReturn {
-    type: 'badgeUpdateFailed' | 'badgeUpdate' | 'questUpdate' | 'gymUpdateFailed' | 'gymUpdate';
-    data: any;
+	type:
+		| 'badgeUpdateFailed'
+		| 'badgeUpdate'
+		| 'questUpdate'
+		| 'gymUpdateFailed'
+		| 'gymUpdate';
+	data: any;
 }
 
 export interface CustomError {
-    err: string,
-    type: string,
-    message: string,
-    code: string,
+	err: string;
+	type: string;
+	message: string;
+	code: string;
 }
 
 export interface FilterError {
-    err: string,
-    type: string,
-    message: string,
-    code: string,
+	err: string;
+	type: string;
+	message: string;
+	code: string;
 }

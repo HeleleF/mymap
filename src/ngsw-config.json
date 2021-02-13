@@ -1,43 +1,40 @@
 {
-  "index": "/index.html",
-  "assetGroups": [
-    {
-      "name": "app",
-      "installMode": "prefetch",
-      "resources": {
-        "files": [
-          "/fav.ico",
-          "/3rdpartylicenses.txt",
-          "/index.html",
-          "/*.css",
-          "/*.js",
-          "/*.json",
-          "/assets/gyms/**"
-        ]
-      }
-    }, {
-      "name": "assets",
-      "installMode": "lazy",
-      "updateMode": "prefetch",
-      "resources": {
-        "files": [
-          "/assets/icons/**"
-        ]
-      }
-    }
-  ],
-  "dataGroups": [
-    {
-      "name": "pogo-api",
-      "urls": [
-        "https://api.mapbox.com/**"
-      ],
-      "cacheConfig": {
-        "strategy": "performance",
-        "maxSize": 500,
-        "maxAge": "50d",
-        "timeout": "7s"
-      }
-    }
-  ]
+	"index": "/index.html",
+	"assetGroups": [
+		{
+			"name": "app",
+			"installMode": "prefetch",
+			"resources": {
+				"files": [
+					"/fav.ico",
+					"/3rdpartylicenses.txt",
+					"/index.html",
+					"/*.css",
+					"/*.js",
+					"/*.json",
+					"/assets/gyms/**"
+				]
+			}
+		},
+		{
+			"name": "assets",
+			"installMode": "lazy",
+			"updateMode": "prefetch",
+			"resources": {
+				"files": ["/assets/icons/**"]
+			}
+		}
+	],
+	"dataGroups": [
+		{
+			"name": "pogo-api",
+			"urls": ["https://api.mapbox.com/**"],
+			"cacheConfig": {
+				"strategy": "performance",
+				"maxSize": 500,
+				"maxAge": "50d",
+				"timeout": "7s"
+			}
+		}
+	]
 }

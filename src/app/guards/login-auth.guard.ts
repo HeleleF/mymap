@@ -8,27 +8,26 @@ import { AuthService } from '../services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginAuthGuard implements CanActivate {
+	constructor(private auth: AuthService, private router: Router) {}
 
-  constructor(
-    private auth: AuthService,
-    private router: Router
-  ) {}
-
-  /**
-   * Restricts a route
-   * to users that are not logged in.
-   */
-  canActivate(): Observable<boolean> {
-
-    return this.auth.user$.pipe(
-      take(1),
-      map(user => !user),
-      tap(isLoggedOut => {
-        console.log('%cGUARD', 'color:#B0FF0A; font-size: large', isLoggedOut);
-        if (!isLoggedOut) {
-          void this.router.navigate(['/dashboard']);
-        }
-      })
-    );
-  }
+	/**
+	 * Restricts a route
+	 * to users that are not logged in.
+	 */
+	canActivate(): Observable<boolean> {
+		return this.auth.user$.pipe(
+			take(1),
+			map((user) => !user),
+			tap((isLoggedOut) => {
+				console.log(
+					'%cGUARD',
+					'color:#B0FF0A; font-size: large',
+					isLoggedOut
+				);
+				if (!isLoggedOut) {
+					void this.router.navigate(['/dashboard']);
+				}
+			})
+		);
+	}
 }

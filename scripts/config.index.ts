@@ -3,8 +3,10 @@ import { writeFile } from 'fs';
 
 const targetPath = './src/environments/environment.prod.ts';
 
+//TODO(helene): change this to replace placeholders instead of rewrting everything
 const envConfigFile = `export const environment = {
    production: true,
+   MAPBOX_STYLE_URI: 'mapbox://styles/mappinglehne/ck4n0h27q0qqe1crzvpg8vpsm',
    MAPBOX_API_TOKEN: '${process.env.MAPBOX_API_TOKEN}',
    firebaseConfig: {
         apiKey: '${process.env.FIREBASE_API_KEY}',
@@ -19,7 +21,7 @@ const envConfigFile = `export const environment = {
 `;
 
 writeFile(targetPath, envConfigFile, 'utf8', (err) => {
-  if (err) {
-    return console.log(err);
-  }
+	if (err) {
+		return console.log(err);
+	}
 });

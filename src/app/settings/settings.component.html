@@ -1,10 +1,12 @@
-
 <label id="radio-group-label">Choose the map style</label>
-<mat-radio-group
-  class="radio-group"
-  [(ngModel)]="currentStyle">
-  <mat-radio-button color="primary" class="radio-button" *ngFor="let style of styles" [value]="style">
-    {{style}}
-  </mat-radio-button>
+<mat-radio-group class="radio-group" [(ngModel)]="currentStyle">
+	<mat-radio-button
+		color="primary"
+		class="radio-button"
+		*ngFor="let style of styles"
+		[value]="style"
+	>
+		{{style}}
+	</mat-radio-button>
 </mat-radio-group>
 <div>Current map style is: {{currentStyle}}</div>

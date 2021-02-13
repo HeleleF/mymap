@@ -13,63 +13,58 @@ import { FilterComponent } from './filter.component';
  * from the map
  */
 export class FilterControl implements IControl {
+	mapRef: MapboxMap | undefined;
+	container: HTMLDivElement;
+	private modal: MatDialog;
+	private fs: FilterService;
+	private sub!: Subscription; // TODO(helene): use ? op instead after updating ts
 
-    mapRef: MapboxMap | undefined;
-    container: HTMLDivElement;
-    private modal: MatDialog;
-    private fs: FilterService;
-    private sub!: Subscription; // TODO(helene): use ? op instead after updating ts
+	constructor() {
+		// get instance of MatDialog via Angular Injector
+		// necessary because the mapbox Control Class has no constructor arguments, so we cant use constructor dependency injection
+		this.modal = AppInjector.get(MatDialog);
+		this.container = document.createElement('div');
 
-    constructor() {
+		this.fs = AppInjector.get(FilterService);
+	}
 
-        // get instance of MatDialog via Angular Injector
-        // necessary because the mapbox Control Class has no constructor arguments, so we cant use constructor dependency injection
-        this.modal = AppInjector.get(MatDialog);
-        this.container = document.createElement('div');
+	onAdd(map: MapboxMap): HTMLDivElement {
+		this.mapRef = map;
 
-        this.fs = AppInjector.get(FilterService);
-    }
+		this.container.classList.add('mapboxgl-ctrl', 'mapboxgl-ctrl-group');
 
-    onAdd(map: MapboxMap): HTMLDivElement {
+		const btn = document.createElement('button');
 
-        this.mapRef = map;
+		btn.setAttribute('type', 'button');
+		btn.setAttribute('title', 'Filter');
 
-        this.container.classList.add('mapboxgl-ctrl', 'mapboxgl-ctrl-group');
+		btn.classList.add('mapboxgl-ctrl-icon', 'mapboxgl-ctrl-filter');
 
-        const btn = document.createElement('button');
+		btn.addEventListener('click', (ev) => {
+			ev.stopPropagation();
+			this.modal.open(FilterComponent);
+		});
 
-        btn.setAttribute('type', 'button');
-        btn.setAttribute('title', 'Filter');
+		this.container.appendChild(btn);
 
-        btn.classList.add('mapboxgl-ctrl-icon', 'mapboxgl-ctrl-filter');
+		this.sub = this.fs.onChanged().subscribe({
+			next: (filters) => {
+				if (filters.badges.length || !filters.showGyms) {
+					btn.classList.add('active');
+				} else {
+					btn.classList.remove('active');
+				}
+			}
+		});
 
-        btn.addEventListener('click', ev => {
+		return this.container;
+	}
 
-            ev.stopPropagation();
-            this.modal.open(FilterComponent);
-        });
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	onRemove(_map: MapboxMap): void {
+		this.container.remove();
+		this.mapRef = undefined;
 
-        this.container.appendChild(btn);
-
-        this.sub = this.fs.onChanged().subscribe({
-            next: (filters) => {
-
-                if (filters.badges.length || !filters.showGyms) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            }
-        });
-
-        return this.container;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onRemove(_map: MapboxMap): void {
-        this.container.remove();
-        this.mapRef = undefined;
-
-        this.sub.unsubscribe();
-    }
+		this.sub.unsubscribe();
+	}
 }

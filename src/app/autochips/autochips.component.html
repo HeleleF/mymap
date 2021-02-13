@@ -1,23 +1,38 @@
 <mat-form-field class="form-field">
+	<mat-chip-list #chipList aria-label="Element selection">
+		<mat-chip
+			*ngFor="let e of elms"
+			selectable="true"
+			removable="true"
+			(removed)="remove(e)"
+			(click)="remove(e)"
+		>
+			<img
+				class="option-img"
+				aria-hidden
+				src="../../assets/quests/{{e.dex}}.svg"
+				height="25"
+				appFallback="../../assets/missingPoke.svg"
+			/>
+			{{e.name}}
+			<mat-icon matChipRemove>cancel</mat-icon>
+		</mat-chip>
 
-  <mat-chip-list #chipList aria-label="Element selection">
+		<input
+			placeholder="New elem..."
+			#elmInput
+			[formControl]="formCtrl"
+			[matAutocomplete]="auto"
+			[matChipInputFor]="chipList"
+		/>
+	</mat-chip-list>
 
-    <mat-chip *ngFor="let e of elms" selectable="true" removable="true" (removed)="remove(e)" (click)="remove(e)">
-      <img class="option-img" aria-hidden src="../../assets/quests/{{e.dex}}.svg" height="25" appFallback="../../assets/missingPoke.svg">
-      {{e.name}}
-      <mat-icon matChipRemove>cancel</mat-icon>
-    </mat-chip>
-
-    <input placeholder="New elem..." #elmInput [formControl]="formCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList">
-
-  </mat-chip-list>
-
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-
-    <mat-option *ngFor="let e of filteredElms | async" [value]="e">
-      <span>{{e.name}}</span>
-    </mat-option>
-    
-  </mat-autocomplete>
-
+	<mat-autocomplete
+		#auto="matAutocomplete"
+		(optionSelected)="selected($event)"
+	>
+		<mat-option *ngFor="let e of filteredElms | async" [value]="e">
+			<span>{{e.name}}</span>
+		</mat-option>
+	</mat-autocomplete>
 </mat-form-field>

@@ -126,6 +126,8 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     // watch for service worker updates
+    // TODO(helene): move this to the main app component, so that sw updates happen no matter what page we are on!
+    // do this in another branch
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
         this.toast.info('Click to reload!', 'App Update', {

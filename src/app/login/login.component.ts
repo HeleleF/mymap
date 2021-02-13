@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
+import fb from 'firebase/app';
 
 import { take } from 'rxjs/operators';
 
@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
 
       } else {
         this.isLoading = false;
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-        this.message = history.state.msg || 'Please login first';
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        this.message = history.state.msg as string || 'Please login first';
       }
     });
 
@@ -58,10 +58,10 @@ export class LoginComponent implements OnInit {
 
   googleLogin(): Promise<void> {
 
-    const provider = new auth.GoogleAuthProvider();
-    provider.setCustomParameters({
-      prompt: 'select_account',
-    });
+    const provider = new fb.auth.GoogleAuthProvider();
+
+    // necessary for testing locally with multiple accounts
+    provider.setCustomParameters({ prompt: 'select_account' });
 
     return this.as.loginWithProvider(provider);
   }

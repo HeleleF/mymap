@@ -4,7 +4,6 @@
 secrets.ts
 .firebase
 *-debug.log
-/src/assets
 /exported
 all.json
 desktop.ini

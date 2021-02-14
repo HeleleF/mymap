@@ -7,6 +7,7 @@
 		"build": "npm run config && ng build --prod",
 		"test": "ng test",
 		"pretty": "prettier --check .",
+		"pretty:fix": "prettier --write .",
 		"lint": "eslint .",
 		"e2e": "ng e2e",
 		"prodtest": "ng build --prod --source-map && http-server-spa dist/MyMap/ index.html 8001",

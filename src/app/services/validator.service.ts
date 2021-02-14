@@ -36,7 +36,7 @@ export class ValidatorService {
 
 	static validPosition(control: AbstractControl): ValidationErrors | null {
 		// TODO(helene): deprecate this in favor of lat and long validator
-		return /^\d+\.\d+\,\d+\.\d+$/.test(control.value)
+		return /^\d+\.\d+,\d+\.\d+$/.test(control.value)
 			? null
 			: { malformedPos: { value: control.value as string } };
 	}
@@ -52,7 +52,7 @@ export class ValidatorService {
 		control: AbstractControl
 	): Observable<ValidationErrors | null> {
 		const uri: string = (control.value as string).replace(
-			/^https?\:\/\//,
+			/^https?:\/\//,
 			''
 		);
 
@@ -74,9 +74,9 @@ export class ValidatorService {
 	 * Tries to extract the necessary gym information from a given string
 	 * and returns it as a form group structure.
 	 */
-	static parseAndValidate(text: string): { [key: string]: any } {
+	static parseAndValidate(text: string): { [key: string]: unknown } {
 		// eslint-disable-next-line max-len
-		const matcher = /badge: (?<badge>\d)\s{1,2}description: \"(?<name>.*)\"\s{1,2}gym_id: \"(?<id>.*)\"\s{1,2}location: \"(?<pos>.*)\"\s{1,2}url: \"(?<url>.*)\"/m;
+		const matcher = /badge: (?<badge>\d)\s{1,2}description: "(?<name>.*)"\s{1,2}gym_id: "(?<id>.*)"\s{1,2}location: "(?<pos>.*)"\s{1,2}url: "(?<url>.*)"/m;
 
 		const match = matcher.exec(text); // || { groups: { name: null, url: null, pos: null, id: null, badge: null } };
 

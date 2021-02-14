@@ -10,17 +10,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
-              uses: actions/checkout@master
+              uses: actions/checkout@v2
             - name: Install Dependencies
               run: npm install
-            - name: Build
+            - name: Build for production
               run: npm run build
               env:
                   FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
                   MAPBOX_API_TOKEN: ${{ secrets.MAPBOX_API_TOKEN }}
             - name: Display structure of uploaded files
-              run: ls -R
-            - name: Archive Production Artifact
+              run: ls -R dist
+            - name: Upload production build artifact
               uses: actions/upload-artifact@v2
               with:
                   name: dist
@@ -32,14 +32,14 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
-              uses: actions/checkout@master
-            - name: Download Artifact
+              uses: actions/checkout@v2
+            - name: Download production build artifact
               uses: actions/download-artifact@v2
               with:
                   name: dist
                   path: dist
             - name: Display structure of downloaded files
-              run: ls -R
+              run: ls -R dist
             - name: Deploy to Firebase
               uses: w9jds/firebase-action@master
               with:

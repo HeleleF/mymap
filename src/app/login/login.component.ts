@@ -34,9 +34,9 @@ export class LoginComponent implements OnInit {
 				});
 			} else {
 				this.isLoading = false;
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				this.message =
-					(history.state.msg as string) || 'Please login first';
+					(history.state as Record<string, string>).msg ||
+					'Please login first';
 			}
 		});
 

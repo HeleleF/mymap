@@ -6,6 +6,7 @@ import { secrets } from './secrets';
 
 export const environment = {
 	production: false,
+	LOCAL_FIRESTORE_URL: 'localhost:8080',
 	MAPBOX_STYLE_URI: 'mapbox://styles/mappinglehne/ck4n0h27q0qqe1crzvpg8vpsm',
 	...secrets
 };

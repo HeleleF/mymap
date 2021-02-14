@@ -1,0 +1,24 @@
+name: Prettier and Linting
+on:
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    check:
+        name: Run Prettier and Eslint
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v2
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '14'
+            - name: Install Dependencies
+              run: npm install
+            - name: Run prettier
+              run: npm run pretty
+            #- name: Run eslint
+            #  run: npm run lint # Eslint complains about unsafe member access for anything environment-related?
+            # disable until we figure this out

@@ -4,7 +4,13 @@
 		"browser": true,
 		"es6": true
 	},
-	"ignorePatterns": ["projects/**/*", "src/index.html"],
+	"ignorePatterns": [
+		"e2e/**/*",
+		"src/test.ts",
+		"src/index.html",
+		"scripts/**/*",
+		"firestoreTests.js"
+	],
 	"overrides": [
 		{
 			"files": ["*.ts"],
@@ -38,7 +44,12 @@
 						"prefix": "app",
 						"style": "camelCase"
 					}
-				]
+				],
+				"@typescript-eslint/no-empty-function": [
+					"error",
+					{ "allow": ["constructors"] }
+				],
+				"no-console": "warn"
 			}
 		},
 		{

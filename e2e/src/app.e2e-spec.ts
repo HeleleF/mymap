@@ -9,8 +9,8 @@ describe('workspace-project App', () => {
 	});
 
 	it('should display welcome message', () => {
-		page.navigateTo();
-		expect(page.getTitleText()).toEqual('Welcome to MyMap!');
+		void page.navigateTo();
+		void expect(page.getTitleText()).toEqual('Welcome to MyMap!');
 	});
 
 	afterEach(async () => {

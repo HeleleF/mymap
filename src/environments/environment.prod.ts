@@ -7,8 +7,6 @@ export const environment = {
 		authDomain: 'meine-pwa.firebaseapp.com',
 		databaseURL: 'https://meine-pwa.firebaseio.com',
 		projectId: 'meine-pwa',
-		storageBucket: 'meine-pwa.appspot.com',
-		messagingSenderId: '340118471403',
-		appId: '1:340118471403:web:4e13847887689032'
+		storageBucket: 'meine-pwa.appspot.com'
 	}
 };

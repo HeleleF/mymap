@@ -96,7 +96,7 @@ export class UserService {
 			.collection<Medal>(`/users/${this.currentUID}/medals`)
 			.get(this.opts)
 			.pipe(
-				tap(this.setCached),
+				tap(() => this.setCached()),
 				map(({ docs }) => {
 					const badgeTypeCounts = [0, 0, 0, 0];
 

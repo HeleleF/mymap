@@ -85,7 +85,6 @@ export class BadgeListComponent implements OnInit {
 				this.loading = false;
 			},
 			error: (e: CustomError) => {
-				console.log(e);
 				this.toast.error(e.message, e.code, { disableTimeOut: true });
 				this.loading = false;
 			}

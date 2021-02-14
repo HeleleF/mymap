@@ -82,7 +82,9 @@ export class MapComponent implements OnInit, OnDestroy {
 								ret.data
 							)}!`,
 							'Gym',
-							{ disableTimeOut: true }
+							{
+								disableTimeOut: true
+							}
 						);
 						break;
 
@@ -92,7 +94,9 @@ export class MapComponent implements OnInit, OnDestroy {
 								ret.data as string
 							}!`,
 							'Gym',
-							{ disableTimeOut: true }
+							{
+								disableTimeOut: true
+							}
 						);
 						break;
 
@@ -335,7 +339,9 @@ export class MapComponent implements OnInit, OnDestroy {
 					this.toast.error(
 						`Couldn't apply filters because ${e.message}!`,
 						'Filter Error',
-						{ disableTimeOut: true }
+						{
+							disableTimeOut: true
+						}
 					);
 				}
 			});

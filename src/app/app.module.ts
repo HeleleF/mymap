@@ -115,7 +115,7 @@ import { setAppInjector } from './shared/app-injector';
 			useValue: environment.production
 				? undefined
 				: {
-						host: 'localhost:8080',
+						host: environment.LOCAL_FIRESTORE_URL,
 						ssl: false
 				  }
 		}

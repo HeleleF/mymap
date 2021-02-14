@@ -12,7 +12,7 @@
 		mat-icon-button
 		[matMenuTriggerFor]="menu"
 		aria-label="Example icon-button with a menu"
-		[disabled]="!(user$ | async)"
+		[disabled]="(user$ | async) === null"
 	>
 		<mat-icon>more_vert</mat-icon>
 	</button>

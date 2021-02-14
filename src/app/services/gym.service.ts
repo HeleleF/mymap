@@ -36,7 +36,7 @@ export class GymService {
 
 	getEntries(): Observable<BadgeEntry[]> {
 		return this.gymsRef.get(this.opts).pipe(
-			tap(this.setCached),
+			tap(() => this.setCached()),
 			map(({ docs }) =>
 				(docs as QueryDocumentSnapshot<GymModel>[]).map((doc) => {
 					const gym = doc.data();
@@ -96,7 +96,7 @@ export class GymService {
 		const newValues: Partial<GymModel> = {};
 
 		if (name) newValues.n = name;
-		if (imageUrl) newValues.i = imageUrl.replace(/^https?\:\/\//, '');
+		if (imageUrl) newValues.i = imageUrl.replace(/^https?:\/\//, '');
 
 		// if one exists, the other has to exist too
 		if (lat && lng) newValues.l = asGeopoint(lat, lng);

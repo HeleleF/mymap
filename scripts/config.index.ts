@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { writeFile } from 'fs';
 
 const targetPath = './src/environments/environment.prod.ts';

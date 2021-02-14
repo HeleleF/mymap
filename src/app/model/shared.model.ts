@@ -7,13 +7,13 @@ export interface Poke {
 
 export interface Message {
 	type: 'newGym' | 'settings';
-	data: any;
+	data: unknown;
 }
 
 export interface ErrorMessage {
 	type: 'Gym';
 	err: string;
-	data?: any;
+	data?: unknown;
 }
 
 export enum MapStyle {
@@ -52,7 +52,7 @@ export interface PopupReturn {
 		| 'questUpdate'
 		| 'gymUpdateFailed'
 		| 'gymUpdate';
-	data: any;
+	data: unknown;
 }
 
 export interface CustomError {

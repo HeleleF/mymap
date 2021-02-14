@@ -93,7 +93,6 @@ export class GymPopupComponent {
 				});
 			})
 			.catch((err: CustomError) => {
-				console.log(err.code);
 				this.popup.close({
 					type: 'badgeUpdateFailed',
 					data: err.message

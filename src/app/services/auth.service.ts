@@ -40,7 +40,7 @@ export class AuthService {
 			})
 			.catch((err: Error) => {
 				// eslint-disable-next-line no-console
-				console.debug('Sign-Out failed', err); // TODO(helene): what now? redirect anyway?
+				console.log('Sign-Out failed', err); // TODO(helene): what now? redirect anyway?
 			});
 	}
 }

@@ -24,7 +24,12 @@
 			disableRipple="true"
 			routerLink="/dashboard"
 		>
-			<img class="user-image" [src]="user.image" />
+			<img
+				class="user-image"
+				[src]="user.image"
+				width="442px"
+				height="442px"
+			/>
 			<span class="user-name">{{user.name}}</span>
 			<span class="user-admin color-accent">{{user.role}}</span>
 		</button>

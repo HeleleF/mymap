@@ -206,7 +206,7 @@ export class MapComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		// prevent subscriptions leaks by activating the "kill switch"
 		// see https://stackoverflow.com/a/41177163
-		this.unsubscribeAll$.next();
+		this.unsubscribeAll$.next(null);
 		this.unsubscribeAll$.complete();
 	}
 
@@ -404,7 +404,7 @@ export class MapComponent implements OnInit, OnDestroy {
 				}),
 				switchMapTo(this.route.fragment),
 				filter(
-					(fragOrEmpty: string | undefined): fragOrEmpty is string =>
+					(fragOrEmpty: string | null): fragOrEmpty is string =>
 						!!fragOrEmpty
 				),
 				first()

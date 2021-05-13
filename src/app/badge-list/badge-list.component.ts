@@ -30,7 +30,7 @@ export class BadgeListComponent implements OnInit {
 		ElementRef<HTMLUListElement>
 	>;
 
-	dsrc: Datasource;
+	dsrc: any;
 	badgeEntries$: Observable<BadgeEntry[][]>;
 
 	loading = true;

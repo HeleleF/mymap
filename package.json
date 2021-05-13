@@ -2,7 +2,7 @@
 	"name": "my-map",
 	"version": "0.0.1",
 	"scripts": {
-		"ng": "ng",
+		"ng": "ng update @angular/cdk @angular/core @angular/material --force",
 		"start": "start firebase emulators:start --only firestore --import \"../exported\" && ng serve --port 8001 --open",
 		"build": "npm run config && ng build --prod",
 		"test": "ng test",

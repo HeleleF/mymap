@@ -50,29 +50,29 @@ export class GymService {
 		return this.gymsRef.get(this.opts).pipe(
 			tap(this.setCached.bind(this)),
 			map(({ docs }) => {
-				const features = (docs as QueryDocumentSnapshot<GymModel>[]).map(
-					(doc) => {
-						const gym = doc.data();
+				const features = (
+					docs as QueryDocumentSnapshot<GymModel>[]
+				).map((doc) => {
+					const gym = doc.data();
 
-						const props: GymProps = {
-							firestoreId: doc.id,
-							portalId: gym.p,
-							imageUrl: gym.i,
-							name: gym.n
-						};
+					const props: GymProps = {
+						firestoreId: doc.id,
+						portalId: gym.p,
+						imageUrl: gym.i,
+						name: gym.n
+					};
 
-						if (gym.r) props.isLegacy = true;
+					if (gym.r) props.isLegacy = true;
 
-						return {
-							type: 'Feature',
-							geometry: {
-								type: 'Point',
-								coordinates: [gym.l.longitude, gym.l.latitude]
-							},
-							properties: props
-						};
-					}
-				);
+					return {
+						type: 'Feature',
+						geometry: {
+							type: 'Point',
+							coordinates: [gym.l.longitude, gym.l.latitude]
+						},
+						properties: props
+					};
+				});
 
 				return {
 					type: 'FeatureCollection',

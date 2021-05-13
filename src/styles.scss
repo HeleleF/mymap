@@ -1,25 +1,25 @@
-@import '~@angular/material/theming';
-@include mat-core();
-
-// https://material.io/design/color/#tools-for-picking-colors hier die farben festlegen
-$my-app-primary: mat-palette($mat-indigo);
-$my-app-accent: mat-palette($mat-pink, A200, A100, A400);
-$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
-
-@include angular-material-theme($my-app-theme);
+@use '~@angular/material' as mat;
+@include mat.core();
 
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons&display=swap');
+
+// https://material.io/design/color/#tools-for-picking-colors hier die farben festlegen
+$my-app-primary: mat.define-palette(mat.$indigo-palette);
+$my-app-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$my-app-theme: mat.define-light-theme($my-app-primary, $my-app-accent);
+
+@include mat.all-component-themes($my-app-theme);
 
 ////////////////////////////////////////////////////
 // THEME COLORS
 ////////////////////////////////////////////////////
 
 .color-primary {
-	color: mat-color($my-app-primary);
+	color: mat.get-color-from-palette($my-app-primary);
 }
 
 .color-accent {
-	color: mat-color($my-app-accent);
+	color: mat.get-color-from-palette($my-app-accent);
 }
 
 ////////////////////////////////////////////////////
@@ -113,5 +113,5 @@ h2 {
 .badge-list::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	background-color: mat-color($my-app-primary);
+	background-color: mat.get-color-from-palette($my-app-primary);
 }

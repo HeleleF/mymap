@@ -76,7 +76,8 @@ export class ValidatorService {
 	 */
 	static parseAndValidate(text: string): { [key: string]: unknown } {
 		// eslint-disable-next-line max-len
-		const matcher = /badge: (?<badge>\d)\s{1,2}description: "(?<name>.*)"\s{1,2}gym_id: "(?<id>.*)"\s{1,2}location: "(?<pos>.*)"\s{1,2}url: "(?<url>.*)"/m;
+		const matcher =
+			/badge: (?<badge>\d)\s{1,2}description: "(?<name>.*)"\s{1,2}gym_id: "(?<id>.*)"\s{1,2}location: "(?<pos>.*)"\s{1,2}url: "(?<url>.*)"/m;
 
 		const match = matcher.exec(text); // || { groups: { name: null, url: null, pos: null, id: null, badge: null } };
 

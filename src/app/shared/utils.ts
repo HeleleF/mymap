@@ -14,7 +14,7 @@ export function getKeys<E>(
 	removeReverseMappings = true
 ): (keyof E)[] {
 	const enumKeys = Object.keys(enum_);
-	return (removeReverseMappings
-		? enumKeys.slice(enumKeys.length / 2)
-		: enumKeys) as (keyof E)[];
+	return (
+		removeReverseMappings ? enumKeys.slice(enumKeys.length / 2) : enumKeys
+	) as (keyof E)[];
 }

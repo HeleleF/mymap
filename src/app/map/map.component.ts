@@ -124,28 +124,27 @@ export class MapComponent implements OnInit, OnDestroy {
 								this.gyms.features[ix].properties.imageUrl =
 									u.imageUrl;
 							if (u.isLegacy)
-								this.gyms.features[
-									ix
-								].properties.isLegacy = true;
+								this.gyms.features[ix].properties.isLegacy =
+									true;
 							if (u.lat && u.lng)
 								this.gyms.features[ix].geometry.coordinates = [
 									+u.lng,
 									+u.lat
 								];
 
-							(this.map.getSource(
-								'gymSource'
-							) as mapboxgl.GeoJSONSource).setData(this.gyms);
+							(
+								this.map.getSource(
+									'gymSource'
+								) as mapboxgl.GeoJSONSource
+							).setData(this.gyms);
 						}
 
 						break;
 					}
 
 					case 'badgeUpdate': {
-						const {
-							firestoreId,
-							newBadge
-						} = ret.data as BadgeUpdate;
+						const { firestoreId, newBadge } =
+							ret.data as BadgeUpdate;
 
 						this.userBadges[firestoreId] = newBadge;
 						this.map.setLayoutProperty(
@@ -258,9 +257,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
 							const feature = data.gym;
 							this.gyms.features.push(feature);
-							(this.map.getSource(
-								'gymSource'
-							) as GeoJSONSource).setData(this.gyms);
+							(
+								this.map.getSource('gymSource') as GeoJSONSource
+							).setData(this.gyms);
 							this.toast.success(
 								`Added "${feature.properties.name}" as a new gym!`,
 								'Gym'
@@ -355,13 +354,11 @@ export class MapComponent implements OnInit, OnDestroy {
 		const props = feature.properties as GymProps;
 		const badge = this.userBadges[props.firestoreId] || 0;
 
-		const ref: MatDialogRef<
-			GymPopupComponent,
-			PopupReturn
-		> = this.modal.open(GymPopupComponent, {
-			data: { ...props, position, badge },
-			panelClass: 'custom-panel'
-		});
+		const ref: MatDialogRef<GymPopupComponent, PopupReturn> =
+			this.modal.open(GymPopupComponent, {
+				data: { ...props, position, badge },
+				panelClass: 'custom-panel'
+			});
 
 		ref.afterClosed().subscribe(this.obv);
 	}
